@@ -1,0 +1,895 @@
+Terminals unused in grammar
+
+   ELSE
+
+
+State 49 conflicts: 3 shift/reduce
+State 50 conflicts: 3 shift/reduce
+State 51 conflicts: 3 shift/reduce
+State 52 conflicts: 3 shift/reduce
+State 53 conflicts: 3 shift/reduce
+State 54 conflicts: 8 shift/reduce
+State 55 conflicts: 8 shift/reduce
+State 56 conflicts: 8 shift/reduce
+
+
+Grammar
+
+    0 $accept: begin $end
+
+    1 begin: LET declarations IN commands END
+
+    2 declarations: tipo idlist ';' declarations
+    3             | %empty
+
+    4 idlist: ID
+    5       | ID ',' idlist
+
+    6 tipo: REAL
+    7     | INTEGER
+
+    8 commands: %empty
+    9         | command ';' commands
+
+   10 command: SKIP
+   11        | READ ID
+   12        | WRITE exp
+   13        | ID ATRIB exp
+   14        | IF exp THEN commands FI
+   15        | WHILE exp DO commands END
+
+   16 exp: REAL
+   17    | NUMERO
+   18    | ID
+   19    | exp '<' exp
+   20    | exp '=' exp
+   21    | exp '>' exp
+   22    | exp '+' exp
+   23    | exp '-' exp
+   24    | exp '*' exp
+   25    | exp '/' exp
+   26    | exp '^' exp
+   27    | '(' exp ')'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 27
+')' (41) 27
+'*' (42) 24
+'+' (43) 22
+',' (44) 5
+'-' (45) 23
+'/' (47) 25
+';' (59) 2 9
+'<' (60) 19
+'=' (61) 20
+'>' (62) 21
+'^' (94) 26
+error (256)
+LET (258) 1
+INTEGER (259) 7
+IN (260) 1
+ID (261) 4 5 11 13 18
+SKIP (262) 10
+IF (263) 14
+FI (264) 14
+THEN (265) 14
+ELSE (266)
+END (267) 1 15
+WHILE (268) 15
+DO (269) 15
+READ (270) 11
+WRITE (271) 12
+NUMERO (272) 17
+ATRIB (273) 13
+REAL (274) 6 16
+
+
+Nonterminals, with rules where they appear
+
+$accept (32)
+    on left: 0
+begin (33)
+    on left: 1, on right: 0
+declarations (34)
+    on left: 2 3, on right: 1 2
+idlist (35)
+    on left: 4 5, on right: 2 5
+tipo (36)
+    on left: 6 7, on right: 2
+commands (37)
+    on left: 8 9, on right: 1 9 14 15
+command (38)
+    on left: 10 11 12 13 14 15, on right: 9
+exp (39)
+    on left: 16 17 18 19 20 21 22 23 24 25 26 27, on right: 12 13 14
+    15 19 20 21 22 23 24 25 26 27
+
+
+State 0
+
+    0 $accept: . begin $end
+
+    LET  shift, and go to state 1
+
+    begin  go to state 2
+
+
+State 1
+
+    1 begin: LET . declarations IN commands END
+
+    INTEGER  shift, and go to state 3
+    REAL     shift, and go to state 4
+
+    $default  reduce using rule 3 (declarations)
+
+    declarations  go to state 5
+    tipo          go to state 6
+
+
+State 2
+
+    0 $accept: begin . $end
+
+    $end  shift, and go to state 7
+
+
+State 3
+
+    7 tipo: INTEGER .
+
+    $default  reduce using rule 7 (tipo)
+
+
+State 4
+
+    6 tipo: REAL .
+
+    $default  reduce using rule 6 (tipo)
+
+
+State 5
+
+    1 begin: LET declarations . IN commands END
+
+    IN  shift, and go to state 8
+
+
+State 6
+
+    2 declarations: tipo . idlist ';' declarations
+
+    ID  shift, and go to state 9
+
+    idlist  go to state 10
+
+
+State 7
+
+    0 $accept: begin $end .
+
+    $default  accept
+
+
+State 8
+
+    1 begin: LET declarations IN . commands END
+
+    ID     shift, and go to state 11
+    SKIP   shift, and go to state 12
+    IF     shift, and go to state 13
+    WHILE  shift, and go to state 14
+    READ   shift, and go to state 15
+    WRITE  shift, and go to state 16
+
+    $default  reduce using rule 8 (commands)
+
+    commands  go to state 17
+    command   go to state 18
+
+
+State 9
+
+    4 idlist: ID .
+    5       | ID . ',' idlist
+
+    ','  shift, and go to state 19
+
+    $default  reduce using rule 4 (idlist)
+
+
+State 10
+
+    2 declarations: tipo idlist . ';' declarations
+
+    ';'  shift, and go to state 20
+
+
+State 11
+
+   13 command: ID . ATRIB exp
+
+    ATRIB  shift, and go to state 21
+
+
+State 12
+
+   10 command: SKIP .
+
+    $default  reduce using rule 10 (command)
+
+
+State 13
+
+   14 command: IF . exp THEN commands FI
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 26
+
+
+State 14
+
+   15 command: WHILE . exp DO commands END
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 27
+
+
+State 15
+
+   11 command: READ . ID
+
+    ID  shift, and go to state 28
+
+
+State 16
+
+   12 command: WRITE . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 29
+
+
+State 17
+
+    1 begin: LET declarations IN commands . END
+
+    END  shift, and go to state 30
+
+
+State 18
+
+    9 commands: command . ';' commands
+
+    ';'  shift, and go to state 31
+
+
+State 19
+
+    5 idlist: ID ',' . idlist
+
+    ID  shift, and go to state 9
+
+    idlist  go to state 32
+
+
+State 20
+
+    2 declarations: tipo idlist ';' . declarations
+
+    INTEGER  shift, and go to state 3
+    REAL     shift, and go to state 4
+
+    $default  reduce using rule 3 (declarations)
+
+    declarations  go to state 33
+    tipo          go to state 6
+
+
+State 21
+
+   13 command: ID ATRIB . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 34
+
+
+State 22
+
+   18 exp: ID .
+
+    $default  reduce using rule 18 (exp)
+
+
+State 23
+
+   17 exp: NUMERO .
+
+    $default  reduce using rule 17 (exp)
+
+
+State 24
+
+   16 exp: REAL .
+
+    $default  reduce using rule 16 (exp)
+
+
+State 25
+
+   27 exp: '(' . exp ')'
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 35
+
+
+State 26
+
+   14 command: IF exp . THEN commands FI
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    THEN  shift, and go to state 36
+    '-'   shift, and go to state 37
+    '+'   shift, and go to state 38
+    '*'   shift, and go to state 39
+    '/'   shift, and go to state 40
+    '^'   shift, and go to state 41
+    '<'   shift, and go to state 42
+    '='   shift, and go to state 43
+    '>'   shift, and go to state 44
+
+
+State 27
+
+   15 command: WHILE exp . DO commands END
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    DO   shift, and go to state 45
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+
+State 28
+
+   11 command: READ ID .
+
+    $default  reduce using rule 11 (command)
+
+
+State 29
+
+   12 command: WRITE exp .
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    $default  reduce using rule 12 (command)
+
+
+State 30
+
+    1 begin: LET declarations IN commands END .
+
+    $default  reduce using rule 1 (begin)
+
+
+State 31
+
+    9 commands: command ';' . commands
+
+    ID     shift, and go to state 11
+    SKIP   shift, and go to state 12
+    IF     shift, and go to state 13
+    WHILE  shift, and go to state 14
+    READ   shift, and go to state 15
+    WRITE  shift, and go to state 16
+
+    $default  reduce using rule 8 (commands)
+
+    commands  go to state 46
+    command   go to state 18
+
+
+State 32
+
+    5 idlist: ID ',' idlist .
+
+    $default  reduce using rule 5 (idlist)
+
+
+State 33
+
+    2 declarations: tipo idlist ';' declarations .
+
+    $default  reduce using rule 2 (declarations)
+
+
+State 34
+
+   13 command: ID ATRIB exp .
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    $default  reduce using rule 13 (command)
+
+
+State 35
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+   27    | '(' exp . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+    ')'  shift, and go to state 47
+
+
+State 36
+
+   14 command: IF exp THEN . commands FI
+
+    ID     shift, and go to state 11
+    SKIP   shift, and go to state 12
+    IF     shift, and go to state 13
+    WHILE  shift, and go to state 14
+    READ   shift, and go to state 15
+    WRITE  shift, and go to state 16
+
+    $default  reduce using rule 8 (commands)
+
+    commands  go to state 48
+    command   go to state 18
+
+
+State 37
+
+   23 exp: exp '-' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 49
+
+
+State 38
+
+   22 exp: exp '+' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 50
+
+
+State 39
+
+   24 exp: exp '*' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 51
+
+
+State 40
+
+   25 exp: exp '/' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 52
+
+
+State 41
+
+   26 exp: exp '^' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 53
+
+
+State 42
+
+   19 exp: exp '<' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 54
+
+
+State 43
+
+   20 exp: exp '=' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 55
+
+
+State 44
+
+   21 exp: exp '>' . exp
+
+    ID      shift, and go to state 22
+    NUMERO  shift, and go to state 23
+    REAL    shift, and go to state 24
+    '('     shift, and go to state 25
+
+    exp  go to state 56
+
+
+State 45
+
+   15 command: WHILE exp DO . commands END
+
+    ID     shift, and go to state 11
+    SKIP   shift, and go to state 12
+    IF     shift, and go to state 13
+    WHILE  shift, and go to state 14
+    READ   shift, and go to state 15
+    WRITE  shift, and go to state 16
+
+    $default  reduce using rule 8 (commands)
+
+    commands  go to state 57
+    command   go to state 18
+
+
+State 46
+
+    9 commands: command ';' commands .
+
+    $default  reduce using rule 9 (commands)
+
+
+State 47
+
+   27 exp: '(' exp ')' .
+
+    $default  reduce using rule 27 (exp)
+
+
+State 48
+
+   14 command: IF exp THEN commands . FI
+
+    FI  shift, and go to state 58
+
+
+State 49
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   23    | exp '-' exp .
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '<'       [reduce using rule 23 (exp)]
+    '='       [reduce using rule 23 (exp)]
+    '>'       [reduce using rule 23 (exp)]
+    $default  reduce using rule 23 (exp)
+
+
+State 50
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   22    | exp '+' exp .
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '<'       [reduce using rule 22 (exp)]
+    '='       [reduce using rule 22 (exp)]
+    '>'       [reduce using rule 22 (exp)]
+    $default  reduce using rule 22 (exp)
+
+
+State 51
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   24    | exp '*' exp .
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '<'       [reduce using rule 24 (exp)]
+    '='       [reduce using rule 24 (exp)]
+    '>'       [reduce using rule 24 (exp)]
+    $default  reduce using rule 24 (exp)
+
+
+State 52
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   25    | exp '/' exp .
+   26    | exp . '^' exp
+
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '<'       [reduce using rule 25 (exp)]
+    '='       [reduce using rule 25 (exp)]
+    '>'       [reduce using rule 25 (exp)]
+    $default  reduce using rule 25 (exp)
+
+
+State 53
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+   26    | exp '^' exp .
+
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '<'       [reduce using rule 26 (exp)]
+    '='       [reduce using rule 26 (exp)]
+    '>'       [reduce using rule 26 (exp)]
+    $default  reduce using rule 26 (exp)
+
+
+State 54
+
+   19 exp: exp . '<' exp
+   19    | exp '<' exp .
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '-'       [reduce using rule 19 (exp)]
+    '+'       [reduce using rule 19 (exp)]
+    '*'       [reduce using rule 19 (exp)]
+    '/'       [reduce using rule 19 (exp)]
+    '^'       [reduce using rule 19 (exp)]
+    '<'       [reduce using rule 19 (exp)]
+    '='       [reduce using rule 19 (exp)]
+    '>'       [reduce using rule 19 (exp)]
+    $default  reduce using rule 19 (exp)
+
+
+State 55
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   20    | exp '=' exp .
+   21    | exp . '>' exp
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '-'       [reduce using rule 20 (exp)]
+    '+'       [reduce using rule 20 (exp)]
+    '*'       [reduce using rule 20 (exp)]
+    '/'       [reduce using rule 20 (exp)]
+    '^'       [reduce using rule 20 (exp)]
+    '<'       [reduce using rule 20 (exp)]
+    '='       [reduce using rule 20 (exp)]
+    '>'       [reduce using rule 20 (exp)]
+    $default  reduce using rule 20 (exp)
+
+
+State 56
+
+   19 exp: exp . '<' exp
+   20    | exp . '=' exp
+   21    | exp . '>' exp
+   21    | exp '>' exp .
+   22    | exp . '+' exp
+   23    | exp . '-' exp
+   24    | exp . '*' exp
+   25    | exp . '/' exp
+   26    | exp . '^' exp
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '^'  shift, and go to state 41
+    '<'  shift, and go to state 42
+    '='  shift, and go to state 43
+    '>'  shift, and go to state 44
+
+    '-'       [reduce using rule 21 (exp)]
+    '+'       [reduce using rule 21 (exp)]
+    '*'       [reduce using rule 21 (exp)]
+    '/'       [reduce using rule 21 (exp)]
+    '^'       [reduce using rule 21 (exp)]
+    '<'       [reduce using rule 21 (exp)]
+    '='       [reduce using rule 21 (exp)]
+    '>'       [reduce using rule 21 (exp)]
+    $default  reduce using rule 21 (exp)
+
+
+State 57
+
+   15 command: WHILE exp DO commands . END
+
+    END  shift, and go to state 59
+
+
+State 58
+
+   14 command: IF exp THEN commands FI .
+
+    $default  reduce using rule 14 (command)
+
+
+State 59
+
+   15 command: WHILE exp DO commands END .
+
+    $default  reduce using rule 15 (command)
