@@ -12,6 +12,17 @@ let person2: any = {name: 'Daniel', age: 12};
 let person3: any = {name: 'Vitor'};
 let person4: any = {name: 'Marcelo', address: {street: 'X'}};
 
+if(person.age > 3) {
+  console.log(person5.name);
+}
+
+if(person.age.value > 3) {
+  console.log(person5.name);
+}
+
+let person5: any = {name: person4.name, address: {street: 'X'}};
+let person5: any = {name: person4.name.value, address: {street: 'X'}};
+
 let numbers: number[] = [10, 11, 12];
 let numbers1: number[] = [0.2, 0.3];
 let names: string[] = ['Daniel', 'Vitor'];
@@ -23,7 +34,110 @@ console.log('Hello World');
 
 if(x > 3) {
   if(x <= 10) {
-    
+    console.log(x);
+    let test: number[] = [10];
+    console.log(test);
   }
+} else {
+  console.log('deu ruim');
 }
 
+if(x > 3) {
+  console.log(x);
+} else if(y < 10) {
+  console.log(y);
+} else {
+  console.log(z);
+}
+
+if(true) {
+  console.log('Hello World');
+}
+
+if(x === 2) {
+  console.log('Hello World');
+}
+
+if(isvalid === true) {
+  console.log('Hello World');
+}
+
+while (i < 5) {
+    console.log(i);
+    i++;
+}
+
+let j: number = 0;
+while (j < 10) {
+  if (j + 2 === 0) {
+    console.log('j é par');
+  }
+  j++;
+}
+
+console.log(x + '2' + y);
+
+do {
+  console.log(i);
+  i++;
+} while (numero < 1 || numero > 10)
+
+if (b === 0) {
+  throw new Error("Divisão por zero não é permitida.");
+}
+
+if (b === 0) {
+  throw new Error(error.message);
+}
+
+try {
+  if (b === 0) {
+    throw new Error("Divisão por zero não é permitida.");
+  }
+  if (c === 0) {
+    throw new Error("Divisão por zero não é permitida.");
+  }
+} catch (error) {
+  console.log(e.message);
+  console.log(e['message']);
+  console.log(e['message'].value);
+  console.log(e['message']['value']);
+}
+
+try {
+  if (b === 0) {
+    throw new Error("Divisão por zero não é permitida.");
+  }
+} catch (error) {
+  console.log(e.message);
+  console.log(e['message']);
+} finally {
+  console.log("Operação de leitura concluída.");
+}
+
+switch (dia) {
+  case 1:
+      return "Segunda-feira";
+  case 2:
+      return "Terça-feira";
+  case 3:
+      return "Quarta-feira";
+  case 4:
+      return "Quinta-feira";
+  case 5:
+      return "Sexta-feira";
+  case 6:
+      return "Sábado";
+  case 7:
+      return "Domingo";
+  default:
+      return "Número inválido! Escolha um número de 1 a 7.";
+}
+
+function sum(a: number, b: number): number { 
+  return a + b; 
+}
+
+const sum(a: number, b: number): number => {
+  return a + b; 
+}

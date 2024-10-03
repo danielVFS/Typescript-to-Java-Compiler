@@ -62,13 +62,29 @@ extern int yydebug;
     LPARENTHESES = 272,
     RPARENTHESES = 273,
     IF = 274,
-    COLON = 275,
-    SEMICOLON = 276,
-    ASSIGN = 277,
-    STRING_LITERAL = 278,
-    NUMBER_LITERAL = 279,
-    FLOAT_LITERAL = 280,
-    BOOLEAN_LITERAL = 281
+    ELSE = 275,
+    WHILE = 276,
+    DO = 277,
+    DOT = 278,
+    TRY = 279,
+    CATCH = 280,
+    FINALLY = 281,
+    SWITCH = 282,
+    CASE = 283,
+    THROW = 284,
+    NEW = 285,
+    RETURN = 286,
+    DEFAULT = 287,
+    COLON = 288,
+    SEMICOLON = 289,
+    ASSIGN = 290,
+    ADD = 291,
+    MINUS = 292,
+    STRING_LITERAL = 293,
+    NUMBER_LITERAL = 294,
+    FLOAT_LITERAL = 295,
+    BOOLEAN_LITERAL = 296,
+    ERROR_LITERAL = 297
   };
 #endif
 
@@ -82,7 +98,7 @@ union YYSTYPE
     char* str;
     int num;
 
-#line 86 "parser.tab.h" /* yacc.c:1909  */
+#line 102 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
