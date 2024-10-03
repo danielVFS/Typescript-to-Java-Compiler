@@ -1,0 +1,14 @@
+int number1 = 10;
+double number2 = 0.2;
+String name = "Daniel";
+boolean isValid = true;
+Object person = new Object();
+
+// tomar cuidos com any, em java não é possível tamanha abstração, vamos assumir que um objeto
+
+int[] numbers = {10, 11, 12};
+String[] names = {"Daniel", "Vitor"};
+Object[] options = {new Object[] {1, "1"}, new Object[] {2, "2"}};
+
+System.out.println("Hello World");
+

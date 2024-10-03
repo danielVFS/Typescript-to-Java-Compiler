@@ -1,0 +1,29 @@
+let number1: number = 10;
+let number2: number = 0.2;
+
+let name1: string = 'Daniel';
+let name2: string = "Vitor";
+
+let person: any = {};
+
+let isvalid: boolean = true;
+
+let person2: any = {name: 'Daniel', age: 12};
+let person3: any = {name: 'Vitor'};
+let person4: any = {name: 'Marcelo', address: {street: 'X'}};
+
+let numbers: number[] = [10, 11, 12];
+let numbers1: number[] = [0.2, 0.3];
+let names: string[] = ['Daniel', 'Vitor'];
+let booleans: boolean[] = [true, false];
+
+let options: any[] = [{option: 1, value: '1', option: 2, value: '2'}];
+
+console.log('Hello World');
+
+if(x > 3) {
+  if(x <= 10) {
+    
+  }
+}
+

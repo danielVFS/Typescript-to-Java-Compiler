@@ -46,28 +46,46 @@ extern int yydebug;
   enum yytokentype
   {
     LET = 258,
-    INTEGER = 259,
-    IN = 260,
-    ID = 261,
-    SKIP = 262,
-    IF = 263,
-    FI = 264,
-    THEN = 265,
-    ELSE = 266,
-    END = 267,
-    WHILE = 268,
-    DO = 269,
-    READ = 270,
-    WRITE = 271,
-    NUMERO = 272,
-    ATRIB = 273,
-    REAL = 274
+    IDENTIFIER = 259,
+    NUMBER = 260,
+    STRING = 261,
+    BOOLEAN = 262,
+    ANY = 263,
+    CONSOLE_LOG = 264,
+    LBRACKET = 265,
+    RBRACKET = 266,
+    LBRACE = 267,
+    RBRACE = 268,
+    SINGLE_QUOTE = 269,
+    DOUBLE_QUOTE = 270,
+    COMMA = 271,
+    LPARENTHESES = 272,
+    RPARENTHESES = 273,
+    IF = 274,
+    COLON = 275,
+    SEMICOLON = 276,
+    ASSIGN = 277,
+    STRING_LITERAL = 278,
+    NUMBER_LITERAL = 279,
+    FLOAT_LITERAL = 280,
+    BOOLEAN_LITERAL = 281
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 6 "parser.y" /* yacc.c:1909  */
+
+    char* str;
+    int num;
+
+#line 86 "parser.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
