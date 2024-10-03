@@ -9,7 +9,8 @@
 }
 
 %start program
-%token LET IDENTIFIER NUMBER STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
+%token LET IDENTIFIER NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
+%token THIS FUNCTION PROMISE
 %token COLON SEMICOLON ASSIGN ADD MINUS
 %token <str> STRING_LITERAL
 %token <num> NUMBER_LITERAL FLOAT_LITERAL
@@ -60,6 +61,16 @@ all_possible_variables:
     | STRING_LITERAL
     | array_of_strings
     | objects
+;
+
+all_possible_variables_types:
+    NUMBER
+    | STRING
+    | BOOLEAN
+    | ANY
+    | BOOLEAN_LITERAL
+    | LBRACE RBRACE
+    | VOID
 ;
 
 
@@ -180,6 +191,7 @@ default_case_of_switch_case:
     DEFAULT COLON RETURN all_possible_variables SEMICOLON
 ;
 
+
 //////////////// commands ////////////////
 
 commands :
@@ -198,8 +210,9 @@ command :
     | TRY LBRACE commands RBRACE CATCH expressions LBRACE commands RBRACE
     | TRY LBRACE commands RBRACE CATCH expressions LBRACE commands RBRACE FINALLY LBRACE commands RBRACE
     | SWITCH expressions LBRACE cases_of_switch_case default_case_of_switch_case RBRACE
+    | function_declarartion
+    | RETURN expressions SEMICOLON
 ;
-
 
 expressions: 
     STRING_LITERAL
@@ -228,7 +241,15 @@ expressions:
     | LPARENTHESES expressions RPARENTHESES
 ;
 
+function_declarartion:
+    FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE  commands RBRACE
+;
 
+function_parameters:
+    /* empty */
+    | IDENTIFIER COLON all_possible_variables_types
+    | IDENTIFIER COLON all_possible_variables_types COMMA function_parameters
+;
 
 
 %%

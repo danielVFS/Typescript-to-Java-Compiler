@@ -139,8 +139,7 @@ function sum(a: number, b: number): number {
 }
 
 function sum(a: number, b: number): void { 
-  a + b;
-  console.log(a + b) 
+  console.log(a + b); 
 }
 
 const subtract = function (a: number, b: number): number {
@@ -159,11 +158,11 @@ public getLogo(): string {
   return this.logo;
 }
 
-const sum = (a: number, b: number): number => {
+async function sum(a: number, b: number): Promise<string> { 
   return a + b; 
 }
 
-async function sum(a: number, b: number): Promise<string> { 
+const sum = (a: number, b: number): number => {
   return a + b; 
 }
 

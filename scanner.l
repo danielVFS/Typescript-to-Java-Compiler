@@ -23,6 +23,7 @@ Error               { printf("Reconhecido: ERROR_LITERAL (%s)\n", yytext); retur
 number              { printf("Reconhecido: NUMBER\n"); return(NUMBER);}
 string              { printf("Reconhecido: STRING\n"); return(STRING);}
 boolean             { printf("Reconhecido: BOOLEAN\n"); return(BOOLEAN);}
+void                { printf("Reconhecido: VOID\n"); return(VOID);}
 any                 { printf("Reconhecido: ANY\n"); return(ANY);}
 let                 { printf("Reconhecido: LET\n"); return(LET);}
 if                  { printf("Reconhecido: IF\n"); return(IF);}
@@ -38,7 +39,10 @@ throw               { printf("Reconhecido: THROW\n"); return(THROW);}
 new                 { printf("Reconhecido: NEW\n"); return(NEW);}
 return              { printf("Reconhecido: RETURN\n"); return(RETURN);}
 default             { printf("Reconhecido: DEFAULT\n"); return(DEFAULT);}
-case             { printf("Reconhecido: CASE\n"); return(CASE);}
+case                { printf("Reconhecido: CASE\n"); return(CASE);}
+function            { printf("Reconhecido: FUNCTION\n"); return(FUNCTION);}
+Promise             { printf("Reconhecido: PROMISE\n"); return(PROMISE);}
+this                { printf("Reconhecido: THIS\n"); return(THIS);}
 ":"                 { printf("Reconhecido: COLON\n"); return (COLON); }
 ";"                 { printf("Reconhecido: SEMICOLON\n"); return (SEMICOLON); }
 "console.log"       { printf("Reconhecido: CONSOLE_LOG\n"); return (CONSOLE_LOG); }
