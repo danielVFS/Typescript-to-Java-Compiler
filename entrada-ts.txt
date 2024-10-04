@@ -99,9 +99,9 @@ try {
   }
 } catch (error) {
   console.log(e.message);
-  console.log(e['message']);
-  console.log(e['message'].value);
-  console.log(e['message']['value']);
+  console.log(e['test']);
+  console.log(e['test'].value);
+  console.log(e['test']['value']);
 }
 
 try {
@@ -142,30 +142,3 @@ function sum(a: number, b: number): void {
   console.log(a + b); 
 }
 
-const subtract = function (a: number, b: number): number {
-  return a - b;
-};
-
-function divide(a: number, b: number = 1): number {
-  return a / b;
-}
-
-function greeting(nome: string, saudacao?: string): string {
-  return console.log(nome + saudacao);
-}
-
-public getLogo(): string {
-  return this.logo;
-}
-
-async function sum(a: number, b: number): Promise<string> { 
-  return a + b; 
-}
-
-const sum = (a: number, b: number): number => {
-  return a + b; 
-}
-
-const sum = async(a: number, b: number): Promise<number> => {
-  return a + b; 
-}
