@@ -3,6 +3,7 @@
     extern int yylineno;
 %}
 
+
 %union {
     char* str;
     int num;
@@ -17,16 +18,11 @@
 %token BOOLEAN_LITERAL ERROR_LITERAL
 
 %%
-program:
-    declarations commands
+program: commands
 ;
 
 //////////////// declararations ////////////////
 
-declarations:
-    declarations declaration
-    | declaration
-;
 
 declaration:
     number_declaration
@@ -169,14 +165,15 @@ increment_decrement_variable:
 
 access_object:
     IDENTIFIER
-    | IDENTIFIER DOT IDENTIFIER
-    | IDENTIFIER DOT IDENTIFIER DOT access_object
+    | IDENTIFIER DOT access_object
     | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET access_object_nested
+    | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET 
 ;
 
 access_object_nested:
-    /* empty */
-    | DOT IDENTIFIER access_object_nested
+    DOT IDENTIFIER
+    | LBRACKET STRING_LITERAL RBRACKET 
+    | DOT IDENTIFIER DOT access_object
     | LBRACKET STRING_LITERAL RBRACKET access_object_nested
 ;
 
@@ -196,7 +193,7 @@ default_case_of_switch_case:
 
 commands :
     command commands
-    | declarations commands
+    | declaration commands
     | /* empty */
 ;
 
@@ -219,7 +216,6 @@ expressions:
     | NUMBER_LITERAL
     | FLOAT_LITERAL
     | BOOLEAN_LITERAL
-    | IDENTIFIER
     | STRING_LITERAL COLON ERROR_LITERAL
     | access_object
     | expressions '<' expressions
@@ -242,7 +238,7 @@ expressions:
 ;
 
 function_declarartion:
-    FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE  commands RBRACE
+    FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 ;
 
 function_parameters:
