@@ -26,6 +26,8 @@ boolean             { printf("Reconhecido: BOOLEAN\n"); return(BOOLEAN);}
 void                { printf("Reconhecido: VOID\n"); return(VOID);}
 any                 { printf("Reconhecido: ANY\n"); return(ANY);}
 let                 { printf("Reconhecido: LET\n"); return(LET);}
+var                 { printf("Reconhecido: VAR\n"); return(VAR);}
+const                 { printf("Reconhecido: CONST\n"); return(CONST);}
 if                  { printf("Reconhecido: IF\n"); return(IF);}
 else                { printf("Reconhecido: ELSE\n"); return(ELSE);}
 while               { printf("Reconhecido: WHILE\n"); return(WHILE);}
