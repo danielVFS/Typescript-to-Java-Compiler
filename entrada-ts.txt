@@ -143,6 +143,11 @@ function sum(a: number, b: number): void {
   console.log(a + b); 
 }
 
+sum(1);
+sum(1, 2);
+sum(1, 2, 3);
+
+
 class Person { 
   name: string;
 
@@ -164,4 +169,6 @@ class Person {
 
 const pessoa = new Person("João");
 
-console.log(pessoa)
+console.log(pessoa);
+
+const pessoa = new Person("João", 12);

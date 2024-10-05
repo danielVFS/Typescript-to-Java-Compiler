@@ -37,6 +37,7 @@ declaration:
     | array_of_objects_declaration
     | console_log_declarations
     | increment_decrement_variable
+    | instance_new_class
 ;
 
 variable_types:
@@ -108,6 +109,9 @@ object_declaration:
 array_of_objects_declaration: 
     variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
 ;
+
+instance_new_class:
+    variable_types IDENTIFIER ASSIGN NEW CLASS_IDENTIFIER LPARENTHESES function_values RPARENTHESES SEMICOLON;
 
 object_attribution:
     IDENTIFIER COLON STRING_LITERAL
@@ -222,6 +226,7 @@ command :
     | TRY LBRACE commands RBRACE CATCH expressions LBRACE commands RBRACE FINALLY LBRACE commands RBRACE
     | SWITCH expressions LBRACE cases_of_switch_case default_case_of_switch_case RBRACE
     | function_declarartion
+    | call_a_function
     | RETURN expressions SEMICOLON
     | class_declarations 
 ;
@@ -256,6 +261,15 @@ expressions:
 function_declarartion:
     FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 ;
+
+call_a_function:
+    IDENTIFIER LPARENTHESES all_possible_variables RPARENTHESES SEMICOLON
+    | IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES SEMICOLON
+;
+
+function_values:
+    all_possible_variables
+    | all_possible_variables COMMA function_values
 
 function_parameters:
     /* empty */
@@ -302,7 +316,7 @@ set_property_with_this:
 class_function_declarartion:
     IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 ;
-
+    
 %%
 main( int argc, char *argv[] )
 {
