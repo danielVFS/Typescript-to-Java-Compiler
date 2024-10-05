@@ -5,6 +5,7 @@ Terminals unused in grammar
    PROMISE
 
 
+State 59 conflicts: 1 shift/reduce
 State 62 conflicts: 1 shift/reduce
 State 112 conflicts: 11 shift/reduce
 State 113 conflicts: 11 shift/reduce
@@ -22,6 +23,8 @@ State 154 conflicts: 11 shift/reduce
 State 155 conflicts: 11 shift/reduce
 State 156 conflicts: 11 shift/reduce
 State 196 conflicts: 11 shift/reduce
+State 259 conflicts: 1 shift/reduce
+State 297 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -216,11 +219,13 @@ Grammar
   145                 | PROTECTED
 
   146 constructor_definition: CONSTRUCTOR LPARENTHESES function_parameters RPARENTHESES LBRACE set_property_with_this RBRACE
+  147                       | %empty
 
-  147 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
-  148                       | %empty
+  148 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
+  149                       | %empty
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+  151                            | %empty
 
 
 Terminals, with rules where they appear
@@ -245,7 +250,7 @@ PUBLIC (264) 143
 PROTECTED (265) 145
 IDENTIFIER (266) 18 19 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52
     53 54 55 56 57 58 75 76 77 78 79 80 81 83 85 86 133 135 136 138
-    139 147 149
+    139 148 150
 CLASS_IDENTIFIER (267) 137
 NUMBER (268) 31 38 39 40 41
 VOID (269) 37
@@ -256,19 +261,19 @@ CONSOLE_LOG (273) 17 18 19 20 21
 LBRACKET (274) 39 41 43 45 47 60 63 66 69 72 79 80 82 84 87 88
 RBRACKET (275) 39 41 43 45 47 60 63 66 69 72 79 80 82 84 87 88
 LBRACE (276) 36 46 58 73 74 97 98 99 100 101 103 104 105 133 137 146
-    149
+    150
 RBRACE (277) 36 46 58 73 74 97 98 99 100 101 103 104 105 133 137 146
-    149
+    150
 SINGLE_QUOTE (278)
 DOUBLE_QUOTE (279)
 COMMA (280) 53 54 55 56 57 61 64 67 70 73 136
-LPARENTHESES (281) 17 18 19 20 21 102 132 133 146 149
-RPARENTHESES (282) 17 18 19 20 21 102 132 133 146 149
+LPARENTHESES (281) 17 18 19 20 21 102 132 133 146 150
+RPARENTHESES (282) 17 18 19 20 21 102 132 133 146 150
 IF (283) 97 98 99
 ELSE (284) 98 99
 WHILE (285) 100 101
 DO (286) 101
-DOT (287) 78 81 83 85 86 147
+DOT (287) 78 81 83 85 86 148
 TRY (288) 103 104
 CATCH (289) 103 104
 FINALLY (290) 104
@@ -278,14 +283,14 @@ THROW (293) 102
 NEW (294) 102
 RETURN (295) 89 90 91 93 107
 DEFAULT (296) 93
-THIS (297) 85 86 87 88 147
+THIS (297) 85 86 87 88 148
 FUNCTION (298) 133
 PROMISE (299)
 COLON (300) 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
-    57 58 89 90 91 93 113 133 135 136 138 139 149
+    57 58 89 90 91 93 113 133 135 136 138 139 150
 SEMICOLON (301) 17 18 19 20 21 38 39 40 41 42 43 44 45 46 47 75 76
-    89 90 91 93 102 107 138 139 147
-ASSIGN (302) 38 39 40 41 42 43 44 45 46 47 117 118 119 121 141 147
+    89 90 91 93 102 107 138 139 148
+ASSIGN (302) 38 39 40 41 42 43 44 45 46 47 117 118 119 121 141 148
 ADD (303) 19 20 75 122
 MINUS (304) 76 123
 STRING_LITERAL (305) 17 20 28 44 48 53 70 71 79 80 82 84 87 88 90 109
@@ -311,7 +316,7 @@ console_log_declarations (67)
 all_possible_variables (68)
     on left: 22 23 24 25 26 27 28 29 30, on right: 89 90 91 93 141
 all_possible_variables_types (69)
-    on left: 31 32 33 34 35 36 37, on right: 133 135 136 138 139 149
+    on left: 31 32 33 34 35 36 37, on right: 133 135 136 138 139 150
 number_declaration (70)
     on left: 38, on right: 2
 array_of_numbers_declaration (71)
@@ -369,7 +374,7 @@ default_case_of_switch_case (96)
     on left: 93, on right: 105
 commands (97)
     on left: 94 95 96, on right: 1 94 95 97 98 99 100 101 103 104 133
-    149
+    150
 command (98)
     on left: 97 98 99 100 101 102 103 104 105 106 107 108, on right:
     94
@@ -381,7 +386,7 @@ expressions (99)
 function_declarartion (100)
     on left: 133, on right: 106
 function_parameters (101)
-    on left: 134 135 136, on right: 133 136 146 149
+    on left: 134 135 136, on right: 133 136 146 150
 class_declarations (102)
     on left: 137, on right: 108
 class_attribute_declaration (103)
@@ -391,11 +396,11 @@ initialize_class_attribute_value (104)
 access_modifiers (105)
     on left: 143 144 145, on right: 138
 constructor_definition (106)
-    on left: 146, on right: 137
+    on left: 146 147, on right: 137
 set_property_with_this (107)
-    on left: 147 148, on right: 146 147
+    on left: 148 149, on right: 146 148
 class_function_declarartion (108)
-    on left: 149, on right: 137
+    on left: 150 151, on right: 137
 
 
 State 0
@@ -1199,7 +1204,8 @@ State 59
     PROTECTED   shift, and go to state 93
     IDENTIFIER  shift, and go to state 94
 
-    $default  reduce using rule 140 (class_attribute_declaration)
+    IDENTIFIER  [reduce using rule 140 (class_attribute_declaration)]
+    $default    reduce using rule 140 (class_attribute_declaration)
 
     class_attribute_declaration  go to state 95
     access_modifiers             go to state 96
@@ -1699,6 +1705,8 @@ State 95
   137 class_declarations: CLASS CLASS_IDENTIFIER LBRACE class_attribute_declaration . constructor_definition class_function_declarartion RBRACE
 
     CONSTRUCTOR  shift, and go to state 139
+
+    $default  reduce using rule 147 (constructor_definition)
 
     constructor_definition  go to state 140
 
@@ -2524,6 +2532,8 @@ State 140
 
     IDENTIFIER  shift, and go to state 185
 
+    $default  reduce using rule 151 (class_function_declarartion)
+
     class_function_declarartion  go to state 186
 
 
@@ -3182,7 +3192,7 @@ State 184
 
 State 185
 
-  149 class_function_declarartion: IDENTIFIER . LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER . LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
     LPARENTHESES  shift, and go to state 220
 
@@ -3562,7 +3572,7 @@ State 219
 
 State 220
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES . function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES . function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
     IDENTIFIER  shift, and go to state 132
 
@@ -4021,7 +4031,8 @@ State 259
     PROTECTED   shift, and go to state 93
     IDENTIFIER  shift, and go to state 94
 
-    $default  reduce using rule 140 (class_attribute_declaration)
+    IDENTIFIER  [reduce using rule 140 (class_attribute_declaration)]
+    $default    reduce using rule 140 (class_attribute_declaration)
 
     class_attribute_declaration  go to state 294
     access_modifiers             go to state 96
@@ -4036,7 +4047,7 @@ State 260
 
 State 261
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters . RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters . RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
     RPARENTHESES  shift, and go to state 296
 
@@ -4389,14 +4400,14 @@ State 295
 
     THIS  shift, and go to state 330
 
-    $default  reduce using rule 148 (set_property_with_this)
+    $default  reduce using rule 149 (set_property_with_this)
 
     set_property_with_this  go to state 331
 
 
 State 296
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES . COLON all_possible_variables_types LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES . COLON all_possible_variables_types LBRACE commands RBRACE
 
     COLON  shift, and go to state 332
 
@@ -4410,7 +4421,8 @@ State 297
     PROTECTED   shift, and go to state 93
     IDENTIFIER  shift, and go to state 94
 
-    $default  reduce using rule 140 (class_attribute_declaration)
+    IDENTIFIER  [reduce using rule 140 (class_attribute_declaration)]
+    $default    reduce using rule 140 (class_attribute_declaration)
 
     class_attribute_declaration  go to state 333
     access_modifiers             go to state 96
@@ -4721,7 +4733,7 @@ State 329
 
 State 330
 
-  147 set_property_with_this: THIS . DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
+  148 set_property_with_this: THIS . DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
 
     DOT  shift, and go to state 352
 
@@ -4735,7 +4747,7 @@ State 331
 
 State 332
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON . all_possible_variables_types LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON . all_possible_variables_types LBRACE commands RBRACE
 
     NUMBER           shift, and go to state 176
     VOID             shift, and go to state 177
@@ -4905,7 +4917,7 @@ State 351
 
 State 352
 
-  147 set_property_with_this: THIS DOT . IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
+  148 set_property_with_this: THIS DOT . IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
 
     IDENTIFIER  shift, and go to state 364
 
@@ -4919,7 +4931,7 @@ State 353
 
 State 354
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types . LBRACE commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types . LBRACE commands RBRACE
 
     LBRACE  shift, and go to state 365
 
@@ -5023,14 +5035,14 @@ State 363
 
 State 364
 
-  147 set_property_with_this: THIS DOT IDENTIFIER . ASSIGN IDENTIFIER SEMICOLON set_property_with_this
+  148 set_property_with_this: THIS DOT IDENTIFIER . ASSIGN IDENTIFIER SEMICOLON set_property_with_this
 
     ASSIGN  shift, and go to state 368
 
 
 State 365
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE . commands RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE . commands RBRACE
 
     LET          shift, and go to state 1
     VAR          shift, and go to state 2
@@ -5085,14 +5097,14 @@ State 367
 
 State 368
 
-  147 set_property_with_this: THIS DOT IDENTIFIER ASSIGN . IDENTIFIER SEMICOLON set_property_with_this
+  148 set_property_with_this: THIS DOT IDENTIFIER ASSIGN . IDENTIFIER SEMICOLON set_property_with_this
 
     IDENTIFIER  shift, and go to state 372
 
 
 State 369
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands . RBRACE
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands . RBRACE
 
     RBRACE  shift, and go to state 373
 
@@ -5147,16 +5159,16 @@ State 371
 
 State 372
 
-  147 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER . SEMICOLON set_property_with_this
+  148 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER . SEMICOLON set_property_with_this
 
     SEMICOLON  shift, and go to state 375
 
 
 State 373
 
-  149 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE .
+  150 class_function_declarartion: IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE .
 
-    $default  reduce using rule 149 (class_function_declarartion)
+    $default  reduce using rule 150 (class_function_declarartion)
 
 
 State 374
@@ -5168,11 +5180,11 @@ State 374
 
 State 375
 
-  147 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON . set_property_with_this
+  148 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON . set_property_with_this
 
     THIS  shift, and go to state 330
 
-    $default  reduce using rule 148 (set_property_with_this)
+    $default  reduce using rule 149 (set_property_with_this)
 
     set_property_with_this  go to state 377
 
@@ -5186,6 +5198,6 @@ State 376
 
 State 377
 
-  147 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this .
+  148 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this .
 
-    $default  reduce using rule 147 (set_property_with_this)
+    $default  reduce using rule 148 (set_property_with_this)

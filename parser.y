@@ -286,6 +286,7 @@ access_modifiers:
 
 constructor_definition:
     CONSTRUCTOR LPARENTHESES function_parameters RPARENTHESES LBRACE set_property_with_this RBRACE
+    | /* empty */
 ;
 
 set_property_with_this:
@@ -295,6 +296,7 @@ set_property_with_this:
 
 class_function_declarartion:
     IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+    | /* empty */
 ;
 
 %%
