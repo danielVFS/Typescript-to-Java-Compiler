@@ -46,49 +46,57 @@ extern int yydebug;
   enum yytokentype
   {
     LET = 258,
-    IDENTIFIER = 259,
-    NUMBER = 260,
-    VOID = 261,
-    STRING = 262,
-    BOOLEAN = 263,
-    ANY = 264,
-    CONSOLE_LOG = 265,
-    LBRACKET = 266,
-    RBRACKET = 267,
-    LBRACE = 268,
-    RBRACE = 269,
-    SINGLE_QUOTE = 270,
-    DOUBLE_QUOTE = 271,
-    COMMA = 272,
-    LPARENTHESES = 273,
-    RPARENTHESES = 274,
-    IF = 275,
-    ELSE = 276,
-    WHILE = 277,
-    DO = 278,
-    DOT = 279,
-    TRY = 280,
-    CATCH = 281,
-    FINALLY = 282,
-    SWITCH = 283,
-    CASE = 284,
-    THROW = 285,
-    NEW = 286,
-    RETURN = 287,
-    DEFAULT = 288,
-    THIS = 289,
-    FUNCTION = 290,
-    PROMISE = 291,
-    COLON = 292,
-    SEMICOLON = 293,
-    ASSIGN = 294,
-    ADD = 295,
-    MINUS = 296,
-    STRING_LITERAL = 297,
-    NUMBER_LITERAL = 298,
-    FLOAT_LITERAL = 299,
-    BOOLEAN_LITERAL = 300,
-    ERROR_LITERAL = 301
+    VAR = 259,
+    CONST = 260,
+    CLASS = 261,
+    CONSTRUCTOR = 262,
+    PRIVATE = 263,
+    PUBLIC = 264,
+    PROTECTED = 265,
+    IDENTIFIER = 266,
+    CLASS_IDENTIFIER = 267,
+    NUMBER = 268,
+    VOID = 269,
+    STRING = 270,
+    BOOLEAN = 271,
+    ANY = 272,
+    CONSOLE_LOG = 273,
+    LBRACKET = 274,
+    RBRACKET = 275,
+    LBRACE = 276,
+    RBRACE = 277,
+    SINGLE_QUOTE = 278,
+    DOUBLE_QUOTE = 279,
+    COMMA = 280,
+    LPARENTHESES = 281,
+    RPARENTHESES = 282,
+    IF = 283,
+    ELSE = 284,
+    WHILE = 285,
+    DO = 286,
+    DOT = 287,
+    TRY = 288,
+    CATCH = 289,
+    FINALLY = 290,
+    SWITCH = 291,
+    CASE = 292,
+    THROW = 293,
+    NEW = 294,
+    RETURN = 295,
+    DEFAULT = 296,
+    THIS = 297,
+    FUNCTION = 298,
+    PROMISE = 299,
+    COLON = 300,
+    SEMICOLON = 301,
+    ASSIGN = 302,
+    ADD = 303,
+    MINUS = 304,
+    STRING_LITERAL = 305,
+    NUMBER_LITERAL = 306,
+    FLOAT_LITERAL = 307,
+    BOOLEAN_LITERAL = 308,
+    ERROR_LITERAL = 309
   };
 #endif
 
@@ -97,12 +105,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 6 "parser.y" /* yacc.c:1909  */
+#line 7 "parser.y" /* yacc.c:1909  */
 
     char* str;
     int num;
 
-#line 106 "parser.tab.h" /* yacc.c:1909  */
+#line 114 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

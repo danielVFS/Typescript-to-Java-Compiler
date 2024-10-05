@@ -5,9 +5,11 @@
 
 NUMBER [0-9]*
 FLOAT [0-9]*"."[0-9]+
-ID [a-z][0-9a-z]*
+ID [a-z][0-9a-zA-Z]*
+CLASS_ID [A-Z][0-9a-zA-Z]*
 STRING_LITERAL_WITH_SINGLE_QUOTE \'[^\']*\'
 STRING_LITERAL_WITH_DOUBLE_QUOTE \"[^"]*\"
+STRING_LITERAL_CRASIS_QUOTE \`[^`]*\`
 TRUE true
 FALSE false 
 
@@ -18,6 +20,7 @@ FALSE false
 {FALSE}             { printf("Reconhecido: FALSE_LITERAL (%s)\n", yytext); return (BOOLEAN_LITERAL);}
 {STRING_LITERAL_WITH_SINGLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); return (STRING_LITERAL);}
 {STRING_LITERAL_WITH_DOUBLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); return (STRING_LITERAL);}
+{STRING_LITERAL_CRASIS_QUOTE}         { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); return (STRING_LITERAL);}
 Error               { printf("Reconhecido: ERROR_LITERAL (%s)\n", yytext); return (ERROR_LITERAL);}
 "="                 { printf("Reconhecido: ASSIGN\n"); return(ASSIGN);}
 number              { printf("Reconhecido: NUMBER\n"); return(NUMBER);}
@@ -45,6 +48,11 @@ case                { printf("Reconhecido: CASE\n"); return(CASE);}
 function            { printf("Reconhecido: FUNCTION\n"); return(FUNCTION);}
 Promise             { printf("Reconhecido: PROMISE\n"); return(PROMISE);}
 this                { printf("Reconhecido: THIS\n"); return(THIS);}
+class               { printf("Reconhecido: CLASS\n"); return(CLASS);}
+private             { printf("Reconhecido: PRIVATE\n"); return(PRIVATE);}
+public              { printf("Reconhecido: PUBLIC\n"); return(PUBLIC);}
+protected           { printf("Reconhecido: PROTECTED\n"); return(PROTECTED);}
+constructor         { printf("Reconhecido: CONSTRUCTOR\n"); return(CONSTRUCTOR);}
 ":"                 { printf("Reconhecido: COLON\n"); return (COLON); }
 ";"                 { printf("Reconhecido: SEMICOLON\n"); return (SEMICOLON); }
 "console.log"       { printf("Reconhecido: CONSOLE_LOG\n"); return (CONSOLE_LOG); }
@@ -61,6 +69,7 @@ this                { printf("Reconhecido: THIS\n"); return(THIS);}
 "."                 { printf("Reconhecido: DOT\n"); return DOT; }
 "\""                { printf("Reconhecido: DOUBLE_QUOTE\n");return DOUBLE_QUOTE; }
 {ID}                { printf("Reconhecido: IDENTIFIER (%s)\n", yytext); return(IDENTIFIER);}
+{CLASS_ID}          { printf("Reconhecido: CLASS_IDENTIFIER (%s)\n", yytext); return(CLASS_IDENTIFIER);}
 "\\\\"[ a-z]*\n     { /*comentário/ }
 "\n"                { /*incrementa sozinho lineno*/ }
 [ \t]+              { /*ignorar espaços em branco*/ }

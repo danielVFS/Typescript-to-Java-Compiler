@@ -10,7 +10,7 @@
 }
 
 %start program
-%token LET VAR CONST IDENTIFIER NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
+%token LET VAR CONST CLASS CONSTRUCTOR PRIVATE PUBLIC PROTECTED IDENTIFIER CLASS_IDENTIFIER NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
 %token THIS FUNCTION PROMISE
 %token COLON SEMICOLON ASSIGN ADD MINUS
 %token <str> STRING_LITERAL
@@ -50,6 +50,7 @@ console_log_declarations:
     CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON
     | CONSOLE_LOG LPARENTHESES IDENTIFIER RPARENTHESES SEMICOLON
     | CONSOLE_LOG LPARENTHESES IDENTIFIER ADD expressions RPARENTHESES SEMICOLON
+    | CONSOLE_LOG LPARENTHESES STRING_LITERAL ADD expressions RPARENTHESES SEMICOLON
     | CONSOLE_LOG LPARENTHESES access_object RPARENTHESES SEMICOLON
 ;
 
@@ -183,6 +184,13 @@ access_object_nested:
     | LBRACKET STRING_LITERAL RBRACKET access_object_nested
 ;
 
+access_class:
+    THIS DOT IDENTIFIER
+    | THIS DOT IDENTIFIER DOT access_object
+    | THIS LBRACKET STRING_LITERAL RBRACKET access_object_nested
+    | THIS LBRACKET STRING_LITERAL RBRACKET 
+;
+
 cases_of_switch_case:
     CASE NUMBER_LITERAL COLON RETURN all_possible_variables SEMICOLON cases_of_switch_case
     | CASE STRING_LITERAL COLON RETURN all_possible_variables SEMICOLON cases_of_switch_case
@@ -215,6 +223,7 @@ command :
     | SWITCH expressions LBRACE cases_of_switch_case default_case_of_switch_case RBRACE
     | function_declarartion
     | RETURN expressions SEMICOLON
+    | class_declarations 
 ;
 
 expressions: 
@@ -224,6 +233,7 @@ expressions:
     | BOOLEAN_LITERAL
     | STRING_LITERAL COLON ERROR_LITERAL
     | access_object
+    | access_class
     | expressions '<' expressions
     | expressions '<' ASSIGN expressions
     | expressions ASSIGN ASSIGN expressions
@@ -253,6 +263,39 @@ function_parameters:
     | IDENTIFIER COLON all_possible_variables_types COMMA function_parameters
 ;
 
+class_declarations: 
+    CLASS CLASS_IDENTIFIER LBRACE class_attribute_declaration constructor_definition class_function_declarartion RBRACE
+;
+
+class_attribute_declaration:
+    access_modifiers IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON class_attribute_declaration
+    | IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON class_attribute_declaration
+    | /* empty */
+;
+
+initialize_class_attribute_value:
+    ASSIGN all_possible_variables 
+    | /* empty */
+;
+
+access_modifiers: 
+    PUBLIC
+    | PRIVATE
+    | PROTECTED
+;
+
+constructor_definition:
+    CONSTRUCTOR LPARENTHESES function_parameters RPARENTHESES LBRACE set_property_with_this RBRACE
+;
+
+set_property_with_this:
+    THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
+    | /* empty */
+;
+
+class_function_declarartion:
+    IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+;
 
 %%
 main( int argc, char *argv[] )
