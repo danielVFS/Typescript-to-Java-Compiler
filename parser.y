@@ -264,13 +264,18 @@ function_parameters:
 ;
 
 class_declarations: 
-    CLASS CLASS_IDENTIFIER LBRACE class_attribute_declaration constructor_definition class_function_declarartion RBRACE
+    CLASS CLASS_IDENTIFIER LBRACE class_attributes constructor_definition class_attributes RBRACE
+;
+
+class_attributes:
+    class_attribute_declaration class_attributes
+    | class_function_declarartion class_attributes
+    | /* empty */
 ;
 
 class_attribute_declaration:
-    access_modifiers IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON class_attribute_declaration
-    | IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON class_attribute_declaration
-    | /* empty */
+    access_modifiers IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON
+    | IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON
 ;
 
 initialize_class_attribute_value:
@@ -296,7 +301,6 @@ set_property_with_this:
 
 class_function_declarartion:
     IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
-    | /* empty */
 ;
 
 %%

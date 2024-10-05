@@ -147,7 +147,7 @@ class Person {
   name: string;
 
   public age: number;
-  
+
   constructor(name: string) {
     this.name = name;
   }
@@ -159,6 +159,7 @@ class Person {
     console.log('Olá 4, bem vindo:' + this.name.value);
     console.log(`Olá 5, bem vindo ${this.name}`);
   }
+
 }
 
 const pessoa = new Person("João");
