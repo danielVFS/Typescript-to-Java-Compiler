@@ -1,21 +1,34 @@
 %{
     #include <stdio.h>
+    #include <ctype.h>
+    #include <stdbool.h>
+    #include "sym.h"
+    #define ASSERT(x,y) if(!(x)) printf("%s na  linha %d\n",(y),yylineno)
     extern int yylineno;
+    FILE * output;
 %}
 
 
 %union {
-    char* str;
-    int num;
+    char * ystr;
+    int   yint;
+    float yfloat;
 }
 
 %start program
-%token LET VAR CONST CLASS CONSTRUCTOR PRIVATE PUBLIC PROTECTED IDENTIFIER CLASS_IDENTIFIER NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
+%token VAR CONST CLASS CONSTRUCTOR PRIVATE PUBLIC PROTECTED NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
 %token THIS FUNCTION PROMISE
 %token COLON SEMICOLON ASSIGN ADD MINUS
-%token <str> STRING_LITERAL
-%token <num> NUMBER_LITERAL FLOAT_LITERAL
-%token BOOLEAN_LITERAL ERROR_LITERAL
+%token <ystr> IDENTIFIER
+%token <ystr> CLASS_IDENTIFIER
+%token <ystr> LET
+%token <ystr> STRING_LITERAL
+%token <yint> NUMBER_LITERAL
+%token <yfloat> FLOAT_LITERAL
+%token <ystr> BOOLEAN_LITERAL
+%token ERROR_LITERAL
+
+%type <ystr> all_possible_variables_types
 
 %%
 program: commands
@@ -41,11 +54,10 @@ declaration:
 ;
 
 variable_types:
-    LET
-    | VAR
+    LET 
+    | VAR 
     | CONST
-;    
-
+;   
 
 console_log_declarations:
     CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON
@@ -68,45 +80,50 @@ all_possible_variables:
 ;
 
 all_possible_variables_types:
-    NUMBER
-    | STRING
-    | BOOLEAN
-    | ANY
-    | BOOLEAN_LITERAL
-    | LBRACE RBRACE
-    | VOID
+    NUMBER { $$ = "int"; }
+    | STRING { fprintf(output, ""); }
+    | BOOLEAN { fprintf(output, ""); }
+    | ANY { fprintf(output, ""); }
+    | BOOLEAN_LITERAL { fprintf(output, ""); }
+    | LBRACE RBRACE { fprintf(output, ""); }
+    | VOID { fprintf(output, ""); }
 ;
 
 
 number_declaration: 
-    variable_types IDENTIFIER COLON NUMBER ASSIGN NUMBER_LITERAL SEMICOLON;
+    variable_types IDENTIFIER COLON NUMBER ASSIGN NUMBER_LITERAL SEMICOLON { fprintf(output,"int %s = %d;", $2, $6);}
+; 
 
 array_of_numbers_declaration: 
     variable_types IDENTIFIER COLON NUMBER LBRACKET RBRACKET ASSIGN array_of_numbers SEMICOLON;
 
 float_declaration: 
-    variable_types IDENTIFIER COLON NUMBER ASSIGN FLOAT_LITERAL SEMICOLON;
+    variable_types IDENTIFIER COLON NUMBER ASSIGN FLOAT_LITERAL SEMICOLON { fprintf(output,"double %s = %f;", $2, $6);}
+;
 
 array_of_floats_declaration: 
     variable_types IDENTIFIER COLON NUMBER LBRACKET RBRACKET ASSIGN array_of_floats SEMICOLON;
 
 boolean_declaration: 
-    variable_types IDENTIFIER COLON BOOLEAN ASSIGN BOOLEAN_LITERAL SEMICOLON;
+    variable_types IDENTIFIER COLON BOOLEAN ASSIGN BOOLEAN_LITERAL SEMICOLON { fprintf(output,"boolean %s = %s;", $2, $6);}
+;
 
 array_of_booleans_declaration: 
     variable_types IDENTIFIER COLON BOOLEAN LBRACKET RBRACKET ASSIGN array_of_booleans SEMICOLON;
 
 string_declaration: 
-    variable_types IDENTIFIER COLON STRING ASSIGN STRING_LITERAL SEMICOLON;
+    variable_types IDENTIFIER COLON STRING ASSIGN STRING_LITERAL SEMICOLON { fprintf(output,"String %s = %s;", $2, $6);}
+;
 
 array_of_strings_declaration: 
     variable_types IDENTIFIER COLON STRING LBRACKET RBRACKET ASSIGN array_of_strings SEMICOLON;
 
 object_declaration: 
     variable_types IDENTIFIER COLON ANY ASSIGN LBRACE object_attribution RBRACE SEMICOLON
+    | variable_types IDENTIFIER COLON CLASS_IDENTIFIER ASSIGN LBRACE object_attribution RBRACE SEMICOLON
 ;
 
-array_of_objects_declaration: 
+array_of_objects_declaration:
     variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
 ;
 
@@ -320,7 +337,9 @@ class_function_declarartion:
 %%
 main( int argc, char *argv[] )
 {
- if ( yyparse () == 0) printf("codigo sem erros \n");
+    init_stringpool(10000);
+    output = fopen("output.java","w");
+    if ( yyparse () == 0) printf("codigo sem erros \n");
 }
 
 yyerror (char *s) /* Called by yyparse on error */

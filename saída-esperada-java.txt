@@ -1,14 +1,23 @@
 int number1 = 10;
 double number2 = 0.2;
-String name = "Daniel";
-boolean isValid = true;
+
+String name1 = "Daniel";
+String name2 = "Vitor";
+
 Object person = new Object();
 
-// tomar cuidos com any, em java não é possível tamanha abstração, vamos assumir que um objeto
+boolean isValid = true;
 
-int[] numbers = {10, 11, 12};
-String[] names = {"Daniel", "Vitor"};
-Object[] options = {new Object[] {1, "1"}, new Object[] {2, "2"}};
+Person person2 = new Person("Daniel", 12);
+Person person3 = new Person("Vitor");
+Person person4 = new Person("Marcelo", new Address("X"));
 
-System.out.println("Hello World");
 
+if (person2.age > 3) {
+    System.out.println(person2.name);
+    System.out.println("Olá, bem vindo " + person2.name);
+}
+
+if (person4.address != null && person4.address.street.equals("X")) {
+    System.out.println(person4.name);
+}

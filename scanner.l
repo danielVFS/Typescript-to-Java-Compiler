@@ -1,5 +1,7 @@
 %{
 #include "parser.tab.h"
+char *stringpool(char *);
+extern FILE * output;
 %}
 %option yylineno
 
@@ -14,13 +16,13 @@ TRUE true
 FALSE false 
 
 %%
-{NUMBER}            { printf("Reconhecido: NUMBER_LITERAL (%s)\n", yytext); return(NUMBER_LITERAL);}
-{FLOAT}             { printf("Reconhecido: FLOAT_LITERAL (%s)\n", yytext); return (FLOAT_LITERAL);}
-{TRUE}              { printf("Reconhecido: TRUE_LITERAL (%s)\n", yytext); return (BOOLEAN_LITERAL);}
-{FALSE}             { printf("Reconhecido: FALSE_LITERAL (%s)\n", yytext); return (BOOLEAN_LITERAL);}
-{STRING_LITERAL_WITH_SINGLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); return (STRING_LITERAL);}
-{STRING_LITERAL_WITH_DOUBLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); return (STRING_LITERAL);}
-{STRING_LITERAL_CRASIS_QUOTE}         { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); return (STRING_LITERAL);}
+{NUMBER}            { printf("Reconhecido: NUMBER_LITERAL (%s)\n", yytext); yylval.yint = atoi(yytext); return(NUMBER_LITERAL);}
+{FLOAT}             { printf("Reconhecido: FLOAT_LITERAL (%s)\n", yytext); yylval.yfloat = atof(yytext); return (FLOAT_LITERAL);}
+{TRUE}              { printf("Reconhecido: TRUE_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (BOOLEAN_LITERAL);}
+{FALSE}             { printf("Reconhecido: FALSE_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (BOOLEAN_LITERAL);}
+{STRING_LITERAL_WITH_SINGLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
+{STRING_LITERAL_WITH_DOUBLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
+{STRING_LITERAL_CRASIS_QUOTE}         { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
 Error               { printf("Reconhecido: ERROR_LITERAL (%s)\n", yytext); return (ERROR_LITERAL);}
 "="                 { printf("Reconhecido: ASSIGN\n"); return(ASSIGN);}
 number              { printf("Reconhecido: NUMBER\n"); return(NUMBER);}
@@ -68,10 +70,10 @@ constructor         { printf("Reconhecido: CONSTRUCTOR\n"); return(CONSTRUCTOR);
 "-"                 { printf("Reconhecido: MINUS\n"); return MINUS; }
 "."                 { printf("Reconhecido: DOT\n"); return DOT; }
 "\""                { printf("Reconhecido: DOUBLE_QUOTE\n");return DOUBLE_QUOTE; }
-{ID}                { printf("Reconhecido: IDENTIFIER (%s)\n", yytext); return(IDENTIFIER);}
-{CLASS_ID}          { printf("Reconhecido: CLASS_IDENTIFIER (%s)\n", yytext); return(CLASS_IDENTIFIER);}
-"\\\\"[ a-z]*\n     { /*comentário/ }
-"\n"                { /*incrementa sozinho lineno*/ }
-[ \t]+              { /*ignorar espaços em branco*/ }
+{ID}                { printf("Reconhecido: IDENTIFIER (%s)\n", yytext); yylval.ystr = stringpool(yytext); return(IDENTIFIER);}
+{CLASS_ID}          { printf("Reconhecido: CLASS_IDENTIFIER (%s)\n", yytext); yylval.ystr = stringpool(yytext); return(CLASS_IDENTIFIER);}
+"\\"[ a-z]*\n 
+"\n"                { fprintf(output,"\n"); /*incrementa sozinho lineno*/ }
+[ \t]+              { fprintf(output,"%s",yytext); }
 .                   { printf("Reconhecido: caractere desconhecido (%c)\n", yytext[0]); return(yytext[0]);}
 %%

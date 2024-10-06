@@ -12,6 +12,8 @@ let person2: any = {name: 'Daniel', age: 12};
 let person3: any = {name: 'Vitor'};
 let person4: any = {name: 'Marcelo', address: {street: 'X'}};
 
+let person4: Person = {name: 'Marcelo', address: {street: 'X'}};
+
 if(person.age > 3) {
   console.log(person5.name);
   console.log(`Olá, bem vindo ${person5.name}`);
