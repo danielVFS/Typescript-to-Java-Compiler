@@ -29,6 +29,8 @@
 %token ERROR_LITERAL
 
 %type <ystr> all_possible_variables_types
+%type <ystr> expressions
+%type <ystr> access_object
 
 %%
 program: commands
@@ -60,10 +62,10 @@ variable_types:
 ;   
 
 console_log_declarations:
-    CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON
-    | CONSOLE_LOG LPARENTHESES IDENTIFIER RPARENTHESES SEMICOLON
-    | CONSOLE_LOG LPARENTHESES IDENTIFIER ADD expressions RPARENTHESES SEMICOLON
-    | CONSOLE_LOG LPARENTHESES STRING_LITERAL ADD expressions RPARENTHESES SEMICOLON
+    CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s);", $3); }
+    | CONSOLE_LOG LPARENTHESES IDENTIFIER RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s);", $3); }
+    | CONSOLE_LOG LPARENTHESES IDENTIFIER ADD expressions RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s + %s);", $3, $5); }
+    | CONSOLE_LOG LPARENTHESES STRING_LITERAL ADD expressions RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s + %s);", $3, $5); }
     | CONSOLE_LOG LPARENTHESES access_object RPARENTHESES SEMICOLON
 ;
 
@@ -192,8 +194,8 @@ increment_decrement_variable:
 ;
 
 access_object:
-    IDENTIFIER
-    | IDENTIFIER DOT access_object
+    IDENTIFIER { $$ = $1; }
+    | IDENTIFIER DOT access_object 
     | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET access_object_nested
     | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET 
 ;
@@ -249,10 +251,10 @@ command :
 ;
 
 expressions: 
-    STRING_LITERAL
+    STRING_LITERAL { $$ = $1; }
     | NUMBER_LITERAL
     | FLOAT_LITERAL
-    | BOOLEAN_LITERAL
+    | BOOLEAN_LITERAL { $$ = $1; }
     | STRING_LITERAL COLON ERROR_LITERAL
     | access_object
     | access_class

@@ -492,23 +492,23 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    34,    34,    41,    42,    43,    44,    45,    46,    47,
-      48,    49,    50,    51,    52,    53,    57,    58,    59,    63,
-      64,    65,    66,    67,    71,    72,    73,    74,    75,    76,
-      77,    78,    79,    83,    84,    85,    86,    87,    88,    89,
-      94,    98,   101,   105,   108,   112,   115,   119,   122,   123,
-     127,   131,   134,   135,   136,   137,   138,   139,   140,   141,
-     142,   143,   144,   145,   149,   153,   154,   157,   161,   162,
-     165,   169,   170,   173,   177,   178,   181,   185,   186,   190,
-     191,   195,   196,   197,   198,   202,   203,   204,   205,   209,
-     210,   211,   212,   216,   217,   218,   219,   223,   230,   231,
-     232,   236,   237,   238,   239,   240,   241,   242,   243,   244,
-     245,   246,   247,   248,   252,   253,   254,   255,   256,   257,
-     258,   259,   260,   261,   262,   263,   264,   265,   266,   267,
-     268,   269,   270,   271,   272,   273,   274,   275,   279,   283,
-     284,   288,   289,   291,   293,   294,   298,   302,   303,   304,
-     308,   309,   313,   314,   318,   319,   320,   324,   325,   329,
-     330,   334
+       0,    36,    36,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    54,    55,    59,    60,    61,    65,
+      66,    67,    68,    69,    73,    74,    75,    76,    77,    78,
+      79,    80,    81,    85,    86,    87,    88,    89,    90,    91,
+      96,   100,   103,   107,   110,   114,   117,   121,   124,   125,
+     129,   133,   136,   137,   138,   139,   140,   141,   142,   143,
+     144,   145,   146,   147,   151,   155,   156,   159,   163,   164,
+     167,   171,   172,   175,   179,   180,   183,   187,   188,   192,
+     193,   197,   198,   199,   200,   204,   205,   206,   207,   211,
+     212,   213,   214,   218,   219,   220,   221,   225,   232,   233,
+     234,   238,   239,   240,   241,   242,   243,   244,   245,   246,
+     247,   248,   249,   250,   254,   255,   256,   257,   258,   259,
+     260,   261,   262,   263,   264,   265,   266,   267,   268,   269,
+     270,   271,   272,   273,   274,   275,   276,   277,   281,   285,
+     286,   290,   291,   293,   295,   296,   300,   304,   305,   306,
+     310,   311,   315,   316,   320,   321,   322,   326,   327,   331,
+     332,   336
 };
 #endif
 
@@ -1567,74 +1567,116 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 33:
-#line 83 "parser.y" /* yacc.c:1646  */
-    { (yyval.ystr) = "int"; }
+        case 19:
+#line 65 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, "System.out.println(%s);", (yyvsp[-2].ystr)); }
 #line 1574 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 34:
-#line 84 "parser.y" /* yacc.c:1646  */
-    { fprintf(output, ""); }
+  case 20:
+#line 66 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, "System.out.println(%s);", (yyvsp[-2].ystr)); }
 #line 1580 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 35:
-#line 85 "parser.y" /* yacc.c:1646  */
-    { fprintf(output, ""); }
+  case 21:
+#line 67 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, "System.out.println(%s + %s);", (yyvsp[-4].ystr), (yyvsp[-2].ystr)); }
 #line 1586 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 36:
-#line 86 "parser.y" /* yacc.c:1646  */
-    { fprintf(output, ""); }
+  case 22:
+#line 68 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, "System.out.println(%s + %s);", (yyvsp[-4].ystr), (yyvsp[-2].ystr)); }
 #line 1592 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 37:
-#line 87 "parser.y" /* yacc.c:1646  */
-    { fprintf(output, ""); }
+  case 33:
+#line 85 "parser.y" /* yacc.c:1646  */
+    { (yyval.ystr) = "int"; }
 #line 1598 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 38:
-#line 88 "parser.y" /* yacc.c:1646  */
+  case 34:
+#line 86 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ""); }
 #line 1604 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 39:
-#line 89 "parser.y" /* yacc.c:1646  */
+  case 35:
+#line 87 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ""); }
 #line 1610 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 40:
-#line 94 "parser.y" /* yacc.c:1646  */
-    { fprintf(output,"int %s = %d;", (yyvsp[-5].ystr), (yyvsp[-1].yint));}
+  case 36:
+#line 88 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, ""); }
 #line 1616 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 42:
-#line 101 "parser.y" /* yacc.c:1646  */
-    { fprintf(output,"double %s = %f;", (yyvsp[-5].ystr), (yyvsp[-1].yfloat));}
+  case 37:
+#line 89 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, ""); }
 #line 1622 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 108 "parser.y" /* yacc.c:1646  */
-    { fprintf(output,"boolean %s = %s;", (yyvsp[-5].ystr), (yyvsp[-1].ystr));}
+  case 38:
+#line 90 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, ""); }
 #line 1628 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 115 "parser.y" /* yacc.c:1646  */
-    { fprintf(output,"String %s = %s;", (yyvsp[-5].ystr), (yyvsp[-1].ystr));}
+  case 39:
+#line 91 "parser.y" /* yacc.c:1646  */
+    { fprintf(output, ""); }
 #line 1634 "parser.tab.c" /* yacc.c:1646  */
     break;
 
+  case 40:
+#line 96 "parser.y" /* yacc.c:1646  */
+    { fprintf(output,"int %s = %d;", (yyvsp[-5].ystr), (yyvsp[-1].yint));}
+#line 1640 "parser.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 1638 "parser.tab.c" /* yacc.c:1646  */
+  case 42:
+#line 103 "parser.y" /* yacc.c:1646  */
+    { fprintf(output,"double %s = %f;", (yyvsp[-5].ystr), (yyvsp[-1].yfloat));}
+#line 1646 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 110 "parser.y" /* yacc.c:1646  */
+    { fprintf(output,"boolean %s = %s;", (yyvsp[-5].ystr), (yyvsp[-1].ystr));}
+#line 1652 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 46:
+#line 117 "parser.y" /* yacc.c:1646  */
+    { fprintf(output,"String %s = %s;", (yyvsp[-5].ystr), (yyvsp[-1].ystr));}
+#line 1658 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 81:
+#line 197 "parser.y" /* yacc.c:1646  */
+    { (yyval.ystr) = (yyvsp[0].ystr); }
+#line 1664 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 114:
+#line 254 "parser.y" /* yacc.c:1646  */
+    { (yyval.ystr) = (yyvsp[0].ystr); }
+#line 1670 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 117:
+#line 257 "parser.y" /* yacc.c:1646  */
+    { (yyval.ystr) = (yyvsp[0].ystr); }
+#line 1676 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1680 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1862,7 +1904,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 337 "parser.y" /* yacc.c:1906  */
+#line 339 "parser.y" /* yacc.c:1906  */
 
 main( int argc, char *argv[] )
 {

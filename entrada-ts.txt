@@ -14,7 +14,11 @@ let person4: any = {name: 'Marcelo', address: {street: 'X'}};
 
 let person4: Person = {name: 'Marcelo', address: {street: 'X'}};
 
-if(person.age > 3) {
+if(true) {
+  console.log('Hello World');
+}
+
+if(person5.age > 3) {
   console.log(person5.name);
   console.log(`Olá, bem vindo ${person5.name}`);
 }
@@ -53,9 +57,6 @@ if(x > 3) {
   console.log(z);
 }
 
-if(true) {
-  console.log('Hello World');
-}
 
 if(x === 2) {
   console.log('Hello World');
@@ -78,7 +79,7 @@ while (j < 10) {
   j++;
 }
 
-console.log(x + '2' + y);
+console.log(x + '2');
 
 do {
   console.log(i);
