@@ -8,7 +8,6 @@
     FILE * output;
 %}
 
-
 %union {
     char * ystr;
     int   yint;
@@ -27,10 +26,6 @@
 %token <yfloat> FLOAT_LITERAL
 %token <ystr> BOOLEAN_LITERAL
 %token ERROR_LITERAL
-
-%type <ystr> all_possible_variables_types
-%type <ystr> expressions
-%type <ystr> access_object
 
 %%
 program: commands
@@ -62,10 +57,10 @@ variable_types:
 ;   
 
 console_log_declarations:
-    CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s);", $3); }
-    | CONSOLE_LOG LPARENTHESES IDENTIFIER RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s);", $3); }
-    | CONSOLE_LOG LPARENTHESES IDENTIFIER ADD expressions RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s + %s);", $3, $5); }
-    | CONSOLE_LOG LPARENTHESES STRING_LITERAL ADD expressions RPARENTHESES SEMICOLON { fprintf(output, "System.out.println(%s + %s);", $3, $5); }
+    CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON 
+    | CONSOLE_LOG LPARENTHESES  { fprintf(output, "System.out.pritln("); } IDENTIFIER { fprintf(output, "%s", $4); } RPARENTHESES SEMICOLON{ fprintf(output, ");"); }
+    | CONSOLE_LOG LPARENTHESES IDENTIFIER ADD expressions RPARENTHESES SEMICOLON 
+    | CONSOLE_LOG LPARENTHESES STRING_LITERAL ADD expressions RPARENTHESES SEMICOLON
     | CONSOLE_LOG LPARENTHESES access_object RPARENTHESES SEMICOLON
 ;
 
@@ -82,13 +77,13 @@ all_possible_variables:
 ;
 
 all_possible_variables_types:
-    NUMBER { $$ = "int"; }
-    | STRING { fprintf(output, ""); }
-    | BOOLEAN { fprintf(output, ""); }
-    | ANY { fprintf(output, ""); }
-    | BOOLEAN_LITERAL { fprintf(output, ""); }
-    | LBRACE RBRACE { fprintf(output, ""); }
-    | VOID { fprintf(output, ""); }
+    NUMBER 
+    | STRING
+    | BOOLEAN 
+    | ANY 
+    | BOOLEAN_LITERAL 
+    | LBRACE RBRACE 
+    | VOID 
 ;
 
 
@@ -194,8 +189,8 @@ increment_decrement_variable:
 ;
 
 access_object:
-    IDENTIFIER { $$ = $1; }
-    | IDENTIFIER DOT access_object 
+    IDENTIFIER { fprintf(output, "%s", $1); }
+    | IDENTIFIER DOT { fprintf(output, "%s.", $1); } access_object 
     | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET access_object_nested
     | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET 
 ;
@@ -238,7 +233,7 @@ command :
     IF expressions LBRACE commands RBRACE
     | IF expressions LBRACE commands RBRACE ELSE LBRACE commands RBRACE
     | IF expressions LBRACE commands RBRACE ELSE IF expressions LBRACE commands RBRACE ELSE LBRACE commands RBRACE
-    | WHILE expressions LBRACE commands RBRACE
+    | WHILE LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
     | DO LBRACE commands RBRACE WHILE expressions
     | THROW NEW ERROR_LITERAL LPARENTHESES expressions RPARENTHESES SEMICOLON
     | TRY LBRACE commands RBRACE CATCH expressions LBRACE commands RBRACE
@@ -251,10 +246,10 @@ command :
 ;
 
 expressions: 
-    STRING_LITERAL { $$ = $1; }
-    | NUMBER_LITERAL
+    STRING_LITERAL { fprintf(output, "%s", $1); }
+    | NUMBER_LITERAL { fprintf(output, "%d", $1); }
     | FLOAT_LITERAL
-    | BOOLEAN_LITERAL { $$ = $1; }
+    | BOOLEAN_LITERAL
     | STRING_LITERAL COLON ERROR_LITERAL
     | access_object
     | access_class
@@ -262,8 +257,8 @@ expressions:
     | expressions '<' ASSIGN expressions
     | expressions ASSIGN ASSIGN expressions
     | expressions ASSIGN ASSIGN ASSIGN expressions
-    | expressions '>' expressions
-    | expressions '>' ASSIGN expressions
+    | expressions '>' { fprintf(output, ">"); } expressions
+    | expressions '>' ASSIGN { fprintf(output, ">="); } expressions
     | expressions ADD expressions
     | expressions MINUS expressions
     | expressions '*' expressions

@@ -1185,7 +1185,7 @@ YY_RULE_SETUP
 case 59:
 YY_RULE_SETUP
 #line 77 "scanner.l"
-{ fprintf(output,"%s",yytext); }
+
 	YY_BREAK
 case 60:
 YY_RULE_SETUP

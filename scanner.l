@@ -74,6 +74,6 @@ constructor         { printf("Reconhecido: CONSTRUCTOR\n"); return(CONSTRUCTOR);
 {CLASS_ID}          { printf("Reconhecido: CLASS_IDENTIFIER (%s)\n", yytext); yylval.ystr = stringpool(yytext); return(CLASS_IDENTIFIER);}
 "\\"[ a-z]*\n 
 "\n"                { fprintf(output,"\n"); /*incrementa sozinho lineno*/ }
-[ \t]+              { fprintf(output,"%s",yytext); }
+[ \t]+              
 .                   { printf("Reconhecido: caractere desconhecido (%c)\n", yytext[0]); return(yytext[0]);}
 %%
