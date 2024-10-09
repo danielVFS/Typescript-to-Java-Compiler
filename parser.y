@@ -1,11 +1,14 @@
 %{
     #include <stdio.h>
+    #include <string.h>
     #include <ctype.h>
     #include <stdbool.h>
     #include "sym.h"
     #define ASSERT(x,y) if(!(x)) printf("%s na  linha %d\n",(y),yylineno)
     extern int yylineno;
     FILE * output;
+
+    char identifierDefined[100];
 %}
 
 %union {
@@ -40,7 +43,6 @@ declaration:
     | string_declaration
     | boolean_declaration
     | object_declaration
-    | array_of_numbers_declaration
     | array_of_floats_declaration
     | array_of_strings_declaration
     | array_of_booleans_declaration
@@ -57,11 +59,21 @@ variable_types:
 ;   
 
 console_log_declarations:
-    CONSOLE_LOG LPARENTHESES STRING_LITERAL RPARENTHESES SEMICOLON 
-    | CONSOLE_LOG LPARENTHESES  { fprintf(output, "System.out.pritln("); } IDENTIFIER { fprintf(output, "%s", $4); } RPARENTHESES SEMICOLON{ fprintf(output, ");"); }
-    | CONSOLE_LOG LPARENTHESES IDENTIFIER ADD expressions RPARENTHESES SEMICOLON 
-    | CONSOLE_LOG LPARENTHESES STRING_LITERAL ADD expressions RPARENTHESES SEMICOLON
-    | CONSOLE_LOG LPARENTHESES access_object RPARENTHESES SEMICOLON
+    console_log_left_common STRING_LITERAL console_log_declaration_with_add console_log_right_common
+    | console_log_left_common access_object console_log_declaration_with_add console_log_right_common
+;
+
+console_log_left_common:
+    CONSOLE_LOG LPARENTHESES { fprintf(output, "System.out.pritln("); }
+;
+
+console_log_right_common:
+    RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+;
+
+console_log_declaration_with_add:
+    ADD { fprintf(output, " + "); } expressions console_log_right_common
+    | /* empty */
 ;
 
 all_possible_variables:
@@ -88,11 +100,13 @@ all_possible_variables_types:
 
 
 number_declaration: 
-    variable_types IDENTIFIER COLON NUMBER ASSIGN NUMBER_LITERAL SEMICOLON { fprintf(output,"int %s = %d;", $2, $6);}
-; 
+    variable_types IDENTIFIER {strcpy(identifierDefined,$2);} COLON NUMBER number_or_array_declaration SEMICOLON { fprintf(output,";");}
+;
 
-array_of_numbers_declaration: 
-    variable_types IDENTIFIER COLON NUMBER LBRACKET RBRACKET ASSIGN array_of_numbers SEMICOLON;
+number_or_array_declaration: 
+    ASSIGN NUMBER_LITERAL { fprintf(output,"int %s = %d", identifierDefined, $2);}
+    | LBRACKET RBRACKET ASSIGN { fprintf(output,"int[] %s = ", identifierDefined);} array_of_numbers
+;
 
 float_declaration: 
     variable_types IDENTIFIER COLON NUMBER ASSIGN FLOAT_LITERAL SEMICOLON { fprintf(output,"double %s = %f;", $2, $6);}
@@ -143,12 +157,12 @@ object_attribution:
 ;
 
 array_of_numbers:
-    LBRACKET numbers RBRACKET
+    LBRACKET { fprintf(output, "{"); } numbers RBRACKET { fprintf(output, "}"); }
 ;
 
 numbers:
-    NUMBER_LITERAL COMMA numbers
-    | NUMBER_LITERAL
+    NUMBER_LITERAL COMMA { fprintf(output, "%d,", $1); } numbers
+    | NUMBER_LITERAL { fprintf(output, "%d", $1); }
 
 array_of_floats:
     LBRACKET floats RBRACKET

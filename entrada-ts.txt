@@ -4,6 +4,19 @@ let number2: number = 0.2;
 let name1: string = 'Daniel';
 let name2: string = "Vitor";
 
+let isvalid: boolean = true;
+
+let numbers: number[] = [10, 11, 12];
+let numbers1: number[] = [0.2, 0.3];
+let names: string[] = ['Daniel', 'Vitor'];
+let booleans: boolean[] = [true, false];
+
+
 while (person.page >= 5) {
   console.log(i);
 }
+
+while (person.page >= 5) {
+  console.log(person.age);
+}
+
