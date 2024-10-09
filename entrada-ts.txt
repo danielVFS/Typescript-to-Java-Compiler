@@ -21,3 +21,15 @@ while (person.page >= 5) {
   console.log(person.age);
 }
 
+if(true) {
+  console.log("Hello World");
+}
+
+if(person5.age > 3) {
+  console.log(person5.name);
+  console.log(`Olá, bem vindo ${person5.name}`);
+}
+
+if(person.age.value > 3) {
+  console.log(person5.name);
+}

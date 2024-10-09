@@ -21,3 +21,14 @@ while(person.page>=5){
 System.out.pritln(person.age);
 }
 
+
+System.out.pritln("Hello World");
+
+
+person5.age>3
+System.out.pritln(person5.name);
+System.out.pritln(`Olá, bem vindo ${person5.name}`);
+
+
+person.age.value>3
+System.out.pritln(person5.name);

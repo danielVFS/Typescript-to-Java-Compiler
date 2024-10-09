@@ -58,7 +58,7 @@ variable_types:
 ;   
 
 console_log_declarations:
-    console_log_left_common STRING_LITERAL console_log_declaration_with_add console_log_right_common
+    console_log_left_common STRING_LITERAL { fprintf(output, "%s", $2); } console_log_declaration_with_add console_log_right_common
     | console_log_left_common access_object console_log_declaration_with_add console_log_right_common
 ;
 
