@@ -38,19 +38,18 @@ program: commands
 
 
 declaration:
-    number_declaration
-    | float_declaration
-    | string_declaration
-    | boolean_declaration
-    | object_declaration
-    | array_of_floats_declaration
-    | array_of_strings_declaration
-    | array_of_booleans_declaration
-    | array_of_objects_declaration
+    variable_types IDENTIFIER {strcpy(identifierDefined,$2);} COLON possible_declarations
     | console_log_declarations
     | increment_decrement_variable
     | instance_new_class
 ;
+
+possible_declarations:
+    number_declaration
+    | string_declaration
+    | boolean_declaration
+;
+
 
 variable_types:
     LET 
@@ -98,36 +97,49 @@ all_possible_variables_types:
     | VOID 
 ;
 
+////////
 
 number_declaration: 
-    variable_types IDENTIFIER {strcpy(identifierDefined,$2);} COLON NUMBER number_or_array_declaration SEMICOLON { fprintf(output,";");}
+    NUMBER number_or_array_declaration
 ;
 
-number_or_array_declaration: 
-    ASSIGN NUMBER_LITERAL { fprintf(output,"int %s = %d", identifierDefined, $2);}
-    | LBRACKET RBRACKET ASSIGN { fprintf(output,"int[] %s = ", identifierDefined);} array_of_numbers
+number_or_array_declaration:
+    LBRACKET RBRACKET ASSIGN array_of_numbers_and_floats_declaration SEMICOLON { fprintf(output,";");}
+    | ASSIGN number_or_float_declaration SEMICOLON { fprintf(output,";");}
+
+number_or_float_declaration:
+    NUMBER_LITERAL { fprintf(output,"int %s = %d", identifierDefined, $1);}
+    | FLOAT_LITERAL { fprintf(output,"double %s = %f", identifierDefined, $1);}
 ;
 
-float_declaration: 
-    variable_types IDENTIFIER COLON NUMBER ASSIGN FLOAT_LITERAL SEMICOLON { fprintf(output,"double %s = %f;", $2, $6);}
+array_of_numbers_and_floats_declaration:
+    array_of_numbers
+    | array_of_floats 
 ;
 
-array_of_floats_declaration: 
-    variable_types IDENTIFIER COLON NUMBER LBRACKET RBRACKET ASSIGN array_of_floats SEMICOLON;
-
-boolean_declaration: 
-    variable_types IDENTIFIER COLON BOOLEAN ASSIGN BOOLEAN_LITERAL SEMICOLON { fprintf(output,"boolean %s = %s;", $2, $6);}
-;
-
-array_of_booleans_declaration: 
-    variable_types IDENTIFIER COLON BOOLEAN LBRACKET RBRACKET ASSIGN array_of_booleans SEMICOLON;
+////////
 
 string_declaration: 
-    variable_types IDENTIFIER COLON STRING ASSIGN STRING_LITERAL SEMICOLON { fprintf(output,"String %s = %s;", $2, $6);}
+    STRING string_or_array_of_strings_declaration SEMICOLON { fprintf(output,";");}
 ;
 
-array_of_strings_declaration: 
-    variable_types IDENTIFIER COLON STRING LBRACKET RBRACKET ASSIGN array_of_strings SEMICOLON;
+string_or_array_of_strings_declaration:
+    ASSIGN STRING_LITERAL { fprintf(output,"String %s = %s", identifierDefined, $2);}
+    | LBRACKET RBRACKET ASSIGN { fprintf(output,"String[] %s =", identifierDefined);} array_of_strings
+;
+
+////////
+
+boolean_declaration: 
+    BOOLEAN boolean_or_array_of_booleans_declaration SEMICOLON { fprintf(output,";");}
+;
+
+boolean_or_array_of_booleans_declaration:
+    ASSIGN BOOLEAN_LITERAL { fprintf(output,"boolean %s = %s", identifierDefined, $2);}
+    | LBRACKET RBRACKET ASSIGN { fprintf(output,"booleans[] %s =", identifierDefined);} array_of_booleans
+;
+
+////////
 
 object_declaration: 
     variable_types IDENTIFIER COLON ANY ASSIGN LBRACE object_attribution RBRACE SEMICOLON
@@ -138,8 +150,12 @@ array_of_objects_declaration:
     variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
 ;
 
+////////
+
 instance_new_class:
     variable_types IDENTIFIER ASSIGN NEW CLASS_IDENTIFIER LPARENTHESES function_values RPARENTHESES SEMICOLON;
+
+////////
 
 object_attribution:
     IDENTIFIER COLON STRING_LITERAL
@@ -156,8 +172,10 @@ object_attribution:
     | /* empty */
 ;
 
+////////
+
 array_of_numbers:
-    LBRACKET { fprintf(output, "{"); } numbers RBRACKET { fprintf(output, "}"); }
+    LBRACKET { fprintf(output, "int[] %s = {", identifierDefined); } numbers RBRACKET { fprintf(output, "}"); }
 ;
 
 numbers:
@@ -165,28 +183,28 @@ numbers:
     | NUMBER_LITERAL { fprintf(output, "%d", $1); }
 
 array_of_floats:
-    LBRACKET floats RBRACKET
+    LBRACKET { fprintf(output, "double[] %s = {", identifierDefined); } floats RBRACKET { fprintf(output, "}"); }
 ;
 
 floats:
-    FLOAT_LITERAL COMMA floats
-    | FLOAT_LITERAL
+    FLOAT_LITERAL COMMA { fprintf(output, "%f,", $1); } floats
+    | FLOAT_LITERAL  { fprintf(output, "%f,", $1); }
 
 array_of_booleans:
-    LBRACKET booleans RBRACKET
+    LBRACKET { fprintf(output, "{"); } booleans RBRACKET { fprintf(output, "}"); }
 ;
 
 booleans:
-    BOOLEAN_LITERAL COMMA booleans
-    | BOOLEAN_LITERAL
+    BOOLEAN_LITERAL COMMA { fprintf(output, "%s,", $1); } booleans
+    | BOOLEAN_LITERAL { fprintf(output, "%s", $1); }
 
 array_of_strings:
-    LBRACKET strings RBRACKET
+    LBRACKET { fprintf(output, "{"); } strings RBRACKET { fprintf(output, "}"); }
 ;
 
 strings:
-    STRING_LITERAL COMMA strings
-    | STRING_LITERAL
+    STRING_LITERAL COMMA { fprintf(output, "%s,", $1); } strings
+    | STRING_LITERAL { fprintf(output, "%s", $1); }
 
 array_of_objects:
     LBRACKET objects RBRACKET
