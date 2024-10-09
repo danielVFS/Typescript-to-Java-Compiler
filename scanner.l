@@ -13,7 +13,8 @@ STRING_LITERAL_WITH_SINGLE_QUOTE \'[^\']*\'
 STRING_LITERAL_WITH_DOUBLE_QUOTE \"[^"]*\"
 STRING_LITERAL_CRASIS_QUOTE \`[^`]*\`
 TRUE true
-FALSE false 
+FALSE false
+ERROR [A-Z][a-zA-Z]*
 
 %%
 {NUMBER}            { printf("Reconhecido: NUMBER_LITERAL (%s)\n", yytext); yylval.yint = atoi(yytext); return(NUMBER_LITERAL);}
@@ -23,7 +24,7 @@ FALSE false
 {STRING_LITERAL_WITH_SINGLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
 {STRING_LITERAL_WITH_DOUBLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
 {STRING_LITERAL_CRASIS_QUOTE}         { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
-Error               { printf("Reconhecido: ERROR_LITERAL (%s)\n", yytext); return (ERROR_LITERAL);}
+{ERROR}               { printf("Reconhecido: ERROR_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (ERROR_LITERAL);}
 "="                 { printf("Reconhecido: ASSIGN\n"); return(ASSIGN);}
 number              { printf("Reconhecido: NUMBER\n"); return(NUMBER);}
 string              { printf("Reconhecido: STRING\n"); return(STRING);}
@@ -55,6 +56,7 @@ private             { printf("Reconhecido: PRIVATE\n"); return(PRIVATE);}
 public              { printf("Reconhecido: PUBLIC\n"); return(PUBLIC);}
 protected           { printf("Reconhecido: PROTECTED\n"); return(PROTECTED);}
 constructor         { printf("Reconhecido: CONSTRUCTOR\n"); return(CONSTRUCTOR);}
+instanceof          { printf("Reconhecido: INSTANCEOF\n"); return(INSTANCEOF);}
 ":"                 { printf("Reconhecido: COLON\n"); return (COLON); }
 ";"                 { printf("Reconhecido: SEMICOLON\n"); return (SEMICOLON); }
 "console.log"       { printf("Reconhecido: CONSOLE_LOG\n"); return (CONSOLE_LOG); }

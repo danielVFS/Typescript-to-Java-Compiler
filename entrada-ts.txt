@@ -4,6 +4,7 @@ let number2: number = 0.2;
 let numbers: number[] = [10, 11, 12];
 let numbers1: number[] = [0.2, 0.3];
 
+
 let name1: string = 'Daniel';
 let name2: string = "Vitor";
 
@@ -12,6 +13,8 @@ let names: string[] = ['Daniel', 'Vitor'];
 let isvalid: boolean = true;
 
 let isValids: boolean[] = [true, false];
+
+let person: any = {};
 
 while (person.page >= 5) {
   console.log(i);
@@ -28,8 +31,90 @@ if(true) {
 if(person5.age > 3) {
   console.log(person5.name);
   console.log(`Olá, bem vindo ${person5.name}`);
+} else {
+  let number1: number = 10;
+  console.log(number1);
 }
 
 if(person.age.value > 3) {
   console.log(person5.name);
 }
+
+let z: number = 7;
+
+if (z > 5) {
+  console.log("z é maior que 5");
+    
+  if (z > 10) {
+    console.log("z também é maior que 10");
+  } else {
+    console.log("z não é maior que 10");
+  }
+} else {
+  console.log("z é menor ou igual a 5");
+}
+
+if(isvalid == true) {
+  console.log('Hello World');
+}
+
+if(str1 === str2) {
+  console.log('Hello World');
+}
+
+if (b === 0) {
+  throw new Error("Divisão por zero não é permitida.");
+}
+
+try {
+  if (b === 0) {
+    throw new Error("Divisão por zero não é permitida.");
+  }
+} finally {
+  console.log("Operação de leitura concluída.");
+}
+
+try {
+  if (b === 0) {
+    throw new Error("Divisão por zero não é permitida.");
+  }
+} catch (error: Error) {
+  console.log(e.message);
+  console.log(e['message']);
+  console.log(e['test'].value);
+  console.log(e['test']['value']);
+  console.log(e['test'].age.value);
+} finally {
+  console.log("Operação de leitura concluída.");
+}
+
+try {
+  if (b === 0) {
+    throw new Error("Divisão por zero não é permitida.");
+  }
+} catch (error instanceof CustomError) {
+  console.log(e.message);
+  console.log(e['message']);
+} finally {
+  console.log("Operação de leitura concluída.");
+}
+
+switch (dia) {
+  case 1:
+      return "Segunda-feira";
+  case "2":
+      return ["Terça", "Terça"];
+  case 13:
+      return [1, 3];
+  case true:
+      return 2;
+  case 5:
+      return "Sexta-feira";
+  case 6:
+      return "Sábado";
+  case 7:
+      return ["Domingo", "Domingo"];
+  default:
+      return "Número inválido! Escolha um número de 1 a 7.";
+}
+

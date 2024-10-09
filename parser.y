@@ -1,5 +1,6 @@
 %{
     #include <stdio.h>
+    #include <stdlib.h>
     #include <string.h>
     #include <ctype.h>
     #include <stdbool.h>
@@ -9,6 +10,21 @@
     FILE * output;
 
     char identifierDefined[100];
+
+   char* remove_quotes(const char* str) {
+        int len = strlen(str);
+        char* result = (char*)malloc(len + 1);
+        int i, j = 0;
+
+        for (i = 0; i < len; i++) {  
+            if (str[i] != '\"') {
+                result[j++] = str[i];
+            }
+        }
+
+        result[j] = '\0';
+        return result;
+    }
 %}
 
 %union {
@@ -19,7 +35,7 @@
 
 %start program
 %token VAR CONST CLASS CONSTRUCTOR PRIVATE PUBLIC PROTECTED NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
-%token THIS FUNCTION PROMISE
+%token THIS FUNCTION PROMISE INSTANCEOF
 %token COLON SEMICOLON ASSIGN ADD MINUS
 %token <ystr> IDENTIFIER
 %token <ystr> CLASS_IDENTIFIER
@@ -28,7 +44,9 @@
 %token <yint> NUMBER_LITERAL
 %token <yfloat> FLOAT_LITERAL
 %token <ystr> BOOLEAN_LITERAL
-%token ERROR_LITERAL
+%token <ystr> ERROR_LITERAL
+
+%type <ystr> error_to_catch
 
 %%
 program: commands
@@ -63,7 +81,7 @@ console_log_declarations:
 ;
 
 console_log_left_common:
-    CONSOLE_LOG LPARENTHESES { fprintf(output, "System.out.pritln("); }
+    CONSOLE_LOG LPARENTHESES { fprintf(output, "System.out.println("); }
 ;
 
 console_log_right_common:
@@ -76,15 +94,14 @@ console_log_declaration_with_add:
 ;
 
 all_possible_variables:
-    NUMBER_LITERAL
-    | array_of_numbers
-    | FLOAT_LITERAL
-    | array_of_floats
-    | BOOLEAN_LITERAL
-    | array_of_booleans
-    | STRING_LITERAL
+    NUMBER_LITERAL { fprintf(output,"%d", $1);}
+    | FLOAT_LITERAL { fprintf(output,"%d", $1);}
+    | BOOLEAN_LITERAL { fprintf(output,"%s", $1);}
+    | STRING_LITERAL { fprintf(output,"%s", $1);}
     | array_of_strings
-    | objects
+    | array_of_numbers_only_values
+    | array_of_floats_only_values
+    | array_of_booleans
 ;
 
 all_possible_variables_types:
@@ -136,7 +153,7 @@ boolean_declaration:
 
 boolean_or_array_of_booleans_declaration:
     ASSIGN BOOLEAN_LITERAL { fprintf(output,"boolean %s = %s", identifierDefined, $2);}
-    | LBRACKET RBRACKET ASSIGN { fprintf(output,"booleans[] %s =", identifierDefined);} array_of_booleans
+    | LBRACKET RBRACKET ASSIGN { fprintf(output,"boolean[] %s =", identifierDefined);} array_of_booleans
 ;
 
 ////////
@@ -178,12 +195,20 @@ array_of_numbers:
     LBRACKET { fprintf(output, "int[] %s = {", identifierDefined); } numbers RBRACKET { fprintf(output, "}"); }
 ;
 
+array_of_numbers_only_values:
+    LBRACKET { fprintf(output, "{"); } numbers RBRACKET { fprintf(output, "}"); }
+;
+
 numbers:
     NUMBER_LITERAL COMMA { fprintf(output, "%d,", $1); } numbers
     | NUMBER_LITERAL { fprintf(output, "%d", $1); }
 
 array_of_floats:
     LBRACKET { fprintf(output, "double[] %s = {", identifierDefined); } floats RBRACKET { fprintf(output, "}"); }
+;
+
+array_of_floats_only_values:
+    LBRACKET { fprintf(output, "{"); } floats RBRACKET { fprintf(output, "}"); }
 ;
 
 floats:
@@ -223,15 +248,40 @@ increment_decrement_variable:
 access_object:
     IDENTIFIER { fprintf(output, "%s", $1); }
     | IDENTIFIER DOT { fprintf(output, "%s.", $1); } access_object 
-    | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET access_object_nested
-    | IDENTIFIER LBRACKET STRING_LITERAL RBRACKET 
+    | access_object_on_bracket 
 ;
 
+access_object_on_bracket:
+    IDENTIFIER LBRACKET STRING_LITERAL RBRACKET { fprintf(output, "%s.%s", $1, remove_quotes($3)); } acess_more_objects_on_bracket
+;
+
+acess_more_objects_on_bracket:
+    access_object_nested
+    | /* empty */
+;
+
+
 access_object_nested:
-    DOT IDENTIFIER
-    | LBRACKET STRING_LITERAL RBRACKET 
-    | DOT IDENTIFIER DOT access_object
-    | LBRACKET STRING_LITERAL RBRACKET access_object_nested
+    access_identifier_on_object_nested
+    | access_bracket_on_object_nested
+;
+
+access_identifier_on_object_nested:
+    DOT IDENTIFIER { fprintf(output, ".%s", $2); } nested_dot_identifier_on_object
+;
+
+nested_dot_identifier_on_object:
+    DOT { fprintf(output, "."); } access_object
+    | /* empty */
+;
+
+access_bracket_on_object_nested:
+    LBRACKET STRING_LITERAL RBRACKET { fprintf(output, ".%s", remove_quotes($2)); }
+;
+
+nested_bracket_on_object:
+    access_object_nested
+    | /* empty */ 
 ;
 
 access_class:
@@ -242,14 +292,19 @@ access_class:
 ;
 
 cases_of_switch_case:
-    CASE NUMBER_LITERAL COLON RETURN all_possible_variables SEMICOLON cases_of_switch_case
-    | CASE STRING_LITERAL COLON RETURN all_possible_variables SEMICOLON cases_of_switch_case
-    | CASE access_object COLON RETURN all_possible_variables SEMICOLON cases_of_switch_case
+    CASE NUMBER_LITERAL COLON RETURN { fprintf(output, "case %d: return ", $2); } returns_of_switch
+    | CASE STRING_LITERAL COLON RETURN { fprintf(output, "case %s: return ", $2); } returns_of_switch
+    | CASE BOOLEAN_LITERAL COLON RETURN { fprintf(output, "case %s: return ", $2); } returns_of_switch
+    | CASE { fprintf(output, "case "); } access_object COLON RETURN { fprintf(output, ": return" ); } returns_of_switch
     | /* empty */
 ;
 
+returns_of_switch:
+    all_possible_variables SEMICOLON { fprintf(output, ";"); } cases_of_switch_case
+;
+
 default_case_of_switch_case: 
-    DEFAULT COLON RETURN all_possible_variables SEMICOLON
+    DEFAULT COLON RETURN { fprintf(output, "default: return "); } all_possible_variables SEMICOLON { fprintf(output, ";"); }
 ;
 
 
@@ -262,46 +317,77 @@ commands :
 ;
 
 command : 
-    IF expressions LBRACE commands RBRACE
-    | IF expressions LBRACE commands RBRACE ELSE LBRACE commands RBRACE
-    | IF expressions LBRACE commands RBRACE ELSE IF expressions LBRACE commands RBRACE ELSE LBRACE commands RBRACE
+    if_declaration
     | WHILE LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
     | DO LBRACE commands RBRACE WHILE expressions
-    | THROW NEW ERROR_LITERAL LPARENTHESES expressions RPARENTHESES SEMICOLON
-    | TRY LBRACE commands RBRACE CATCH expressions LBRACE commands RBRACE
-    | TRY LBRACE commands RBRACE CATCH expressions LBRACE commands RBRACE FINALLY LBRACE commands RBRACE
-    | SWITCH expressions LBRACE cases_of_switch_case default_case_of_switch_case RBRACE
+    | THROW NEW ERROR_LITERAL LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+    | try_finally_declaration
+    | SWITCH LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } cases_of_switch_case default_case_of_switch_case RBRACE { fprintf(output, "}"); }
     | function_declarartion
     | call_a_function
     | RETURN expressions SEMICOLON
     | class_declarations 
 ;
 
+if_declaration: 
+    IF LPARENTHESES { fprintf(output, "if("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); } else_declaration
+;
+
+else_declaration:
+    ELSE LBRACE { fprintf(output, "else{"); } commands RBRACE { fprintf(output, "}"); }
+    | /* empty */
+;
+
+try_finally_declaration:
+    TRY LBRACE { fprintf(output, "try {"); } commands RBRACE { fprintf(output, "}"); } catch_declararation FINALLY LBRACE { fprintf(output, "finally {"); } commands RBRACE { fprintf(output, "}"); }
+;
+
+catch_declararation:
+    CATCH LPARENTHESES { fprintf(output, "catch ("); } catch_error RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
+    | /* empty */
+;
+
+catch_error: 
+    IDENTIFIER error_to_catch { fprintf(output, "%s %s", $2, $1); }
+;
+
+error_to_catch:
+    COLON ERROR_LITERAL {$$ = $2;}
+    | INSTANCEOF ERROR_LITERAL {$$ = $2;}
+;
+
 expressions: 
     STRING_LITERAL { fprintf(output, "%s", $1); }
     | NUMBER_LITERAL { fprintf(output, "%d", $1); }
-    | FLOAT_LITERAL
-    | BOOLEAN_LITERAL
-    | STRING_LITERAL COLON ERROR_LITERAL
+    | FLOAT_LITERAL { fprintf(output, "%d", $1); }
+    | BOOLEAN_LITERAL { fprintf(output, "%s", $1); }
     | access_object
     | access_class
-    | expressions '<' expressions
-    | expressions '<' ASSIGN expressions
-    | expressions ASSIGN ASSIGN expressions
-    | expressions ASSIGN ASSIGN ASSIGN expressions
+    | expressions '<' { fprintf(output, "<"); } expressions
+    | expressions '<' ASSIGN { fprintf(output, "<="); } expressions
+    | expressions assign_expression expressions { fprintf(output, ")"); }
     | expressions '>' { fprintf(output, ">"); } expressions
     | expressions '>' ASSIGN { fprintf(output, ">="); } expressions
-    | expressions ADD expressions
-    | expressions MINUS expressions
-    | expressions '*' expressions
-    | expressions '/' expressions
-    | expressions '^' expressions
-    | expressions '%' expressions
-    | expressions '|' expressions
-    | expressions '|' '|' expressions
-    | expressions '&' expressions
-    | expressions '&' '&' expressions
-    | LPARENTHESES expressions RPARENTHESES
+    | expressions ADD { fprintf(output, "+"); } expressions 
+    | expressions MINUS { fprintf(output, "-"); }  expressions
+    | expressions '*' { fprintf(output, "*"); }  expressions
+    | expressions '/' { fprintf(output, "/"); }  expressions
+    | expressions '^' { fprintf(output, "^"); }  expressions
+    | expressions '%' { fprintf(output, "%"); }  expressions
+    | expressions '|' { fprintf(output, "|"); }  expressions
+    | expressions '|' '|' { fprintf(output, "||"); }  expressions
+    | expressions '&' { fprintf(output, "&"); }  expressions
+    | expressions '&' '&' { fprintf(output, "&&"); }  expressions
+    | LPARENTHESES { fprintf(output, "("); } expressions RPARENTHESES { fprintf(output, ")"); }
+;
+
+assign_expression:
+    ASSIGN ASSIGN compare_type_and_value_expressions { fprintf(output, ".equals("); }
+;
+
+compare_type_and_value_expressions:
+    ASSIGN
+    | /* empty */
 ;
 
 function_declarartion:
