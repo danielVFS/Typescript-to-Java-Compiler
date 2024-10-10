@@ -16,41 +16,35 @@ Terminals unused in grammar
 
 Rules useless in grammar
 
-  243 array_of_objects_declaration: variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
+  244 array_of_objects_declaration: variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
 
-  244 array_of_objects: LBRACKET objects RBRACKET
+  245 array_of_objects: LBRACKET objects RBRACKET
 
-  245 objects: LBRACE object_attribution RBRACE COMMA objects
-  246        | LBRACE object_attribution RBRACE
+  246 objects: LBRACE object_attribution RBRACE COMMA objects
+  247        | LBRACE object_attribution RBRACE
 
-  247 nested_bracket_on_object: access_object_nested
-  248                         | %empty
-
-
-Rules useless in parser due to conflicts
-
-   14 variable_types: CONST
+  248 nested_bracket_on_object: access_object_nested
+  249                         | %empty
 
 
-State 2 conflicts: 1 shift/reduce
-State 90 conflicts: 4 shift/reduce
+State 88 conflicts: 4 shift/reduce
+State 133 conflicts: 4 shift/reduce
 State 135 conflicts: 4 shift/reduce
-State 137 conflicts: 4 shift/reduce
-State 160 conflicts: 11 shift/reduce
-State 207 conflicts: 11 shift/reduce
+State 158 conflicts: 11 shift/reduce
+State 205 conflicts: 11 shift/reduce
+State 206 conflicts: 11 shift/reduce
 State 208 conflicts: 11 shift/reduce
 State 210 conflicts: 11 shift/reduce
+State 211 conflicts: 11 shift/reduce
 State 212 conflicts: 11 shift/reduce
 State 213 conflicts: 11 shift/reduce
 State 214 conflicts: 11 shift/reduce
-State 215 conflicts: 11 shift/reduce
 State 216 conflicts: 11 shift/reduce
 State 218 conflicts: 11 shift/reduce
-State 220 conflicts: 11 shift/reduce
+State 263 conflicts: 11 shift/reduce
+State 264 conflicts: 11 shift/reduce
 State 265 conflicts: 11 shift/reduce
 State 266 conflicts: 11 shift/reduce
-State 267 conflicts: 11 shift/reduce
-State 268 conflicts: 11 shift/reduce
 
 
 Grammar
@@ -67,47 +61,47 @@ Grammar
     6            | set_value_on_class
     7            | instance_new_class
 
-    8 possible_declarations: number_declaration
-    9                      | string_declaration
-   10                      | boolean_declaration
-   11                      | object_declaration
+    8 $@2: %empty
 
-   12 variable_types: LET
-   13               | VAR
-   14               | CONST
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON
 
-   15 $@2: %empty
+   10 possible_declarations: number_declaration
+   11                      | string_declaration
+   12                      | boolean_declaration
+   13                      | object_declaration
 
-   16 console_log_declarations: console_log_left_common STRING_LITERAL $@2 console_log_declaration_with_add console_log_right_common
-   17                         | console_log_left_common access_object console_log_declaration_with_add console_log_right_common
+   14 variable_types: LET
+   15               | VAR
+   16               | CONST
 
-   18 console_log_left_common: CONSOLE_LOG LPARENTHESES
+   17 $@3: %empty
 
-   19 console_log_right_common: RPARENTHESES SEMICOLON
+   18 console_log_declarations: console_log_left_common STRING_LITERAL $@3 console_log_declaration_with_add console_log_right_common
+   19                         | console_log_left_common access_object console_log_declaration_with_add console_log_right_common
 
-   20 $@3: %empty
+   20 console_log_left_common: CONSOLE_LOG LPARENTHESES
 
-   21 console_log_declaration_with_add: ADD $@3 expressions console_log_right_common
-   22                                 | %empty
+   21 console_log_right_common: RPARENTHESES SEMICOLON
 
-   23 all_possible_variables: NUMBER_LITERAL
-   24                       | FLOAT_LITERAL
-   25                       | BOOLEAN_LITERAL
-   26                       | STRING_LITERAL
-   27                       | array_of_strings
-   28                       | array_of_numbers_only_values
-   29                       | array_of_floats_only_values
-   30                       | array_of_booleans
+   22 $@4: %empty
 
-   31 all_possible_variables_types: NUMBER
-   32                             | STRING
-   33                             | BOOLEAN
-   34                             | ANY
-   35                             | VOID
+   23 console_log_declaration_with_add: ADD $@4 expressions console_log_right_common
+   24                                 | %empty
 
-   36 $@4: %empty
+   25 all_possible_variables: NUMBER_LITERAL
+   26                       | FLOAT_LITERAL
+   27                       | BOOLEAN_LITERAL
+   28                       | STRING_LITERAL
+   29                       | array_of_strings
+   30                       | array_of_numbers_only_values
+   31                       | array_of_floats_only_values
+   32                       | array_of_booleans
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON
+   33 all_possible_variables_types: NUMBER
+   34                             | STRING
+   35                             | BOOLEAN
+   36                             | ANY
+   37                             | VOID
 
    38 number_declaration: NUMBER number_or_array_declaration
 
@@ -420,59 +414,62 @@ Grammar
   210                | IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES SEMICOLON
 
   211 function_values: all_possible_variables
-  212                | all_possible_variables COMMA function_values
 
-  213 function_parameters: %empty
+  212 $@66: %empty
 
-  214 $@66: %empty
+  213 function_values: all_possible_variables COMMA $@66 function_values
 
-  215 function_parameters: IDENTIFIER COLON all_possible_variables_types $@66 function_parameters_one_or_more
+  214 function_parameters: %empty
 
-  216 $@67: %empty
+  215 $@67: %empty
 
-  217 function_parameters_one_or_more: COMMA $@67 function_parameters
-  218                                | %empty
+  216 function_parameters: IDENTIFIER COLON all_possible_variables_types $@67 function_parameters_one_or_more
 
-  219 $@68: %empty
+  217 $@68: %empty
 
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE $@68 class_attributes constructor_definition class_attributes RBRACE
+  218 function_parameters_one_or_more: COMMA $@68 function_parameters
+  219                                | %empty
 
-  221 class_attributes: class_attribute_declaration class_attributes
-  222                 | class_function_declarartion class_attributes
-  223                 | %empty
+  220 $@69: %empty
 
-  224 $@69: %empty
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE $@69 class_attributes constructor_definition class_attributes RBRACE
 
-  225 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@69 initialize_class_attribute_value SEMICOLON
+  222 class_attributes: class_attribute_declaration class_attributes
+  223                 | class_function_declarartion class_attributes
+  224                 | %empty
 
-  226 $@70: %empty
+  225 $@70: %empty
 
-  227 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
+  226 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
 
-  228 initialize_class_attribute_value: ASSIGN all_possible_variables
-  229                                 | %empty
+  227 $@71: %empty
 
-  230 access_modifiers: PUBLIC
-  231                 | PRIVATE
-  232                 | PROTECTED
+  228 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@71 initialize_class_attribute_value SEMICOLON
 
-  233 $@71: %empty
+  229 initialize_class_attribute_value: ASSIGN all_possible_variables
+  230                                 | %empty
+
+  231 access_modifiers: PUBLIC
+  232                 | PRIVATE
+  233                 | PROTECTED
 
   234 $@72: %empty
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters RPARENTHESES LBRACE $@72 set_property_with_this RBRACE
-  236                       | %empty
+  235 $@73: %empty
 
-  237 $@73: %empty
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters RPARENTHESES LBRACE $@73 set_property_with_this RBRACE
+  237                       | %empty
 
-  238 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@73 set_property_with_this
-  239                       | %empty
+  238 $@74: %empty
 
-  240 $@74: %empty
+  239 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@74 set_property_with_this
+  240                       | %empty
 
   241 $@75: %empty
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands RBRACE
+  242 $@76: %empty
+
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands RBRACE
 
 
 Terminals, with rules where they appear
@@ -487,64 +484,64 @@ $end (0) 0
 '^' (94) 192
 '|' (124) 196 198
 error (256)
-VAR (258) 13
-CONST (259) 14 37
-CLASS (260) 220
-CONSTRUCTOR (261) 235
-PRIVATE (262) 231
-PUBLIC (263) 230
-PROTECTED (264) 232
-NUMBER (265) 31 38
-VOID (266) 35
-STRING (267) 32 45
-BOOLEAN (268) 33 49
-ANY (269) 34 54
-CONSOLE_LOG (270) 18
+VAR (258) 15
+CONST (259) 16
+CLASS (260) 221
+CONSTRUCTOR (261) 236
+PRIVATE (262) 232
+PUBLIC (263) 231
+PROTECTED (264) 233
+NUMBER (265) 33 38
+VOID (266) 37
+STRING (267) 34 45
+BOOLEAN (268) 35 49
+ANY (269) 36 54
+CONSOLE_LOG (270) 20
 LBRACKET (271) 39 48 52 74 76 81 83 88 93 104 114
 RBRACKET (272) 39 48 52 74 76 81 83 88 93 104 114
-LBRACE (273) 54 56 71 136 139 145 154 156 161 164 208 220 235 242
-RBRACE (274) 54 56 71 136 139 145 154 156 161 164 208 220 235 242
+LBRACE (273) 54 56 71 136 139 145 154 156 161 164 208 221 236 243
+RBRACE (274) 54 56 71 136 139 145 154 156 161 164 208 221 236 243
 SINGLE_QUOTE (275)
 DOUBLE_QUOTE (276)
-COMMA (277) 63 65 67 69 70 78 85 90 95 210 212 217
-LPARENTHESES (278) 18 37 136 139 141 145 154 164 204 208 209 210 235
-    242
-RPARENTHESES (279) 19 37 136 139 141 145 154 164 204 208 209 210 235
-    242
+COMMA (277) 63 65 67 69 70 78 85 90 95 210 213 218
+LPARENTHESES (278) 9 20 136 139 141 145 154 164 204 208 209 210 236
+    243
+RPARENTHESES (279) 9 21 136 139 141 145 154 164 204 208 209 210 236
+    243
 IF (280) 154
 ELSE (281) 156
 WHILE (282) 136 139
 DO (283) 139
-DOT (284) 101 110 112 129 238
+DOT (284) 101 110 112 129 239
 TRY (285) 161
 CATCH (286) 164
 FINALLY (287) 161
 SWITCH (288) 145
 CASE (289) 116 118 120 123
 THROW (290) 141
-NEW (291) 37 141
+NEW (291) 9 141
 RETURN (292) 116 118 120 123 128 149
 DEFAULT (293) 128
-THIS (294) 129 238
+THIS (294) 129 239
 FUNCTION (295) 208
 PROMISE (296)
 INSTANCEOF (297) 168
 COLON (298) 3 57 58 59 60 61 63 65 67 69 70 71 116 118 120 123 128
-    167 208 215 225 227 242
-SEMICOLON (299) 19 37 39 40 45 49 54 56 97 98 126 128 129 139 141 149
-    209 210 225 227 238
-ASSIGN (300) 37 39 40 46 48 50 52 54 56 129 177 182 205 206 228 238
-ADD (301) 21 97 184
+    167 208 216 226 228 243
+SEMICOLON (299) 9 21 39 40 45 49 54 56 97 98 126 128 129 139 141 149
+    209 210 226 228 239
+ASSIGN (300) 9 39 40 46 48 50 52 54 56 129 177 182 205 206 229 239
+ADD (301) 23 97 184
 MINUS (302) 98 186
-IDENTIFIER (303) 3 37 57 58 59 60 61 63 65 67 69 70 71 97 98 99 101
-    104 110 129 166 208 209 210 215 225 227 238 242
+IDENTIFIER (303) 3 9 57 58 59 60 61 63 65 67 69 70 71 97 98 99 101
+    104 110 129 166 208 209 210 216 226 228 239 243
 CLASS_IDENTIFIER (304)
-LET (305) 12
-STRING_LITERAL (306) 16 26 46 57 63 95 96 104 114 118 169
-NUMBER_LITERAL (307) 23 41 58 65 78 79 116 170
-FLOAT_LITERAL (308) 24 42 59 67 85 86 171
-BOOLEAN_LITERAL (309) 25 50 60 69 90 91 120 172
-ERROR_LITERAL (310) 37 56 141 167 168 220
+LET (305) 14
+STRING_LITERAL (306) 18 28 46 57 63 95 96 104 114 118 169
+NUMBER_LITERAL (307) 25 41 58 65 78 79 116 170
+FLOAT_LITERAL (308) 26 42 59 67 85 86 171
+BOOLEAN_LITERAL (309) 27 50 60 69 90 91 120 172
+ERROR_LITERAL (310) 9 56 141 167 168 221
 
 
 Nonterminals, with rules where they appear
@@ -557,33 +554,33 @@ declaration (66)
     on left: 3 4 5 6 7, on right: 131
 $@1 (67)
     on left: 2, on right: 3
-possible_declarations (68)
-    on left: 8 9 10 11, on right: 3
-variable_types (69)
-    on left: 12 13 14, on right: 3
-console_log_declarations (70)
-    on left: 16 17, on right: 4
-$@2 (71)
-    on left: 15, on right: 16
-console_log_left_common (72)
-    on left: 18, on right: 16 17
-console_log_right_common (73)
-    on left: 19, on right: 16 17 21
-console_log_declaration_with_add (74)
-    on left: 21 22, on right: 16 17
-$@3 (75)
-    on left: 20, on right: 21
-all_possible_variables (76)
-    on left: 23 24 25 26 27 28 29 30, on right: 126 128 209 210 211
-    212 228
-all_possible_variables_types (77)
-    on left: 31 32 33 34 35, on right: 208 215 225 227 242
-instance_new_class (78)
-    on left: 37, on right: 7
-$@4 (79)
-    on left: 36, on right: 37
+instance_new_class (68)
+    on left: 9, on right: 7
+$@2 (69)
+    on left: 8, on right: 9
+possible_declarations (70)
+    on left: 10 11 12 13, on right: 3
+variable_types (71)
+    on left: 14 15 16, on right: 3 9
+console_log_declarations (72)
+    on left: 18 19, on right: 4
+$@3 (73)
+    on left: 17, on right: 18
+console_log_left_common (74)
+    on left: 20, on right: 18 19
+console_log_right_common (75)
+    on left: 21, on right: 18 19 23
+console_log_declaration_with_add (76)
+    on left: 23 24, on right: 18 19
+$@4 (77)
+    on left: 22, on right: 23
+all_possible_variables (78)
+    on left: 25 26 27 28 29 30 31 32, on right: 126 128 209 210 211
+    213 229
+all_possible_variables_types (79)
+    on left: 33 34 35 36 37, on right: 208 216 226 228 243
 number_declaration (80)
-    on left: 38, on right: 8
+    on left: 38, on right: 10
 number_or_array_declaration (81)
     on left: 39 40, on right: 38
 number_or_float_declaration (82)
@@ -591,19 +588,19 @@ number_or_float_declaration (82)
 array_of_numbers_and_floats_declaration (83)
     on left: 43 44, on right: 39
 string_declaration (84)
-    on left: 45, on right: 9
+    on left: 45, on right: 11
 string_or_array_of_strings_declaration (85)
     on left: 46 48, on right: 45
 $@5 (86)
     on left: 47, on right: 48
 boolean_declaration (87)
-    on left: 49, on right: 10
+    on left: 49, on right: 12
 boolean_or_array_of_booleans_declaration (88)
     on left: 50 52, on right: 49
 $@6 (89)
     on left: 51, on right: 52
 object_declaration (90)
-    on left: 54 56, on right: 11
+    on left: 54 56, on right: 13
 $@7 (91)
     on left: 53, on right: 54
 $@8 (92)
@@ -624,7 +621,7 @@ array_of_numbers (98)
 $@13 (99)
     on left: 73, on right: 74
 array_of_numbers_only_values (100)
-    on left: 76, on right: 28
+    on left: 76, on right: 30
 $@14 (101)
     on left: 75, on right: 76
 numbers (102)
@@ -636,7 +633,7 @@ array_of_floats (104)
 $@16 (105)
     on left: 80, on right: 81
 array_of_floats_only_values (106)
-    on left: 83, on right: 29
+    on left: 83, on right: 31
 $@17 (107)
     on left: 82, on right: 83
 floats (108)
@@ -644,7 +641,7 @@ floats (108)
 $@18 (109)
     on left: 84, on right: 85
 array_of_booleans (110)
-    on left: 88, on right: 30 52
+    on left: 88, on right: 32 52
 $@19 (111)
     on left: 87, on right: 88
 booleans (112)
@@ -652,7 +649,7 @@ booleans (112)
 $@20 (113)
     on left: 89, on right: 90
 array_of_strings (114)
-    on left: 93, on right: 27 48
+    on left: 93, on right: 29 48
 $@21 (115)
     on left: 92, on right: 93
 strings (116)
@@ -662,7 +659,7 @@ $@22 (117)
 increment_decrement_variable (118)
     on left: 97 98, on right: 5
 access_object (119)
-    on left: 99 101 102, on right: 17 61 70 101 112 123 173
+    on left: 99 101 102, on right: 19 61 70 101 112 123 173
 $@23 (120)
     on left: 100, on right: 101
 access_object_on_bracket (121)
@@ -707,7 +704,7 @@ set_value_on_class (140)
     on left: 129, on right: 6
 commands (141)
     on left: 130 131 132, on right: 1 130 131 136 139 154 156 161 164
-    208 242
+    208 243
 command (142)
     on left: 133 136 139 141 142 145 146 147 149 150, on right: 130
 $@34 (143)
@@ -758,7 +755,7 @@ error_to_catch (165)
     on left: 167 168, on right: 166
 expressions (166)
     on left: 169 170 171 172 173 175 177 178 180 182 184 186 188 190
-    192 194 196 198 200 202 204, on right: 21 136 139 141 145 149 154
+    192 194 196 198 200 202 204, on right: 23 136 139 141 145 149 154
     175 177 178 180 182 184 186 188 190 192 194 196 198 200 202 204
 $@51 (167)
     on left: 174, on right: 175
@@ -799,47 +796,49 @@ function_declarartion (184)
 call_a_function (185)
     on left: 209 210, on right: 147
 function_values (186)
-    on left: 211 212, on right: 37 210 212
-function_parameters (187)
-    on left: 213 215, on right: 208 217 235 242
-$@66 (188)
-    on left: 214, on right: 215
-function_parameters_one_or_more (189)
-    on left: 217 218, on right: 215
-$@67 (190)
-    on left: 216, on right: 217
-class_declarations (191)
-    on left: 220, on right: 150
-$@68 (192)
-    on left: 219, on right: 220
-class_attributes (193)
-    on left: 221 222 223, on right: 220 221 222
-class_attribute_declaration (194)
-    on left: 225 227, on right: 221
-$@69 (195)
-    on left: 224, on right: 225
+    on left: 211 213, on right: 9 210 213
+$@66 (187)
+    on left: 212, on right: 213
+function_parameters (188)
+    on left: 214 216, on right: 208 218 236 243
+$@67 (189)
+    on left: 215, on right: 216
+function_parameters_one_or_more (190)
+    on left: 218 219, on right: 216
+$@68 (191)
+    on left: 217, on right: 218
+class_declarations (192)
+    on left: 221, on right: 150
+$@69 (193)
+    on left: 220, on right: 221
+class_attributes (194)
+    on left: 222 223 224, on right: 221 222 223
+class_attribute_declaration (195)
+    on left: 226 228, on right: 222
 $@70 (196)
-    on left: 226, on right: 227
-initialize_class_attribute_value (197)
-    on left: 228 229, on right: 225 227
-access_modifiers (198)
-    on left: 230 231 232, on right: 225
-constructor_definition (199)
-    on left: 235 236, on right: 220
-$@71 (200)
-    on left: 233, on right: 235
+    on left: 225, on right: 226
+$@71 (197)
+    on left: 227, on right: 228
+initialize_class_attribute_value (198)
+    on left: 229 230, on right: 226 228
+access_modifiers (199)
+    on left: 231 232 233, on right: 226
+constructor_definition (200)
+    on left: 236 237, on right: 221
 $@72 (201)
-    on left: 234, on right: 235
-set_property_with_this (202)
-    on left: 238 239, on right: 235 238
-$@73 (203)
-    on left: 237, on right: 238
-class_function_declarartion (204)
-    on left: 242, on right: 222
-$@74 (205)
-    on left: 240, on right: 242
+    on left: 234, on right: 236
+$@73 (202)
+    on left: 235, on right: 236
+set_property_with_this (203)
+    on left: 239 240, on right: 236 239
+$@74 (204)
+    on left: 238, on right: 239
+class_function_declarartion (205)
+    on left: 243, on right: 223
 $@75 (206)
-    on left: 241, on right: 242
+    on left: 241, on right: 243
+$@76 (207)
+    on left: 242, on right: 243
 
 
 State 0
@@ -866,10 +865,10 @@ State 0
 
     program                       go to state 16
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
     commands                      go to state 24
@@ -883,75 +882,72 @@ State 0
 
 State 1
 
-   13 variable_types: VAR .
+   15 variable_types: VAR .
 
-    $default  reduce using rule 13 (variable_types)
+    $default  reduce using rule 15 (variable_types)
 
 
 State 2
 
-   14 variable_types: CONST .
-   37 instance_new_class: CONST . IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON
+   16 variable_types: CONST .
 
-    IDENTIFIER  shift, and go to state 31
-
-    IDENTIFIER  [reduce using rule 14 (variable_types)]
+    $default  reduce using rule 16 (variable_types)
 
 
 State 3
 
-  220 class_declarations: CLASS . ERROR_LITERAL LBRACE $@68 class_attributes constructor_definition class_attributes RBRACE
+  221 class_declarations: CLASS . ERROR_LITERAL LBRACE $@69 class_attributes constructor_definition class_attributes RBRACE
 
-    ERROR_LITERAL  shift, and go to state 32
+    ERROR_LITERAL  shift, and go to state 31
 
 
 State 4
 
-   18 console_log_left_common: CONSOLE_LOG . LPARENTHESES
+   20 console_log_left_common: CONSOLE_LOG . LPARENTHESES
 
-    LPARENTHESES  shift, and go to state 33
+    LPARENTHESES  shift, and go to state 32
 
 
 State 5
 
   154 if_declaration: IF . LPARENTHESES $@42 expressions RPARENTHESES LBRACE $@43 commands RBRACE $@44 else_declaration
 
-    LPARENTHESES  shift, and go to state 34
+    LPARENTHESES  shift, and go to state 33
 
 
 State 6
 
   136 command: WHILE . LPARENTHESES $@34 expressions RPARENTHESES LBRACE $@35 commands RBRACE
 
-    LPARENTHESES  shift, and go to state 35
+    LPARENTHESES  shift, and go to state 34
 
 
 State 7
 
   139 command: DO . LBRACE $@36 commands RBRACE WHILE LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
 
-    LBRACE  shift, and go to state 36
+    LBRACE  shift, and go to state 35
 
 
 State 8
 
   161 try_finally_declaration: TRY . LBRACE $@46 commands RBRACE $@47 catch_declararation FINALLY LBRACE $@48 commands RBRACE
 
-    LBRACE  shift, and go to state 37
+    LBRACE  shift, and go to state 36
 
 
 State 9
 
   145 command: SWITCH . LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case RBRACE
 
-    LPARENTHESES  shift, and go to state 38
+    LPARENTHESES  shift, and go to state 37
 
 
 State 10
 
   141 command: THROW . NEW ERROR_LITERAL LPARENTHESES $@38 expressions RPARENTHESES SEMICOLON
 
-    NEW  shift, and go to state 39
+    NEW  shift, and go to state 38
 
 
 State 11
@@ -960,21 +956,21 @@ State 11
 
     $default  reduce using rule 148 ($@41)
 
-    $@41  go to state 40
+    $@41  go to state 39
 
 
 State 12
 
   129 set_value_on_class: THIS . DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON
 
-    DOT  shift, and go to state 41
+    DOT  shift, and go to state 40
 
 
 State 13
 
   208 function_declarartion: FUNCTION . IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
-    IDENTIFIER  shift, and go to state 42
+    IDENTIFIER  shift, and go to state 41
 
 
 State 14
@@ -984,23 +980,23 @@ State 14
   209 call_a_function: IDENTIFIER . LPARENTHESES all_possible_variables RPARENTHESES SEMICOLON
   210                | IDENTIFIER . LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES SEMICOLON
 
-    LPARENTHESES  shift, and go to state 43
-    ADD           shift, and go to state 44
-    MINUS         shift, and go to state 45
+    LPARENTHESES  shift, and go to state 42
+    ADD           shift, and go to state 43
+    MINUS         shift, and go to state 44
 
 
 State 15
 
-   12 variable_types: LET .
+   14 variable_types: LET .
 
-    $default  reduce using rule 12 (variable_types)
+    $default  reduce using rule 14 (variable_types)
 
 
 State 16
 
     0 $accept: program . $end
 
-    $end  shift, and go to state 46
+    $end  shift, and go to state 45
 
 
 State 17
@@ -1026,13 +1022,13 @@ State 17
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 47
+    commands                      go to state 46
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -1043,35 +1039,36 @@ State 17
 
 State 18
 
-    3 declaration: variable_types . IDENTIFIER $@1 COLON possible_declarations
+    7 declaration: instance_new_class .
 
-    IDENTIFIER  shift, and go to state 48
+    $default  reduce using rule 7 (declaration)
 
 
 State 19
+
+    3 declaration: variable_types . IDENTIFIER $@1 COLON possible_declarations
+    9 instance_new_class: variable_types . IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON
+
+    IDENTIFIER  shift, and go to state 47
+
+
+State 20
 
     4 declaration: console_log_declarations .
 
     $default  reduce using rule 4 (declaration)
 
 
-State 20
-
-   16 console_log_declarations: console_log_left_common . STRING_LITERAL $@2 console_log_declaration_with_add console_log_right_common
-   17                         | console_log_left_common . access_object console_log_declaration_with_add console_log_right_common
-
-    IDENTIFIER      shift, and go to state 49
-    STRING_LITERAL  shift, and go to state 50
-
-    access_object             go to state 51
-    access_object_on_bracket  go to state 52
-
-
 State 21
 
-    7 declaration: instance_new_class .
+   18 console_log_declarations: console_log_left_common . STRING_LITERAL $@3 console_log_declaration_with_add console_log_right_common
+   19                         | console_log_left_common . access_object console_log_declaration_with_add console_log_right_common
 
-    $default  reduce using rule 7 (declaration)
+    IDENTIFIER      shift, and go to state 48
+    STRING_LITERAL  shift, and go to state 49
+
+    access_object             go to state 50
+    access_object_on_bracket  go to state 51
 
 
 State 22
@@ -1118,13 +1115,13 @@ State 25
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 53
+    commands                      go to state 52
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -1170,257 +1167,246 @@ State 30
 
 State 31
 
-   37 instance_new_class: CONST IDENTIFIER . ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON
+  221 class_declarations: CLASS ERROR_LITERAL . LBRACE $@69 class_attributes constructor_definition class_attributes RBRACE
 
-    ASSIGN  shift, and go to state 54
+    LBRACE  shift, and go to state 53
 
 
 State 32
 
-  220 class_declarations: CLASS ERROR_LITERAL . LBRACE $@68 class_attributes constructor_definition class_attributes RBRACE
+   20 console_log_left_common: CONSOLE_LOG LPARENTHESES .
 
-    LBRACE  shift, and go to state 55
+    $default  reduce using rule 20 (console_log_left_common)
 
 
 State 33
-
-   18 console_log_left_common: CONSOLE_LOG LPARENTHESES .
-
-    $default  reduce using rule 18 (console_log_left_common)
-
-
-State 34
 
   154 if_declaration: IF LPARENTHESES . $@42 expressions RPARENTHESES LBRACE $@43 commands RBRACE $@44 else_declaration
 
     $default  reduce using rule 151 ($@42)
 
-    $@42  go to state 56
+    $@42  go to state 54
 
 
-State 35
+State 34
 
   136 command: WHILE LPARENTHESES . $@34 expressions RPARENTHESES LBRACE $@35 commands RBRACE
 
     $default  reduce using rule 134 ($@34)
 
-    $@34  go to state 57
+    $@34  go to state 55
 
 
-State 36
+State 35
 
   139 command: DO LBRACE . $@36 commands RBRACE WHILE LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
 
     $default  reduce using rule 137 ($@36)
 
-    $@36  go to state 58
+    $@36  go to state 56
 
 
-State 37
+State 36
 
   161 try_finally_declaration: TRY LBRACE . $@46 commands RBRACE $@47 catch_declararation FINALLY LBRACE $@48 commands RBRACE
 
     $default  reduce using rule 158 ($@46)
 
-    $@46  go to state 59
+    $@46  go to state 57
 
 
-State 38
+State 37
 
   145 command: SWITCH LPARENTHESES . $@39 expressions RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case RBRACE
 
     $default  reduce using rule 143 ($@39)
 
-    $@39  go to state 60
+    $@39  go to state 58
+
+
+State 38
+
+  141 command: THROW NEW . ERROR_LITERAL LPARENTHESES $@38 expressions RPARENTHESES SEMICOLON
+
+    ERROR_LITERAL  shift, and go to state 59
 
 
 State 39
 
-  141 command: THROW NEW . ERROR_LITERAL LPARENTHESES $@38 expressions RPARENTHESES SEMICOLON
+  149 command: RETURN $@41 . expressions SEMICOLON
 
-    ERROR_LITERAL  shift, and go to state 61
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
+
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 66
 
 
 State 40
 
-  149 command: RETURN $@41 . expressions SEMICOLON
+  129 set_value_on_class: THIS DOT . IDENTIFIER ASSIGN IDENTIFIER SEMICOLON
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 68
+    IDENTIFIER  shift, and go to state 67
 
 
 State 41
 
-  129 set_value_on_class: THIS DOT . IDENTIFIER ASSIGN IDENTIFIER SEMICOLON
+  208 function_declarartion: FUNCTION IDENTIFIER . LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
-    IDENTIFIER  shift, and go to state 69
+    LPARENTHESES  shift, and go to state 68
 
 
 State 42
 
-  208 function_declarartion: FUNCTION IDENTIFIER . LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+  209 call_a_function: IDENTIFIER LPARENTHESES . all_possible_variables RPARENTHESES SEMICOLON
+  210                | IDENTIFIER LPARENTHESES . all_possible_variables COMMA function_values RPARENTHESES SEMICOLON
 
-    LPARENTHESES  shift, and go to state 70
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
+
+    all_possible_variables        go to state 74
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
 
 
 State 43
 
-  209 call_a_function: IDENTIFIER LPARENTHESES . all_possible_variables RPARENTHESES SEMICOLON
-  210                | IDENTIFIER LPARENTHESES . all_possible_variables COMMA function_values RPARENTHESES SEMICOLON
+   97 increment_decrement_variable: IDENTIFIER ADD . ADD SEMICOLON
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
-
-    all_possible_variables        go to state 76
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    ADD  shift, and go to state 79
 
 
 State 44
 
-   97 increment_decrement_variable: IDENTIFIER ADD . ADD SEMICOLON
+   98 increment_decrement_variable: IDENTIFIER MINUS . MINUS SEMICOLON
 
-    ADD  shift, and go to state 81
+    MINUS  shift, and go to state 80
 
 
 State 45
-
-   98 increment_decrement_variable: IDENTIFIER MINUS . MINUS SEMICOLON
-
-    MINUS  shift, and go to state 82
-
-
-State 46
 
     0 $accept: program $end .
 
     $default  accept
 
 
-State 47
+State 46
 
   131 commands: declaration commands .
 
     $default  reduce using rule 131 (commands)
 
 
-State 48
+State 47
 
     3 declaration: variable_types IDENTIFIER . $@1 COLON possible_declarations
+    9 instance_new_class: variable_types IDENTIFIER . ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON
+
+    ASSIGN  shift, and go to state 81
 
     $default  reduce using rule 2 ($@1)
 
-    $@1  go to state 83
+    $@1  go to state 82
 
 
-State 49
+State 48
 
    99 access_object: IDENTIFIER .
   101              | IDENTIFIER . DOT $@23 access_object
   104 access_object_on_bracket: IDENTIFIER . LBRACKET STRING_LITERAL RBRACKET $@24 acess_more_objects_on_bracket
 
-    LBRACKET  shift, and go to state 84
-    DOT       shift, and go to state 85
+    LBRACKET  shift, and go to state 83
+    DOT       shift, and go to state 84
 
     $default  reduce using rule 99 (access_object)
 
 
+State 49
+
+   18 console_log_declarations: console_log_left_common STRING_LITERAL . $@3 console_log_declaration_with_add console_log_right_common
+
+    $default  reduce using rule 17 ($@3)
+
+    $@3  go to state 85
+
+
 State 50
 
-   16 console_log_declarations: console_log_left_common STRING_LITERAL . $@2 console_log_declaration_with_add console_log_right_common
+   19 console_log_declarations: console_log_left_common access_object . console_log_declaration_with_add console_log_right_common
 
-    $default  reduce using rule 15 ($@2)
+    ADD  shift, and go to state 86
 
-    $@2  go to state 86
+    $default  reduce using rule 24 (console_log_declaration_with_add)
+
+    console_log_declaration_with_add  go to state 87
 
 
 State 51
-
-   17 console_log_declarations: console_log_left_common access_object . console_log_declaration_with_add console_log_right_common
-
-    ADD  shift, and go to state 87
-
-    $default  reduce using rule 22 (console_log_declaration_with_add)
-
-    console_log_declaration_with_add  go to state 88
-
-
-State 52
 
   102 access_object: access_object_on_bracket .
 
     $default  reduce using rule 102 (access_object)
 
 
-State 53
+State 52
 
   130 commands: command commands .
 
     $default  reduce using rule 130 (commands)
 
 
+State 53
+
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE . $@69 class_attributes constructor_definition class_attributes RBRACE
+
+    $default  reduce using rule 220 ($@69)
+
+    $@69  go to state 88
+
+
 State 54
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN . NEW ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON
+  154 if_declaration: IF LPARENTHESES $@42 . expressions RPARENTHESES LBRACE $@43 commands RBRACE $@44 else_declaration
 
-    NEW  shift, and go to state 89
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
+
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 89
 
 
 State 55
 
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE . $@68 class_attributes constructor_definition class_attributes RBRACE
+  136 command: WHILE LPARENTHESES $@34 . expressions RPARENTHESES LBRACE $@35 commands RBRACE
 
-    $default  reduce using rule 219 ($@68)
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    $@68  go to state 90
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 90
 
 
 State 56
-
-  154 if_declaration: IF LPARENTHESES $@42 . expressions RPARENTHESES LBRACE $@43 commands RBRACE $@44 else_declaration
-
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 91
-
-
-State 57
-
-  136 command: WHILE LPARENTHESES $@34 . expressions RPARENTHESES LBRACE $@35 commands RBRACE
-
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 92
-
-
-State 58
 
   139 command: DO LBRACE $@36 . commands RBRACE WHILE LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
 
@@ -1443,13 +1429,13 @@ State 58
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 93
+    commands                      go to state 91
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -1458,7 +1444,7 @@ State 58
     class_declarations            go to state 30
 
 
-State 59
+State 57
 
   161 try_finally_declaration: TRY LBRACE $@46 . commands RBRACE $@47 catch_declararation FINALLY LBRACE $@48 commands RBRACE
 
@@ -1481,13 +1467,13 @@ State 59
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 94
+    commands                      go to state 92
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -1496,74 +1482,74 @@ State 59
     class_declarations            go to state 30
 
 
-State 60
+State 58
 
   145 command: SWITCH LPARENTHESES $@39 . expressions RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case RBRACE
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 95
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 93
 
 
-State 61
+State 59
 
   141 command: THROW NEW ERROR_LITERAL . LPARENTHESES $@38 expressions RPARENTHESES SEMICOLON
 
-    LPARENTHESES  shift, and go to state 96
+    LPARENTHESES  shift, and go to state 94
 
 
-State 62
+State 60
 
   204 expressions: LPARENTHESES . $@65 expressions RPARENTHESES
 
     $default  reduce using rule 203 ($@65)
 
-    $@65  go to state 97
+    $@65  go to state 95
 
 
-State 63
+State 61
 
   169 expressions: STRING_LITERAL .
 
     $default  reduce using rule 169 (expressions)
 
 
-State 64
+State 62
 
   170 expressions: NUMBER_LITERAL .
 
     $default  reduce using rule 170 (expressions)
 
 
-State 65
+State 63
 
   171 expressions: FLOAT_LITERAL .
 
     $default  reduce using rule 171 (expressions)
 
 
-State 66
+State 64
 
   172 expressions: BOOLEAN_LITERAL .
 
     $default  reduce using rule 172 (expressions)
 
 
-State 67
+State 65
 
   173 expressions: access_object .
 
     $default  reduce using rule 173 (expressions)
 
 
-State 68
+State 66
 
   149 command: RETURN $@41 expressions . SEMICOLON
   175 expressions: expressions . '<' $@51 expressions
@@ -1582,41 +1568,41 @@ State 68
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    SEMICOLON  shift, and go to state 98
-    ASSIGN     shift, and go to state 99
-    ADD        shift, and go to state 100
-    MINUS      shift, and go to state 101
-    '<'        shift, and go to state 102
-    '>'        shift, and go to state 103
-    '*'        shift, and go to state 104
-    '/'        shift, and go to state 105
-    '^'        shift, and go to state 106
-    '%'        shift, and go to state 107
-    '|'        shift, and go to state 108
-    '&'        shift, and go to state 109
+    SEMICOLON  shift, and go to state 96
+    ASSIGN     shift, and go to state 97
+    ADD        shift, and go to state 98
+    MINUS      shift, and go to state 99
+    '<'        shift, and go to state 100
+    '>'        shift, and go to state 101
+    '*'        shift, and go to state 102
+    '/'        shift, and go to state 103
+    '^'        shift, and go to state 104
+    '%'        shift, and go to state 105
+    '|'        shift, and go to state 106
+    '&'        shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 69
+State 67
 
   129 set_value_on_class: THIS DOT IDENTIFIER . ASSIGN IDENTIFIER SEMICOLON
 
-    ASSIGN  shift, and go to state 111
+    ASSIGN  shift, and go to state 109
 
 
-State 70
+State 68
 
   208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES . function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
-    IDENTIFIER  shift, and go to state 112
+    IDENTIFIER  shift, and go to state 110
 
-    $default  reduce using rule 213 (function_parameters)
+    $default  reduce using rule 214 (function_parameters)
 
-    function_parameters  go to state 113
+    function_parameters  go to state 111
 
 
-State 71
+State 69
 
    76 array_of_numbers_only_values: LBRACKET . $@14 numbers RBRACKET
    83 array_of_floats_only_values: LBRACKET . $@17 floats RBRACKET
@@ -1628,172 +1614,172 @@ State 71
     BOOLEAN_LITERAL  reduce using rule 87 ($@19)
     $default         reduce using rule 75 ($@14)
 
-    $@14  go to state 114
-    $@17  go to state 115
-    $@19  go to state 116
-    $@21  go to state 117
+    $@14  go to state 112
+    $@17  go to state 113
+    $@19  go to state 114
+    $@21  go to state 115
+
+
+State 70
+
+   28 all_possible_variables: STRING_LITERAL .
+
+    $default  reduce using rule 28 (all_possible_variables)
+
+
+State 71
+
+   25 all_possible_variables: NUMBER_LITERAL .
+
+    $default  reduce using rule 25 (all_possible_variables)
 
 
 State 72
 
-   26 all_possible_variables: STRING_LITERAL .
+   26 all_possible_variables: FLOAT_LITERAL .
 
     $default  reduce using rule 26 (all_possible_variables)
 
 
 State 73
 
-   23 all_possible_variables: NUMBER_LITERAL .
+   27 all_possible_variables: BOOLEAN_LITERAL .
 
-    $default  reduce using rule 23 (all_possible_variables)
+    $default  reduce using rule 27 (all_possible_variables)
 
 
 State 74
 
-   24 all_possible_variables: FLOAT_LITERAL .
+  209 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables . RPARENTHESES SEMICOLON
+  210                | IDENTIFIER LPARENTHESES all_possible_variables . COMMA function_values RPARENTHESES SEMICOLON
 
-    $default  reduce using rule 24 (all_possible_variables)
+    COMMA         shift, and go to state 116
+    RPARENTHESES  shift, and go to state 117
 
 
 State 75
 
-   25 all_possible_variables: BOOLEAN_LITERAL .
+   30 all_possible_variables: array_of_numbers_only_values .
 
-    $default  reduce using rule 25 (all_possible_variables)
+    $default  reduce using rule 30 (all_possible_variables)
 
 
 State 76
 
-  209 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables . RPARENTHESES SEMICOLON
-  210                | IDENTIFIER LPARENTHESES all_possible_variables . COMMA function_values RPARENTHESES SEMICOLON
+   31 all_possible_variables: array_of_floats_only_values .
 
-    COMMA         shift, and go to state 118
-    RPARENTHESES  shift, and go to state 119
+    $default  reduce using rule 31 (all_possible_variables)
 
 
 State 77
 
-   28 all_possible_variables: array_of_numbers_only_values .
+   32 all_possible_variables: array_of_booleans .
 
-    $default  reduce using rule 28 (all_possible_variables)
+    $default  reduce using rule 32 (all_possible_variables)
 
 
 State 78
 
-   29 all_possible_variables: array_of_floats_only_values .
+   29 all_possible_variables: array_of_strings .
 
     $default  reduce using rule 29 (all_possible_variables)
 
 
 State 79
 
-   30 all_possible_variables: array_of_booleans .
+   97 increment_decrement_variable: IDENTIFIER ADD ADD . SEMICOLON
 
-    $default  reduce using rule 30 (all_possible_variables)
+    SEMICOLON  shift, and go to state 118
 
 
 State 80
 
-   27 all_possible_variables: array_of_strings .
+   98 increment_decrement_variable: IDENTIFIER MINUS MINUS . SEMICOLON
 
-    $default  reduce using rule 27 (all_possible_variables)
+    SEMICOLON  shift, and go to state 119
 
 
 State 81
 
-   97 increment_decrement_variable: IDENTIFIER ADD ADD . SEMICOLON
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN . NEW ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON
 
-    SEMICOLON  shift, and go to state 120
+    NEW  shift, and go to state 120
 
 
 State 82
 
-   98 increment_decrement_variable: IDENTIFIER MINUS MINUS . SEMICOLON
+    3 declaration: variable_types IDENTIFIER $@1 . COLON possible_declarations
 
-    SEMICOLON  shift, and go to state 121
+    COLON  shift, and go to state 121
 
 
 State 83
 
-    3 declaration: variable_types IDENTIFIER $@1 . COLON possible_declarations
+  104 access_object_on_bracket: IDENTIFIER LBRACKET . STRING_LITERAL RBRACKET $@24 acess_more_objects_on_bracket
 
-    COLON  shift, and go to state 122
+    STRING_LITERAL  shift, and go to state 122
 
 
 State 84
-
-  104 access_object_on_bracket: IDENTIFIER LBRACKET . STRING_LITERAL RBRACKET $@24 acess_more_objects_on_bracket
-
-    STRING_LITERAL  shift, and go to state 123
-
-
-State 85
 
   101 access_object: IDENTIFIER DOT . $@23 access_object
 
     $default  reduce using rule 100 ($@23)
 
-    $@23  go to state 124
+    $@23  go to state 123
+
+
+State 85
+
+   18 console_log_declarations: console_log_left_common STRING_LITERAL $@3 . console_log_declaration_with_add console_log_right_common
+
+    ADD  shift, and go to state 86
+
+    $default  reduce using rule 24 (console_log_declaration_with_add)
+
+    console_log_declaration_with_add  go to state 124
 
 
 State 86
 
-   16 console_log_declarations: console_log_left_common STRING_LITERAL $@2 . console_log_declaration_with_add console_log_right_common
+   23 console_log_declaration_with_add: ADD . $@4 expressions console_log_right_common
 
-    ADD  shift, and go to state 87
+    $default  reduce using rule 22 ($@4)
 
-    $default  reduce using rule 22 (console_log_declaration_with_add)
-
-    console_log_declaration_with_add  go to state 125
+    $@4  go to state 125
 
 
 State 87
 
-   21 console_log_declaration_with_add: ADD . $@3 expressions console_log_right_common
+   19 console_log_declarations: console_log_left_common access_object console_log_declaration_with_add . console_log_right_common
 
-    $default  reduce using rule 20 ($@3)
+    RPARENTHESES  shift, and go to state 126
 
-    $@3  go to state 126
+    console_log_right_common  go to state 127
 
 
 State 88
 
-   17 console_log_declarations: console_log_left_common access_object console_log_declaration_with_add . console_log_right_common
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE $@69 . class_attributes constructor_definition class_attributes RBRACE
 
-    RPARENTHESES  shift, and go to state 127
+    PRIVATE     shift, and go to state 128
+    PUBLIC      shift, and go to state 129
+    PROTECTED   shift, and go to state 130
+    IDENTIFIER  shift, and go to state 131
 
-    console_log_right_common  go to state 128
+    PRIVATE     [reduce using rule 224 (class_attributes)]
+    PUBLIC      [reduce using rule 224 (class_attributes)]
+    PROTECTED   [reduce using rule 224 (class_attributes)]
+    IDENTIFIER  [reduce using rule 224 (class_attributes)]
+    $default    reduce using rule 224 (class_attributes)
+
+    class_attributes             go to state 132
+    class_attribute_declaration  go to state 133
+    access_modifiers             go to state 134
+    class_function_declarartion  go to state 135
 
 
 State 89
-
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW . ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON
-
-    ERROR_LITERAL  shift, and go to state 129
-
-
-State 90
-
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE $@68 . class_attributes constructor_definition class_attributes RBRACE
-
-    PRIVATE     shift, and go to state 130
-    PUBLIC      shift, and go to state 131
-    PROTECTED   shift, and go to state 132
-    IDENTIFIER  shift, and go to state 133
-
-    PRIVATE     [reduce using rule 223 (class_attributes)]
-    PUBLIC      [reduce using rule 223 (class_attributes)]
-    PROTECTED   [reduce using rule 223 (class_attributes)]
-    IDENTIFIER  [reduce using rule 223 (class_attributes)]
-    $default    reduce using rule 223 (class_attributes)
-
-    class_attributes             go to state 134
-    class_attribute_declaration  go to state 135
-    access_modifiers             go to state 136
-    class_function_declarartion  go to state 137
-
-
-State 91
 
   154 if_declaration: IF LPARENTHESES $@42 expressions . RPARENTHESES LBRACE $@43 commands RBRACE $@44 else_declaration
   175 expressions: expressions . '<' $@51 expressions
@@ -1812,23 +1798,23 @@ State 91
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    RPARENTHESES  shift, and go to state 138
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 136
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 92
+State 90
 
   136 command: WHILE LPARENTHESES $@34 expressions . RPARENTHESES LBRACE $@35 commands RBRACE
   175 expressions: expressions . '<' $@51 expressions
@@ -1847,37 +1833,37 @@ State 92
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    RPARENTHESES  shift, and go to state 139
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 137
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 93
+State 91
 
   139 command: DO LBRACE $@36 commands . RBRACE WHILE LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
 
-    RBRACE  shift, and go to state 140
+    RBRACE  shift, and go to state 138
 
 
-State 94
+State 92
 
   161 try_finally_declaration: TRY LBRACE $@46 commands . RBRACE $@47 catch_declararation FINALLY LBRACE $@48 commands RBRACE
 
-    RBRACE  shift, and go to state 141
+    RBRACE  shift, and go to state 139
 
 
-State 95
+State 93
 
   145 command: SWITCH LPARENTHESES $@39 expressions . RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case RBRACE
   175 expressions: expressions . '<' $@51 expressions
@@ -1896,499 +1882,499 @@ State 95
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    RPARENTHESES  shift, and go to state 142
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 140
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 96
+State 94
 
   141 command: THROW NEW ERROR_LITERAL LPARENTHESES . $@38 expressions RPARENTHESES SEMICOLON
 
     $default  reduce using rule 140 ($@38)
 
-    $@38  go to state 143
+    $@38  go to state 141
 
 
-State 97
+State 95
 
   204 expressions: LPARENTHESES $@65 . expressions RPARENTHESES
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 144
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 142
 
 
-State 98
+State 96
 
   149 command: RETURN $@41 expressions SEMICOLON .
 
     $default  reduce using rule 149 (command)
 
 
-State 99
+State 97
 
   205 assign_expression: ASSIGN . ASSIGN compare_type_and_value_expressions
 
-    ASSIGN  shift, and go to state 145
+    ASSIGN  shift, and go to state 143
 
 
-State 100
+State 98
 
   184 expressions: expressions ADD . $@55 expressions
 
     $default  reduce using rule 183 ($@55)
 
-    $@55  go to state 146
+    $@55  go to state 144
 
 
-State 101
+State 99
 
   186 expressions: expressions MINUS . $@56 expressions
 
     $default  reduce using rule 185 ($@56)
 
-    $@56  go to state 147
+    $@56  go to state 145
 
 
-State 102
+State 100
 
   175 expressions: expressions '<' . $@51 expressions
   177            | expressions '<' . ASSIGN $@52 expressions
 
-    ASSIGN  shift, and go to state 148
+    ASSIGN  shift, and go to state 146
 
     $default  reduce using rule 174 ($@51)
 
-    $@51  go to state 149
+    $@51  go to state 147
 
 
-State 103
+State 101
 
   180 expressions: expressions '>' . $@53 expressions
   182            | expressions '>' . ASSIGN $@54 expressions
 
-    ASSIGN  shift, and go to state 150
+    ASSIGN  shift, and go to state 148
 
     $default  reduce using rule 179 ($@53)
 
-    $@53  go to state 151
+    $@53  go to state 149
 
 
-State 104
+State 102
 
   188 expressions: expressions '*' . $@57 expressions
 
     $default  reduce using rule 187 ($@57)
 
-    $@57  go to state 152
+    $@57  go to state 150
 
 
-State 105
+State 103
 
   190 expressions: expressions '/' . $@58 expressions
 
     $default  reduce using rule 189 ($@58)
 
-    $@58  go to state 153
+    $@58  go to state 151
 
 
-State 106
+State 104
 
   192 expressions: expressions '^' . $@59 expressions
 
     $default  reduce using rule 191 ($@59)
 
-    $@59  go to state 154
+    $@59  go to state 152
 
 
-State 107
+State 105
 
   194 expressions: expressions '%' . $@60 expressions
 
     $default  reduce using rule 193 ($@60)
 
-    $@60  go to state 155
+    $@60  go to state 153
 
 
-State 108
+State 106
 
   196 expressions: expressions '|' . $@61 expressions
   198            | expressions '|' . '|' $@62 expressions
 
-    '|'  shift, and go to state 156
+    '|'  shift, and go to state 154
 
     $default  reduce using rule 195 ($@61)
 
-    $@61  go to state 157
+    $@61  go to state 155
 
 
-State 109
+State 107
 
   200 expressions: expressions '&' . $@63 expressions
   202            | expressions '&' . '&' $@64 expressions
 
-    '&'  shift, and go to state 158
+    '&'  shift, and go to state 156
 
     $default  reduce using rule 199 ($@63)
 
-    $@63  go to state 159
+    $@63  go to state 157
+
+
+State 108
+
+  178 expressions: expressions assign_expression . expressions
+
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
+
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 158
+
+
+State 109
+
+  129 set_value_on_class: THIS DOT IDENTIFIER ASSIGN . IDENTIFIER SEMICOLON
+
+    IDENTIFIER  shift, and go to state 159
 
 
 State 110
 
-  178 expressions: expressions assign_expression . expressions
+  216 function_parameters: IDENTIFIER . COLON all_possible_variables_types $@67 function_parameters_one_or_more
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 160
+    COLON  shift, and go to state 160
 
 
 State 111
 
-  129 set_value_on_class: THIS DOT IDENTIFIER ASSIGN . IDENTIFIER SEMICOLON
+  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters . RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
 
-    IDENTIFIER  shift, and go to state 161
+    RPARENTHESES  shift, and go to state 161
 
 
 State 112
 
-  215 function_parameters: IDENTIFIER . COLON all_possible_variables_types $@66 function_parameters_one_or_more
+   76 array_of_numbers_only_values: LBRACKET $@14 . numbers RBRACKET
 
-    COLON  shift, and go to state 162
+    NUMBER_LITERAL  shift, and go to state 162
+
+    numbers  go to state 163
 
 
 State 113
 
-  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters . RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+   83 array_of_floats_only_values: LBRACKET $@17 . floats RBRACKET
 
-    RPARENTHESES  shift, and go to state 163
+    FLOAT_LITERAL  shift, and go to state 164
+
+    floats  go to state 165
 
 
 State 114
 
-   76 array_of_numbers_only_values: LBRACKET $@14 . numbers RBRACKET
+   88 array_of_booleans: LBRACKET $@19 . booleans RBRACKET
 
-    NUMBER_LITERAL  shift, and go to state 164
+    BOOLEAN_LITERAL  shift, and go to state 166
 
-    numbers  go to state 165
+    booleans  go to state 167
 
 
 State 115
 
-   83 array_of_floats_only_values: LBRACKET $@17 . floats RBRACKET
+   93 array_of_strings: LBRACKET $@21 . strings RBRACKET
 
-    FLOAT_LITERAL  shift, and go to state 166
+    STRING_LITERAL  shift, and go to state 168
 
-    floats  go to state 167
+    strings  go to state 169
 
 
 State 116
 
-   88 array_of_booleans: LBRACKET $@19 . booleans RBRACKET
+  210 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables COMMA . function_values RPARENTHESES SEMICOLON
 
-    BOOLEAN_LITERAL  shift, and go to state 168
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
-    booleans  go to state 169
+    all_possible_variables        go to state 170
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
+    function_values               go to state 171
 
 
 State 117
 
-   93 array_of_strings: LBRACKET $@21 . strings RBRACKET
+  209 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables RPARENTHESES . SEMICOLON
 
-    STRING_LITERAL  shift, and go to state 170
-
-    strings  go to state 171
+    SEMICOLON  shift, and go to state 172
 
 
 State 118
-
-  210 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables COMMA . function_values RPARENTHESES SEMICOLON
-
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
-
-    all_possible_variables        go to state 172
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
-    function_values               go to state 173
-
-
-State 119
-
-  209 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables RPARENTHESES . SEMICOLON
-
-    SEMICOLON  shift, and go to state 174
-
-
-State 120
 
    97 increment_decrement_variable: IDENTIFIER ADD ADD SEMICOLON .
 
     $default  reduce using rule 97 (increment_decrement_variable)
 
 
-State 121
+State 119
 
    98 increment_decrement_variable: IDENTIFIER MINUS MINUS SEMICOLON .
 
     $default  reduce using rule 98 (increment_decrement_variable)
 
 
-State 122
+State 120
+
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW . ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON
+
+    ERROR_LITERAL  shift, and go to state 173
+
+
+State 121
 
     3 declaration: variable_types IDENTIFIER $@1 COLON . possible_declarations
 
-    NUMBER         shift, and go to state 175
-    STRING         shift, and go to state 176
-    BOOLEAN        shift, and go to state 177
-    ANY            shift, and go to state 178
-    ERROR_LITERAL  shift, and go to state 179
+    NUMBER         shift, and go to state 174
+    STRING         shift, and go to state 175
+    BOOLEAN        shift, and go to state 176
+    ANY            shift, and go to state 177
+    ERROR_LITERAL  shift, and go to state 178
 
-    possible_declarations  go to state 180
-    number_declaration     go to state 181
-    string_declaration     go to state 182
-    boolean_declaration    go to state 183
-    object_declaration     go to state 184
+    possible_declarations  go to state 179
+    number_declaration     go to state 180
+    string_declaration     go to state 181
+    boolean_declaration    go to state 182
+    object_declaration     go to state 183
+
+
+State 122
+
+  104 access_object_on_bracket: IDENTIFIER LBRACKET STRING_LITERAL . RBRACKET $@24 acess_more_objects_on_bracket
+
+    RBRACKET  shift, and go to state 184
 
 
 State 123
 
-  104 access_object_on_bracket: IDENTIFIER LBRACKET STRING_LITERAL . RBRACKET $@24 acess_more_objects_on_bracket
+  101 access_object: IDENTIFIER DOT $@23 . access_object
 
-    RBRACKET  shift, and go to state 185
+    IDENTIFIER  shift, and go to state 48
+
+    access_object             go to state 185
+    access_object_on_bracket  go to state 51
 
 
 State 124
 
-  101 access_object: IDENTIFIER DOT $@23 . access_object
+   18 console_log_declarations: console_log_left_common STRING_LITERAL $@3 console_log_declaration_with_add . console_log_right_common
 
-    IDENTIFIER  shift, and go to state 49
+    RPARENTHESES  shift, and go to state 126
 
-    access_object             go to state 186
-    access_object_on_bracket  go to state 52
+    console_log_right_common  go to state 186
 
 
 State 125
 
-   16 console_log_declarations: console_log_left_common STRING_LITERAL $@2 console_log_declaration_with_add . console_log_right_common
+   23 console_log_declaration_with_add: ADD $@4 . expressions console_log_right_common
 
-    RPARENTHESES  shift, and go to state 127
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    console_log_right_common  go to state 187
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 187
 
 
 State 126
 
-   21 console_log_declaration_with_add: ADD $@3 . expressions console_log_right_common
+   21 console_log_right_common: RPARENTHESES . SEMICOLON
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 188
+    SEMICOLON  shift, and go to state 188
 
 
 State 127
 
-   19 console_log_right_common: RPARENTHESES . SEMICOLON
+   19 console_log_declarations: console_log_left_common access_object console_log_declaration_with_add console_log_right_common .
 
-    SEMICOLON  shift, and go to state 189
+    $default  reduce using rule 19 (console_log_declarations)
 
 
 State 128
 
-   17 console_log_declarations: console_log_left_common access_object console_log_declaration_with_add console_log_right_common .
-
-    $default  reduce using rule 17 (console_log_declarations)
-
-
-State 129
-
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL . LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON
-
-    LPARENTHESES  shift, and go to state 190
-
-
-State 130
-
-  231 access_modifiers: PRIVATE .
-
-    $default  reduce using rule 231 (access_modifiers)
-
-
-State 131
-
-  230 access_modifiers: PUBLIC .
-
-    $default  reduce using rule 230 (access_modifiers)
-
-
-State 132
-
-  232 access_modifiers: PROTECTED .
+  232 access_modifiers: PRIVATE .
 
     $default  reduce using rule 232 (access_modifiers)
 
 
+State 129
+
+  231 access_modifiers: PUBLIC .
+
+    $default  reduce using rule 231 (access_modifiers)
+
+
+State 130
+
+  233 access_modifiers: PROTECTED .
+
+    $default  reduce using rule 233 (access_modifiers)
+
+
+State 131
+
+  228 class_attribute_declaration: IDENTIFIER . COLON all_possible_variables_types $@71 initialize_class_attribute_value SEMICOLON
+  243 class_function_declarartion: IDENTIFIER . LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands RBRACE
+
+    LPARENTHESES  shift, and go to state 189
+    COLON         shift, and go to state 190
+
+
+State 132
+
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE $@69 class_attributes . constructor_definition class_attributes RBRACE
+
+    CONSTRUCTOR  shift, and go to state 191
+
+    $default  reduce using rule 237 (constructor_definition)
+
+    constructor_definition  go to state 192
+
+
 State 133
 
-  227 class_attribute_declaration: IDENTIFIER . COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
-  242 class_function_declarartion: IDENTIFIER . LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands RBRACE
+  222 class_attributes: class_attribute_declaration . class_attributes
 
-    LPARENTHESES  shift, and go to state 191
-    COLON         shift, and go to state 192
+    PRIVATE     shift, and go to state 128
+    PUBLIC      shift, and go to state 129
+    PROTECTED   shift, and go to state 130
+    IDENTIFIER  shift, and go to state 131
+
+    PRIVATE     [reduce using rule 224 (class_attributes)]
+    PUBLIC      [reduce using rule 224 (class_attributes)]
+    PROTECTED   [reduce using rule 224 (class_attributes)]
+    IDENTIFIER  [reduce using rule 224 (class_attributes)]
+    $default    reduce using rule 224 (class_attributes)
+
+    class_attributes             go to state 193
+    class_attribute_declaration  go to state 133
+    access_modifiers             go to state 134
+    class_function_declarartion  go to state 135
 
 
 State 134
 
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE $@68 class_attributes . constructor_definition class_attributes RBRACE
+  226 class_attribute_declaration: access_modifiers . IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
 
-    CONSTRUCTOR  shift, and go to state 193
-
-    $default  reduce using rule 236 (constructor_definition)
-
-    constructor_definition  go to state 194
+    IDENTIFIER  shift, and go to state 194
 
 
 State 135
 
-  221 class_attributes: class_attribute_declaration . class_attributes
+  223 class_attributes: class_function_declarartion . class_attributes
 
-    PRIVATE     shift, and go to state 130
-    PUBLIC      shift, and go to state 131
-    PROTECTED   shift, and go to state 132
-    IDENTIFIER  shift, and go to state 133
+    PRIVATE     shift, and go to state 128
+    PUBLIC      shift, and go to state 129
+    PROTECTED   shift, and go to state 130
+    IDENTIFIER  shift, and go to state 131
 
-    PRIVATE     [reduce using rule 223 (class_attributes)]
-    PUBLIC      [reduce using rule 223 (class_attributes)]
-    PROTECTED   [reduce using rule 223 (class_attributes)]
-    IDENTIFIER  [reduce using rule 223 (class_attributes)]
-    $default    reduce using rule 223 (class_attributes)
+    PRIVATE     [reduce using rule 224 (class_attributes)]
+    PUBLIC      [reduce using rule 224 (class_attributes)]
+    PROTECTED   [reduce using rule 224 (class_attributes)]
+    IDENTIFIER  [reduce using rule 224 (class_attributes)]
+    $default    reduce using rule 224 (class_attributes)
 
     class_attributes             go to state 195
-    class_attribute_declaration  go to state 135
-    access_modifiers             go to state 136
-    class_function_declarartion  go to state 137
+    class_attribute_declaration  go to state 133
+    access_modifiers             go to state 134
+    class_function_declarartion  go to state 135
 
 
 State 136
 
-  225 class_attribute_declaration: access_modifiers . IDENTIFIER COLON all_possible_variables_types $@69 initialize_class_attribute_value SEMICOLON
+  154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES . LBRACE $@43 commands RBRACE $@44 else_declaration
 
-    IDENTIFIER  shift, and go to state 196
+    LBRACE  shift, and go to state 196
 
 
 State 137
 
-  222 class_attributes: class_function_declarartion . class_attributes
+  136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES . LBRACE $@35 commands RBRACE
 
-    PRIVATE     shift, and go to state 130
-    PUBLIC      shift, and go to state 131
-    PROTECTED   shift, and go to state 132
-    IDENTIFIER  shift, and go to state 133
-
-    PRIVATE     [reduce using rule 223 (class_attributes)]
-    PUBLIC      [reduce using rule 223 (class_attributes)]
-    PROTECTED   [reduce using rule 223 (class_attributes)]
-    IDENTIFIER  [reduce using rule 223 (class_attributes)]
-    $default    reduce using rule 223 (class_attributes)
-
-    class_attributes             go to state 197
-    class_attribute_declaration  go to state 135
-    access_modifiers             go to state 136
-    class_function_declarartion  go to state 137
+    LBRACE  shift, and go to state 197
 
 
 State 138
 
-  154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES . LBRACE $@43 commands RBRACE $@44 else_declaration
+  139 command: DO LBRACE $@36 commands RBRACE . WHILE LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
 
-    LBRACE  shift, and go to state 198
+    WHILE  shift, and go to state 198
 
 
 State 139
-
-  136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES . LBRACE $@35 commands RBRACE
-
-    LBRACE  shift, and go to state 199
-
-
-State 140
-
-  139 command: DO LBRACE $@36 commands RBRACE . WHILE LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
-
-    WHILE  shift, and go to state 200
-
-
-State 141
 
   161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE . $@47 catch_declararation FINALLY LBRACE $@48 commands RBRACE
 
     $default  reduce using rule 159 ($@47)
 
-    $@47  go to state 201
+    $@47  go to state 199
 
 
-State 142
+State 140
 
   145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES . LBRACE $@40 cases_of_switch_case default_case_of_switch_case RBRACE
 
-    LBRACE  shift, and go to state 202
+    LBRACE  shift, and go to state 200
 
 
-State 143
+State 141
 
   141 command: THROW NEW ERROR_LITERAL LPARENTHESES $@38 . expressions RPARENTHESES SEMICOLON
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 203
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 201
 
 
-State 144
+State 142
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -2407,230 +2393,230 @@ State 144
   202            | expressions . '&' '&' $@64 expressions
   204            | LPARENTHESES $@65 expressions . RPARENTHESES
 
-    RPARENTHESES  shift, and go to state 204
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 202
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
+
+
+State 143
+
+  205 assign_expression: ASSIGN ASSIGN . compare_type_and_value_expressions
+
+    ASSIGN  shift, and go to state 203
+
+    $default  reduce using rule 207 (compare_type_and_value_expressions)
+
+    compare_type_and_value_expressions  go to state 204
+
+
+State 144
+
+  184 expressions: expressions ADD $@55 . expressions
+
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
+
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 205
 
 
 State 145
 
-  205 assign_expression: ASSIGN ASSIGN . compare_type_and_value_expressions
+  186 expressions: expressions MINUS $@56 . expressions
 
-    ASSIGN  shift, and go to state 205
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    $default  reduce using rule 207 (compare_type_and_value_expressions)
-
-    compare_type_and_value_expressions  go to state 206
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 206
 
 
 State 146
-
-  184 expressions: expressions ADD $@55 . expressions
-
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 207
-
-
-State 147
-
-  186 expressions: expressions MINUS $@56 . expressions
-
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 208
-
-
-State 148
 
   177 expressions: expressions '<' ASSIGN . $@52 expressions
 
     $default  reduce using rule 176 ($@52)
 
-    $@52  go to state 209
+    $@52  go to state 207
 
 
-State 149
+State 147
 
   175 expressions: expressions '<' $@51 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 210
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 208
 
 
-State 150
+State 148
 
   182 expressions: expressions '>' ASSIGN . $@54 expressions
 
     $default  reduce using rule 181 ($@54)
 
-    $@54  go to state 211
+    $@54  go to state 209
+
+
+State 149
+
+  180 expressions: expressions '>' $@53 . expressions
+
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
+
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 210
+
+
+State 150
+
+  188 expressions: expressions '*' $@57 . expressions
+
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
+
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 211
 
 
 State 151
 
-  180 expressions: expressions '>' $@53 . expressions
+  190 expressions: expressions '/' $@58 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
     expressions               go to state 212
 
 
 State 152
 
-  188 expressions: expressions '*' $@57 . expressions
+  192 expressions: expressions '^' $@59 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
     expressions               go to state 213
 
 
 State 153
 
-  190 expressions: expressions '/' $@58 . expressions
+  194 expressions: expressions '%' $@60 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
     expressions               go to state 214
 
 
 State 154
 
-  192 expressions: expressions '^' $@59 . expressions
+  198 expressions: expressions '|' '|' . $@62 expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    $default  reduce using rule 197 ($@62)
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 215
+    $@62  go to state 215
 
 
 State 155
 
-  194 expressions: expressions '%' $@60 . expressions
+  196 expressions: expressions '|' $@61 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
     expressions               go to state 216
 
 
 State 156
 
-  198 expressions: expressions '|' '|' . $@62 expressions
-
-    $default  reduce using rule 197 ($@62)
-
-    $@62  go to state 217
-
-
-State 157
-
-  196 expressions: expressions '|' $@61 . expressions
-
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
-
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 218
-
-
-State 158
-
   202 expressions: expressions '&' '&' . $@64 expressions
 
     $default  reduce using rule 201 ($@64)
 
-    $@64  go to state 219
+    $@64  go to state 217
 
 
-State 159
+State 157
 
   200 expressions: expressions '&' $@63 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 220
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 218
 
 
-State 160
+State 158
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -2649,17 +2635,17 @@ State 160
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 178 (expressions)]
     ADD       [reduce using rule 178 (expressions)]
@@ -2674,233 +2660,240 @@ State 160
     '&'       [reduce using rule 178 (expressions)]
     $default  reduce using rule 178 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
+
+
+State 159
+
+  129 set_value_on_class: THIS DOT IDENTIFIER ASSIGN IDENTIFIER . SEMICOLON
+
+    SEMICOLON  shift, and go to state 219
+
+
+State 160
+
+  216 function_parameters: IDENTIFIER COLON . all_possible_variables_types $@67 function_parameters_one_or_more
+
+    NUMBER   shift, and go to state 220
+    VOID     shift, and go to state 221
+    STRING   shift, and go to state 222
+    BOOLEAN  shift, and go to state 223
+    ANY      shift, and go to state 224
+
+    all_possible_variables_types  go to state 225
 
 
 State 161
 
-  129 set_value_on_class: THIS DOT IDENTIFIER ASSIGN IDENTIFIER . SEMICOLON
+  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES . COLON all_possible_variables_types LBRACE commands RBRACE
 
-    SEMICOLON  shift, and go to state 221
+    COLON  shift, and go to state 226
 
 
 State 162
 
-  215 function_parameters: IDENTIFIER COLON . all_possible_variables_types $@66 function_parameters_one_or_more
-
-    NUMBER   shift, and go to state 222
-    VOID     shift, and go to state 223
-    STRING   shift, and go to state 224
-    BOOLEAN  shift, and go to state 225
-    ANY      shift, and go to state 226
-
-    all_possible_variables_types  go to state 227
-
-
-State 163
-
-  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES . COLON all_possible_variables_types LBRACE commands RBRACE
-
-    COLON  shift, and go to state 228
-
-
-State 164
-
    78 numbers: NUMBER_LITERAL . COMMA $@15 numbers
    79        | NUMBER_LITERAL .
 
-    COMMA  shift, and go to state 229
+    COMMA  shift, and go to state 227
 
     $default  reduce using rule 79 (numbers)
 
 
-State 165
+State 163
 
    76 array_of_numbers_only_values: LBRACKET $@14 numbers . RBRACKET
+
+    RBRACKET  shift, and go to state 228
+
+
+State 164
+
+   85 floats: FLOAT_LITERAL . COMMA $@18 floats
+   86       | FLOAT_LITERAL .
+
+    COMMA  shift, and go to state 229
+
+    $default  reduce using rule 86 (floats)
+
+
+State 165
+
+   83 array_of_floats_only_values: LBRACKET $@17 floats . RBRACKET
 
     RBRACKET  shift, and go to state 230
 
 
 State 166
 
-   85 floats: FLOAT_LITERAL . COMMA $@18 floats
-   86       | FLOAT_LITERAL .
+   90 booleans: BOOLEAN_LITERAL . COMMA $@20 booleans
+   91         | BOOLEAN_LITERAL .
 
     COMMA  shift, and go to state 231
 
-    $default  reduce using rule 86 (floats)
+    $default  reduce using rule 91 (booleans)
 
 
 State 167
 
-   83 array_of_floats_only_values: LBRACKET $@17 floats . RBRACKET
+   88 array_of_booleans: LBRACKET $@19 booleans . RBRACKET
 
     RBRACKET  shift, and go to state 232
 
 
 State 168
 
-   90 booleans: BOOLEAN_LITERAL . COMMA $@20 booleans
-   91         | BOOLEAN_LITERAL .
+   95 strings: STRING_LITERAL . COMMA $@22 strings
+   96        | STRING_LITERAL .
 
     COMMA  shift, and go to state 233
 
-    $default  reduce using rule 91 (booleans)
+    $default  reduce using rule 96 (strings)
 
 
 State 169
 
-   88 array_of_booleans: LBRACKET $@19 booleans . RBRACKET
+   93 array_of_strings: LBRACKET $@21 strings . RBRACKET
 
     RBRACKET  shift, and go to state 234
 
 
 State 170
 
-   95 strings: STRING_LITERAL . COMMA $@22 strings
-   96        | STRING_LITERAL .
+  211 function_values: all_possible_variables .
+  213                | all_possible_variables . COMMA $@66 function_values
 
     COMMA  shift, and go to state 235
-
-    $default  reduce using rule 96 (strings)
-
-
-State 171
-
-   93 array_of_strings: LBRACKET $@21 strings . RBRACKET
-
-    RBRACKET  shift, and go to state 236
-
-
-State 172
-
-  211 function_values: all_possible_variables .
-  212                | all_possible_variables . COMMA function_values
-
-    COMMA  shift, and go to state 237
 
     $default  reduce using rule 211 (function_values)
 
 
-State 173
+State 171
 
   210 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values . RPARENTHESES SEMICOLON
 
-    RPARENTHESES  shift, and go to state 238
+    RPARENTHESES  shift, and go to state 236
 
 
-State 174
+State 172
 
   209 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables RPARENTHESES SEMICOLON .
 
     $default  reduce using rule 209 (call_a_function)
 
 
-State 175
+State 173
+
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL . LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON
+
+    LPARENTHESES  shift, and go to state 237
+
+
+State 174
 
    38 number_declaration: NUMBER . number_or_array_declaration
 
-    LBRACKET  shift, and go to state 239
-    ASSIGN    shift, and go to state 240
+    LBRACKET  shift, and go to state 238
+    ASSIGN    shift, and go to state 239
 
-    number_or_array_declaration  go to state 241
+    number_or_array_declaration  go to state 240
+
+
+State 175
+
+   45 string_declaration: STRING . string_or_array_of_strings_declaration SEMICOLON
+
+    LBRACKET  shift, and go to state 241
+    ASSIGN    shift, and go to state 242
+
+    string_or_array_of_strings_declaration  go to state 243
 
 
 State 176
 
-   45 string_declaration: STRING . string_or_array_of_strings_declaration SEMICOLON
+   49 boolean_declaration: BOOLEAN . boolean_or_array_of_booleans_declaration SEMICOLON
 
-    LBRACKET  shift, and go to state 242
-    ASSIGN    shift, and go to state 243
+    LBRACKET  shift, and go to state 244
+    ASSIGN    shift, and go to state 245
 
-    string_or_array_of_strings_declaration  go to state 244
+    boolean_or_array_of_booleans_declaration  go to state 246
 
 
 State 177
 
-   49 boolean_declaration: BOOLEAN . boolean_or_array_of_booleans_declaration SEMICOLON
+   54 object_declaration: ANY . ASSIGN LBRACE $@7 object_attribution RBRACE SEMICOLON
 
-    LBRACKET  shift, and go to state 245
-    ASSIGN    shift, and go to state 246
-
-    boolean_or_array_of_booleans_declaration  go to state 247
+    ASSIGN  shift, and go to state 247
 
 
 State 178
 
-   54 object_declaration: ANY . ASSIGN LBRACE $@7 object_attribution RBRACE SEMICOLON
+   56 object_declaration: ERROR_LITERAL . ASSIGN LBRACE $@8 object_attribution RBRACE SEMICOLON
 
     ASSIGN  shift, and go to state 248
 
 
 State 179
 
-   56 object_declaration: ERROR_LITERAL . ASSIGN LBRACE $@8 object_attribution RBRACE SEMICOLON
-
-    ASSIGN  shift, and go to state 249
-
-
-State 180
-
     3 declaration: variable_types IDENTIFIER $@1 COLON possible_declarations .
 
     $default  reduce using rule 3 (declaration)
 
 
-State 181
+State 180
 
-    8 possible_declarations: number_declaration .
-
-    $default  reduce using rule 8 (possible_declarations)
-
-
-State 182
-
-    9 possible_declarations: string_declaration .
-
-    $default  reduce using rule 9 (possible_declarations)
-
-
-State 183
-
-   10 possible_declarations: boolean_declaration .
+   10 possible_declarations: number_declaration .
 
     $default  reduce using rule 10 (possible_declarations)
 
 
-State 184
+State 181
 
-   11 possible_declarations: object_declaration .
+   11 possible_declarations: string_declaration .
 
     $default  reduce using rule 11 (possible_declarations)
 
 
-State 185
+State 182
+
+   12 possible_declarations: boolean_declaration .
+
+    $default  reduce using rule 12 (possible_declarations)
+
+
+State 183
+
+   13 possible_declarations: object_declaration .
+
+    $default  reduce using rule 13 (possible_declarations)
+
+
+State 184
 
   104 access_object_on_bracket: IDENTIFIER LBRACKET STRING_LITERAL RBRACKET . $@24 acess_more_objects_on_bracket
 
     $default  reduce using rule 103 ($@24)
 
-    $@24  go to state 250
+    $@24  go to state 249
 
 
-State 186
+State 185
 
   101 access_object: IDENTIFIER DOT $@23 access_object .
 
     $default  reduce using rule 101 (access_object)
 
 
+State 186
+
+   18 console_log_declarations: console_log_left_common STRING_LITERAL $@3 console_log_declaration_with_add console_log_right_common .
+
+    $default  reduce using rule 18 (console_log_declarations)
+
+
 State 187
 
-   16 console_log_declarations: console_log_left_common STRING_LITERAL $@2 console_log_declaration_with_add console_log_right_common .
-
-    $default  reduce using rule 16 (console_log_declarations)
-
-
-State 188
-
-   21 console_log_declaration_with_add: ADD $@3 expressions . console_log_right_common
+   23 console_log_declaration_with_add: ADD $@4 expressions . console_log_right_common
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
   178            | expressions . assign_expression expressions
@@ -2917,152 +2910,143 @@ State 188
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    RPARENTHESES  shift, and go to state 127
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 126
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    console_log_right_common  go to state 251
-    assign_expression         go to state 110
+    console_log_right_common  go to state 250
+    assign_expression         go to state 108
+
+
+State 188
+
+   21 console_log_right_common: RPARENTHESES SEMICOLON .
+
+    $default  reduce using rule 21 (console_log_right_common)
 
 
 State 189
 
-   19 console_log_right_common: RPARENTHESES SEMICOLON .
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES . $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands RBRACE
 
-    $default  reduce using rule 19 (console_log_right_common)
+    $default  reduce using rule 241 ($@75)
+
+    $@75  go to state 251
 
 
 State 190
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES . $@4 function_values RPARENTHESES SEMICOLON
+  228 class_attribute_declaration: IDENTIFIER COLON . all_possible_variables_types $@71 initialize_class_attribute_value SEMICOLON
 
-    $default  reduce using rule 36 ($@4)
+    NUMBER   shift, and go to state 220
+    VOID     shift, and go to state 221
+    STRING   shift, and go to state 222
+    BOOLEAN  shift, and go to state 223
+    ANY      shift, and go to state 224
 
-    $@4  go to state 252
+    all_possible_variables_types  go to state 252
 
 
 State 191
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES . $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands RBRACE
+  236 constructor_definition: CONSTRUCTOR . LPARENTHESES $@72 function_parameters RPARENTHESES LBRACE $@73 set_property_with_this RBRACE
 
-    $default  reduce using rule 240 ($@74)
-
-    $@74  go to state 253
+    LPARENTHESES  shift, and go to state 253
 
 
 State 192
 
-  227 class_attribute_declaration: IDENTIFIER COLON . all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE $@69 class_attributes constructor_definition . class_attributes RBRACE
 
-    NUMBER   shift, and go to state 222
-    VOID     shift, and go to state 223
-    STRING   shift, and go to state 224
-    BOOLEAN  shift, and go to state 225
-    ANY      shift, and go to state 226
+    PRIVATE     shift, and go to state 128
+    PUBLIC      shift, and go to state 129
+    PROTECTED   shift, and go to state 130
+    IDENTIFIER  shift, and go to state 131
 
-    all_possible_variables_types  go to state 254
+    $default  reduce using rule 224 (class_attributes)
+
+    class_attributes             go to state 254
+    class_attribute_declaration  go to state 133
+    access_modifiers             go to state 134
+    class_function_declarartion  go to state 135
 
 
 State 193
 
-  235 constructor_definition: CONSTRUCTOR . LPARENTHESES $@71 function_parameters RPARENTHESES LBRACE $@72 set_property_with_this RBRACE
-
-    LPARENTHESES  shift, and go to state 255
-
-
-State 194
-
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE $@68 class_attributes constructor_definition . class_attributes RBRACE
-
-    PRIVATE     shift, and go to state 130
-    PUBLIC      shift, and go to state 131
-    PROTECTED   shift, and go to state 132
-    IDENTIFIER  shift, and go to state 133
-
-    $default  reduce using rule 223 (class_attributes)
-
-    class_attributes             go to state 256
-    class_attribute_declaration  go to state 135
-    access_modifiers             go to state 136
-    class_function_declarartion  go to state 137
-
-
-State 195
-
-  221 class_attributes: class_attribute_declaration class_attributes .
-
-    $default  reduce using rule 221 (class_attributes)
-
-
-State 196
-
-  225 class_attribute_declaration: access_modifiers IDENTIFIER . COLON all_possible_variables_types $@69 initialize_class_attribute_value SEMICOLON
-
-    COLON  shift, and go to state 257
-
-
-State 197
-
-  222 class_attributes: class_function_declarartion class_attributes .
+  222 class_attributes: class_attribute_declaration class_attributes .
 
     $default  reduce using rule 222 (class_attributes)
 
 
-State 198
+State 194
+
+  226 class_attribute_declaration: access_modifiers IDENTIFIER . COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
+
+    COLON  shift, and go to state 255
+
+
+State 195
+
+  223 class_attributes: class_function_declarartion class_attributes .
+
+    $default  reduce using rule 223 (class_attributes)
+
+
+State 196
 
   154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES LBRACE . $@43 commands RBRACE $@44 else_declaration
 
     $default  reduce using rule 152 ($@43)
 
-    $@43  go to state 258
+    $@43  go to state 256
 
 
-State 199
+State 197
 
   136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES LBRACE . $@35 commands RBRACE
 
     $default  reduce using rule 135 ($@35)
 
-    $@35  go to state 259
+    $@35  go to state 257
 
 
-State 200
+State 198
 
   139 command: DO LBRACE $@36 commands RBRACE WHILE . LPARENTHESES $@37 expressions RPARENTHESES SEMICOLON
 
-    LPARENTHESES  shift, and go to state 260
+    LPARENTHESES  shift, and go to state 258
 
 
-State 201
+State 199
 
   161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE $@47 . catch_declararation FINALLY LBRACE $@48 commands RBRACE
 
-    CATCH  shift, and go to state 261
+    CATCH  shift, and go to state 259
 
     $default  reduce using rule 165 (catch_declararation)
 
-    catch_declararation  go to state 262
+    catch_declararation  go to state 260
 
 
-State 202
+State 200
 
   145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE . $@40 cases_of_switch_case default_case_of_switch_case RBRACE
 
     $default  reduce using rule 144 ($@40)
 
-    $@40  go to state 263
+    $@40  go to state 261
 
 
-State 203
+State 201
 
   141 command: THROW NEW ERROR_LITERAL LPARENTHESES $@38 expressions . RPARENTHESES SEMICOLON
   175 expressions: expressions . '<' $@51 expressions
@@ -3081,44 +3065,44 @@ State 203
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    RPARENTHESES  shift, and go to state 264
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 262
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 204
+State 202
 
   204 expressions: LPARENTHESES $@65 expressions RPARENTHESES .
 
     $default  reduce using rule 204 (expressions)
 
 
-State 205
+State 203
 
   206 compare_type_and_value_expressions: ASSIGN .
 
     $default  reduce using rule 206 (compare_type_and_value_expressions)
 
 
-State 206
+State 204
 
   205 assign_expression: ASSIGN ASSIGN compare_type_and_value_expressions .
 
     $default  reduce using rule 205 (assign_expression)
 
 
-State 207
+State 205
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3137,17 +3121,17 @@ State 207
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 184 (expressions)]
     ADD       [reduce using rule 184 (expressions)]
@@ -3162,10 +3146,10 @@ State 207
     '&'       [reduce using rule 184 (expressions)]
     $default  reduce using rule 184 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 208
+State 206
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3184,17 +3168,17 @@ State 208
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 186 (expressions)]
     ADD       [reduce using rule 186 (expressions)]
@@ -3209,26 +3193,26 @@ State 208
     '&'       [reduce using rule 186 (expressions)]
     $default  reduce using rule 186 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 209
+State 207
 
   177 expressions: expressions '<' ASSIGN $@52 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 265
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 263
 
 
-State 210
+State 208
 
   175 expressions: expressions . '<' $@51 expressions
   175            | expressions '<' $@51 expressions .
@@ -3247,17 +3231,17 @@ State 210
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 175 (expressions)]
     ADD       [reduce using rule 175 (expressions)]
@@ -3272,26 +3256,26 @@ State 210
     '&'       [reduce using rule 175 (expressions)]
     $default  reduce using rule 175 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 211
+State 209
 
   182 expressions: expressions '>' ASSIGN $@54 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 266
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 264
 
 
-State 212
+State 210
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3310,17 +3294,17 @@ State 212
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 180 (expressions)]
     ADD       [reduce using rule 180 (expressions)]
@@ -3335,10 +3319,10 @@ State 212
     '&'       [reduce using rule 180 (expressions)]
     $default  reduce using rule 180 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 213
+State 211
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3357,17 +3341,17 @@ State 213
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 188 (expressions)]
     ADD       [reduce using rule 188 (expressions)]
@@ -3382,10 +3366,10 @@ State 213
     '&'       [reduce using rule 188 (expressions)]
     $default  reduce using rule 188 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 214
+State 212
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3404,17 +3388,17 @@ State 214
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 190 (expressions)]
     ADD       [reduce using rule 190 (expressions)]
@@ -3429,10 +3413,10 @@ State 214
     '&'       [reduce using rule 190 (expressions)]
     $default  reduce using rule 190 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 215
+State 213
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3451,17 +3435,17 @@ State 215
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 192 (expressions)]
     ADD       [reduce using rule 192 (expressions)]
@@ -3476,10 +3460,10 @@ State 215
     '&'       [reduce using rule 192 (expressions)]
     $default  reduce using rule 192 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 216
+State 214
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3498,17 +3482,17 @@ State 216
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 194 (expressions)]
     ADD       [reduce using rule 194 (expressions)]
@@ -3523,26 +3507,26 @@ State 216
     '&'       [reduce using rule 194 (expressions)]
     $default  reduce using rule 194 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 217
+State 215
 
   198 expressions: expressions '|' '|' $@62 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 267
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 265
 
 
-State 218
+State 216
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3561,17 +3545,17 @@ State 218
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 196 (expressions)]
     ADD       [reduce using rule 196 (expressions)]
@@ -3586,26 +3570,26 @@ State 218
     '&'       [reduce using rule 196 (expressions)]
     $default  reduce using rule 196 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 219
+State 217
 
   202 expressions: expressions '&' '&' $@64 . expressions
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 268
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 266
 
 
-State 220
+State 218
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -3624,17 +3608,17 @@ State 220
   200            | expressions '&' $@63 expressions .
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 200 (expressions)]
     ADD       [reduce using rule 200 (expressions)]
@@ -3649,332 +3633,314 @@ State 220
     '&'       [reduce using rule 200 (expressions)]
     $default  reduce using rule 200 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 221
+State 219
 
   129 set_value_on_class: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON .
 
     $default  reduce using rule 129 (set_value_on_class)
 
 
+State 220
+
+   33 all_possible_variables_types: NUMBER .
+
+    $default  reduce using rule 33 (all_possible_variables_types)
+
+
+State 221
+
+   37 all_possible_variables_types: VOID .
+
+    $default  reduce using rule 37 (all_possible_variables_types)
+
+
 State 222
 
-   31 all_possible_variables_types: NUMBER .
+   34 all_possible_variables_types: STRING .
 
-    $default  reduce using rule 31 (all_possible_variables_types)
+    $default  reduce using rule 34 (all_possible_variables_types)
 
 
 State 223
 
-   35 all_possible_variables_types: VOID .
+   35 all_possible_variables_types: BOOLEAN .
 
     $default  reduce using rule 35 (all_possible_variables_types)
 
 
 State 224
 
-   32 all_possible_variables_types: STRING .
+   36 all_possible_variables_types: ANY .
 
-    $default  reduce using rule 32 (all_possible_variables_types)
+    $default  reduce using rule 36 (all_possible_variables_types)
 
 
 State 225
 
-   33 all_possible_variables_types: BOOLEAN .
+  216 function_parameters: IDENTIFIER COLON all_possible_variables_types . $@67 function_parameters_one_or_more
 
-    $default  reduce using rule 33 (all_possible_variables_types)
+    $default  reduce using rule 215 ($@67)
+
+    $@67  go to state 267
 
 
 State 226
 
-   34 all_possible_variables_types: ANY .
+  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON . all_possible_variables_types LBRACE commands RBRACE
 
-    $default  reduce using rule 34 (all_possible_variables_types)
+    NUMBER   shift, and go to state 220
+    VOID     shift, and go to state 221
+    STRING   shift, and go to state 222
+    BOOLEAN  shift, and go to state 223
+    ANY      shift, and go to state 224
+
+    all_possible_variables_types  go to state 268
 
 
 State 227
-
-  215 function_parameters: IDENTIFIER COLON all_possible_variables_types . $@66 function_parameters_one_or_more
-
-    $default  reduce using rule 214 ($@66)
-
-    $@66  go to state 269
-
-
-State 228
-
-  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON . all_possible_variables_types LBRACE commands RBRACE
-
-    NUMBER   shift, and go to state 222
-    VOID     shift, and go to state 223
-    STRING   shift, and go to state 224
-    BOOLEAN  shift, and go to state 225
-    ANY      shift, and go to state 226
-
-    all_possible_variables_types  go to state 270
-
-
-State 229
 
    78 numbers: NUMBER_LITERAL COMMA . $@15 numbers
 
     $default  reduce using rule 77 ($@15)
 
-    $@15  go to state 271
+    $@15  go to state 269
 
 
-State 230
+State 228
 
    76 array_of_numbers_only_values: LBRACKET $@14 numbers RBRACKET .
 
     $default  reduce using rule 76 (array_of_numbers_only_values)
 
 
-State 231
+State 229
 
    85 floats: FLOAT_LITERAL COMMA . $@18 floats
 
     $default  reduce using rule 84 ($@18)
 
-    $@18  go to state 272
+    $@18  go to state 270
 
 
-State 232
+State 230
 
    83 array_of_floats_only_values: LBRACKET $@17 floats RBRACKET .
 
     $default  reduce using rule 83 (array_of_floats_only_values)
 
 
-State 233
+State 231
 
    90 booleans: BOOLEAN_LITERAL COMMA . $@20 booleans
 
     $default  reduce using rule 89 ($@20)
 
-    $@20  go to state 273
+    $@20  go to state 271
 
 
-State 234
+State 232
 
    88 array_of_booleans: LBRACKET $@19 booleans RBRACKET .
 
     $default  reduce using rule 88 (array_of_booleans)
 
 
-State 235
+State 233
 
    95 strings: STRING_LITERAL COMMA . $@22 strings
 
     $default  reduce using rule 94 ($@22)
 
-    $@22  go to state 274
+    $@22  go to state 272
 
 
-State 236
+State 234
 
    93 array_of_strings: LBRACKET $@21 strings RBRACKET .
 
     $default  reduce using rule 93 (array_of_strings)
 
 
+State 235
+
+  213 function_values: all_possible_variables COMMA . $@66 function_values
+
+    $default  reduce using rule 212 ($@66)
+
+    $@66  go to state 273
+
+
+State 236
+
+  210 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES . SEMICOLON
+
+    SEMICOLON  shift, and go to state 274
+
+
 State 237
 
-  212 function_values: all_possible_variables COMMA . function_values
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES . $@2 function_values RPARENTHESES SEMICOLON
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    $default  reduce using rule 8 ($@2)
 
-    all_possible_variables        go to state 172
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
-    function_values               go to state 275
+    $@2  go to state 275
 
 
 State 238
 
-  210 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES . SEMICOLON
+   39 number_or_array_declaration: LBRACKET . RBRACKET ASSIGN array_of_numbers_and_floats_declaration SEMICOLON
 
-    SEMICOLON  shift, and go to state 276
+    RBRACKET  shift, and go to state 276
 
 
 State 239
 
-   39 number_or_array_declaration: LBRACKET . RBRACKET ASSIGN array_of_numbers_and_floats_declaration SEMICOLON
+   40 number_or_array_declaration: ASSIGN . number_or_float_declaration SEMICOLON
 
-    RBRACKET  shift, and go to state 277
+    NUMBER_LITERAL  shift, and go to state 277
+    FLOAT_LITERAL   shift, and go to state 278
+
+    number_or_float_declaration  go to state 279
 
 
 State 240
-
-   40 number_or_array_declaration: ASSIGN . number_or_float_declaration SEMICOLON
-
-    NUMBER_LITERAL  shift, and go to state 278
-    FLOAT_LITERAL   shift, and go to state 279
-
-    number_or_float_declaration  go to state 280
-
-
-State 241
 
    38 number_declaration: NUMBER number_or_array_declaration .
 
     $default  reduce using rule 38 (number_declaration)
 
 
-State 242
+State 241
 
    48 string_or_array_of_strings_declaration: LBRACKET . RBRACKET ASSIGN $@5 array_of_strings
 
-    RBRACKET  shift, and go to state 281
+    RBRACKET  shift, and go to state 280
+
+
+State 242
+
+   46 string_or_array_of_strings_declaration: ASSIGN . STRING_LITERAL
+
+    STRING_LITERAL  shift, and go to state 281
 
 
 State 243
 
-   46 string_or_array_of_strings_declaration: ASSIGN . STRING_LITERAL
+   45 string_declaration: STRING string_or_array_of_strings_declaration . SEMICOLON
 
-    STRING_LITERAL  shift, and go to state 282
+    SEMICOLON  shift, and go to state 282
 
 
 State 244
 
-   45 string_declaration: STRING string_or_array_of_strings_declaration . SEMICOLON
+   52 boolean_or_array_of_booleans_declaration: LBRACKET . RBRACKET ASSIGN $@6 array_of_booleans
 
-    SEMICOLON  shift, and go to state 283
+    RBRACKET  shift, and go to state 283
 
 
 State 245
 
-   52 boolean_or_array_of_booleans_declaration: LBRACKET . RBRACKET ASSIGN $@6 array_of_booleans
+   50 boolean_or_array_of_booleans_declaration: ASSIGN . BOOLEAN_LITERAL
 
-    RBRACKET  shift, and go to state 284
+    BOOLEAN_LITERAL  shift, and go to state 284
 
 
 State 246
 
-   50 boolean_or_array_of_booleans_declaration: ASSIGN . BOOLEAN_LITERAL
+   49 boolean_declaration: BOOLEAN boolean_or_array_of_booleans_declaration . SEMICOLON
 
-    BOOLEAN_LITERAL  shift, and go to state 285
+    SEMICOLON  shift, and go to state 285
 
 
 State 247
 
-   49 boolean_declaration: BOOLEAN boolean_or_array_of_booleans_declaration . SEMICOLON
+   54 object_declaration: ANY ASSIGN . LBRACE $@7 object_attribution RBRACE SEMICOLON
 
-    SEMICOLON  shift, and go to state 286
+    LBRACE  shift, and go to state 286
 
 
 State 248
 
-   54 object_declaration: ANY ASSIGN . LBRACE $@7 object_attribution RBRACE SEMICOLON
+   56 object_declaration: ERROR_LITERAL ASSIGN . LBRACE $@8 object_attribution RBRACE SEMICOLON
 
     LBRACE  shift, and go to state 287
 
 
 State 249
 
-   56 object_declaration: ERROR_LITERAL ASSIGN . LBRACE $@8 object_attribution RBRACE SEMICOLON
+  104 access_object_on_bracket: IDENTIFIER LBRACKET STRING_LITERAL RBRACKET $@24 . acess_more_objects_on_bracket
 
-    LBRACE  shift, and go to state 288
+    LBRACKET  shift, and go to state 288
+    DOT       shift, and go to state 289
+
+    $default  reduce using rule 106 (acess_more_objects_on_bracket)
+
+    acess_more_objects_on_bracket       go to state 290
+    access_object_nested                go to state 291
+    access_identifier_on_object_nested  go to state 292
+    access_bracket_on_object_nested     go to state 293
 
 
 State 250
 
-  104 access_object_on_bracket: IDENTIFIER LBRACKET STRING_LITERAL RBRACKET $@24 . acess_more_objects_on_bracket
+   23 console_log_declaration_with_add: ADD $@4 expressions console_log_right_common .
 
-    LBRACKET  shift, and go to state 289
-    DOT       shift, and go to state 290
-
-    $default  reduce using rule 106 (acess_more_objects_on_bracket)
-
-    acess_more_objects_on_bracket       go to state 291
-    access_object_nested                go to state 292
-    access_identifier_on_object_nested  go to state 293
-    access_bracket_on_object_nested     go to state 294
+    $default  reduce using rule 23 (console_log_declaration_with_add)
 
 
 State 251
 
-   21 console_log_declaration_with_add: ADD $@3 expressions console_log_right_common .
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 . function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands RBRACE
 
-    $default  reduce using rule 21 (console_log_declaration_with_add)
+    IDENTIFIER  shift, and go to state 110
+
+    $default  reduce using rule 214 (function_parameters)
+
+    function_parameters  go to state 294
 
 
 State 252
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 . function_values RPARENTHESES SEMICOLON
+  228 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types . $@71 initialize_class_attribute_value SEMICOLON
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    $default  reduce using rule 227 ($@71)
 
-    all_possible_variables        go to state 172
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
-    function_values               go to state 295
+    $@71  go to state 295
 
 
 State 253
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 . function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands RBRACE
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES . $@72 function_parameters RPARENTHESES LBRACE $@73 set_property_with_this RBRACE
 
-    IDENTIFIER  shift, and go to state 112
+    $default  reduce using rule 234 ($@72)
 
-    $default  reduce using rule 213 (function_parameters)
-
-    function_parameters  go to state 296
+    $@72  go to state 296
 
 
 State 254
 
-  227 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types . $@70 initialize_class_attribute_value SEMICOLON
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE $@69 class_attributes constructor_definition class_attributes . RBRACE
 
-    $default  reduce using rule 226 ($@70)
-
-    $@70  go to state 297
+    RBRACE  shift, and go to state 297
 
 
 State 255
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES . $@71 function_parameters RPARENTHESES LBRACE $@72 set_property_with_this RBRACE
+  226 class_attribute_declaration: access_modifiers IDENTIFIER COLON . all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON
 
-    $default  reduce using rule 233 ($@71)
+    NUMBER   shift, and go to state 220
+    VOID     shift, and go to state 221
+    STRING   shift, and go to state 222
+    BOOLEAN  shift, and go to state 223
+    ANY      shift, and go to state 224
 
-    $@71  go to state 298
+    all_possible_variables_types  go to state 298
 
 
 State 256
-
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE $@68 class_attributes constructor_definition class_attributes . RBRACE
-
-    RBRACE  shift, and go to state 299
-
-
-State 257
-
-  225 class_attribute_declaration: access_modifiers IDENTIFIER COLON . all_possible_variables_types $@69 initialize_class_attribute_value SEMICOLON
-
-    NUMBER   shift, and go to state 222
-    VOID     shift, and go to state 223
-    STRING   shift, and go to state 224
-    BOOLEAN  shift, and go to state 225
-    ANY      shift, and go to state 226
-
-    all_possible_variables_types  go to state 300
-
-
-State 258
 
   154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES LBRACE $@43 . commands RBRACE $@44 else_declaration
 
@@ -3997,13 +3963,13 @@ State 258
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 301
+    commands                      go to state 299
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -4012,7 +3978,7 @@ State 258
     class_declarations            go to state 30
 
 
-State 259
+State 257
 
   136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES LBRACE $@35 . commands RBRACE
 
@@ -4035,13 +4001,13 @@ State 259
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 302
+    commands                      go to state 300
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -4050,48 +4016,48 @@ State 259
     class_declarations            go to state 30
 
 
-State 260
+State 258
 
   139 command: DO LBRACE $@36 commands RBRACE WHILE LPARENTHESES . $@37 expressions RPARENTHESES SEMICOLON
 
     $default  reduce using rule 138 ($@37)
 
-    $@37  go to state 303
+    $@37  go to state 301
+
+
+State 259
+
+  164 catch_declararation: CATCH . LPARENTHESES $@49 catch_error RPARENTHESES LBRACE $@50 commands RBRACE
+
+    LPARENTHESES  shift, and go to state 302
+
+
+State 260
+
+  161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE $@47 catch_declararation . FINALLY LBRACE $@48 commands RBRACE
+
+    FINALLY  shift, and go to state 303
 
 
 State 261
 
-  164 catch_declararation: CATCH . LPARENTHESES $@49 catch_error RPARENTHESES LBRACE $@50 commands RBRACE
+  145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 . cases_of_switch_case default_case_of_switch_case RBRACE
 
-    LPARENTHESES  shift, and go to state 304
+    CASE  shift, and go to state 304
+
+    $default  reduce using rule 124 (cases_of_switch_case)
+
+    cases_of_switch_case  go to state 305
 
 
 State 262
 
-  161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE $@47 catch_declararation . FINALLY LBRACE $@48 commands RBRACE
+  141 command: THROW NEW ERROR_LITERAL LPARENTHESES $@38 expressions RPARENTHESES . SEMICOLON
 
-    FINALLY  shift, and go to state 305
+    SEMICOLON  shift, and go to state 306
 
 
 State 263
-
-  145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 . cases_of_switch_case default_case_of_switch_case RBRACE
-
-    CASE  shift, and go to state 306
-
-    $default  reduce using rule 124 (cases_of_switch_case)
-
-    cases_of_switch_case  go to state 307
-
-
-State 264
-
-  141 command: THROW NEW ERROR_LITERAL LPARENTHESES $@38 expressions RPARENTHESES . SEMICOLON
-
-    SEMICOLON  shift, and go to state 308
-
-
-State 265
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -4110,17 +4076,17 @@ State 265
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 177 (expressions)]
     ADD       [reduce using rule 177 (expressions)]
@@ -4135,10 +4101,10 @@ State 265
     '&'       [reduce using rule 177 (expressions)]
     $default  reduce using rule 177 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 266
+State 264
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -4157,17 +4123,17 @@ State 266
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 182 (expressions)]
     ADD       [reduce using rule 182 (expressions)]
@@ -4182,10 +4148,10 @@ State 266
     '&'       [reduce using rule 182 (expressions)]
     $default  reduce using rule 182 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 267
+State 265
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -4204,17 +4170,17 @@ State 267
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 198 (expressions)]
     ADD       [reduce using rule 198 (expressions)]
@@ -4229,10 +4195,10 @@ State 267
     '&'       [reduce using rule 198 (expressions)]
     $default  reduce using rule 198 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 268
+State 266
 
   175 expressions: expressions . '<' $@51 expressions
   177            | expressions . '<' ASSIGN $@52 expressions
@@ -4251,17 +4217,17 @@ State 268
   202            | expressions . '&' '&' $@64 expressions
   202            | expressions '&' '&' $@64 expressions .
 
-    ASSIGN  shift, and go to state 99
-    ADD     shift, and go to state 100
-    MINUS   shift, and go to state 101
-    '<'     shift, and go to state 102
-    '>'     shift, and go to state 103
-    '*'     shift, and go to state 104
-    '/'     shift, and go to state 105
-    '^'     shift, and go to state 106
-    '%'     shift, and go to state 107
-    '|'     shift, and go to state 108
-    '&'     shift, and go to state 109
+    ASSIGN  shift, and go to state 97
+    ADD     shift, and go to state 98
+    MINUS   shift, and go to state 99
+    '<'     shift, and go to state 100
+    '>'     shift, and go to state 101
+    '*'     shift, and go to state 102
+    '/'     shift, and go to state 103
+    '^'     shift, and go to state 104
+    '%'     shift, and go to state 105
+    '|'     shift, and go to state 106
+    '&'     shift, and go to state 107
 
     ASSIGN    [reduce using rule 202 (expressions)]
     ADD       [reduce using rule 202 (expressions)]
@@ -4276,148 +4242,177 @@ State 268
     '&'       [reduce using rule 202 (expressions)]
     $default  reduce using rule 202 (expressions)
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
+
+
+State 267
+
+  216 function_parameters: IDENTIFIER COLON all_possible_variables_types $@67 . function_parameters_one_or_more
+
+    COMMA  shift, and go to state 307
+
+    $default  reduce using rule 219 (function_parameters_one_or_more)
+
+    function_parameters_one_or_more  go to state 308
+
+
+State 268
+
+  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types . LBRACE commands RBRACE
+
+    LBRACE  shift, and go to state 309
 
 
 State 269
 
-  215 function_parameters: IDENTIFIER COLON all_possible_variables_types $@66 . function_parameters_one_or_more
+   78 numbers: NUMBER_LITERAL COMMA $@15 . numbers
 
-    COMMA  shift, and go to state 309
+    NUMBER_LITERAL  shift, and go to state 162
 
-    $default  reduce using rule 218 (function_parameters_one_or_more)
-
-    function_parameters_one_or_more  go to state 310
+    numbers  go to state 310
 
 
 State 270
 
-  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types . LBRACE commands RBRACE
+   85 floats: FLOAT_LITERAL COMMA $@18 . floats
 
-    LBRACE  shift, and go to state 311
+    FLOAT_LITERAL  shift, and go to state 164
+
+    floats  go to state 311
 
 
 State 271
 
-   78 numbers: NUMBER_LITERAL COMMA $@15 . numbers
+   90 booleans: BOOLEAN_LITERAL COMMA $@20 . booleans
 
-    NUMBER_LITERAL  shift, and go to state 164
+    BOOLEAN_LITERAL  shift, and go to state 166
 
-    numbers  go to state 312
+    booleans  go to state 312
 
 
 State 272
 
-   85 floats: FLOAT_LITERAL COMMA $@18 . floats
+   95 strings: STRING_LITERAL COMMA $@22 . strings
 
-    FLOAT_LITERAL  shift, and go to state 166
+    STRING_LITERAL  shift, and go to state 168
 
-    floats  go to state 313
+    strings  go to state 313
 
 
 State 273
 
-   90 booleans: BOOLEAN_LITERAL COMMA $@20 . booleans
+  213 function_values: all_possible_variables COMMA $@66 . function_values
 
-    BOOLEAN_LITERAL  shift, and go to state 168
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
-    booleans  go to state 314
+    all_possible_variables        go to state 170
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
+    function_values               go to state 314
 
 
 State 274
-
-   95 strings: STRING_LITERAL COMMA $@22 . strings
-
-    STRING_LITERAL  shift, and go to state 170
-
-    strings  go to state 315
-
-
-State 275
-
-  212 function_values: all_possible_variables COMMA function_values .
-
-    $default  reduce using rule 212 (function_values)
-
-
-State 276
 
   210 call_a_function: IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES SEMICOLON .
 
     $default  reduce using rule 210 (call_a_function)
 
 
-State 277
+State 275
+
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 . function_values RPARENTHESES SEMICOLON
+
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
+
+    all_possible_variables        go to state 170
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
+    function_values               go to state 315
+
+
+State 276
 
    39 number_or_array_declaration: LBRACKET RBRACKET . ASSIGN array_of_numbers_and_floats_declaration SEMICOLON
 
     ASSIGN  shift, and go to state 316
 
 
-State 278
+State 277
 
    41 number_or_float_declaration: NUMBER_LITERAL .
 
     $default  reduce using rule 41 (number_or_float_declaration)
 
 
-State 279
+State 278
 
    42 number_or_float_declaration: FLOAT_LITERAL .
 
     $default  reduce using rule 42 (number_or_float_declaration)
 
 
-State 280
+State 279
 
    40 number_or_array_declaration: ASSIGN number_or_float_declaration . SEMICOLON
 
     SEMICOLON  shift, and go to state 317
 
 
-State 281
+State 280
 
    48 string_or_array_of_strings_declaration: LBRACKET RBRACKET . ASSIGN $@5 array_of_strings
 
     ASSIGN  shift, and go to state 318
 
 
-State 282
+State 281
 
    46 string_or_array_of_strings_declaration: ASSIGN STRING_LITERAL .
 
     $default  reduce using rule 46 (string_or_array_of_strings_declaration)
 
 
-State 283
+State 282
 
    45 string_declaration: STRING string_or_array_of_strings_declaration SEMICOLON .
 
     $default  reduce using rule 45 (string_declaration)
 
 
-State 284
+State 283
 
    52 boolean_or_array_of_booleans_declaration: LBRACKET RBRACKET . ASSIGN $@6 array_of_booleans
 
     ASSIGN  shift, and go to state 319
 
 
-State 285
+State 284
 
    50 boolean_or_array_of_booleans_declaration: ASSIGN BOOLEAN_LITERAL .
 
     $default  reduce using rule 50 (boolean_or_array_of_booleans_declaration)
 
 
-State 286
+State 285
 
    49 boolean_declaration: BOOLEAN boolean_or_array_of_booleans_declaration SEMICOLON .
 
     $default  reduce using rule 49 (boolean_declaration)
 
 
-State 287
+State 286
 
    54 object_declaration: ANY ASSIGN LBRACE . $@7 object_attribution RBRACE SEMICOLON
 
@@ -4426,7 +4421,7 @@ State 287
     $@7  go to state 320
 
 
-State 288
+State 287
 
    56 object_declaration: ERROR_LITERAL ASSIGN LBRACE . $@8 object_attribution RBRACE SEMICOLON
 
@@ -4435,195 +4430,188 @@ State 288
     $@8  go to state 321
 
 
-State 289
+State 288
 
   114 access_bracket_on_object_nested: LBRACKET . STRING_LITERAL RBRACKET
 
     STRING_LITERAL  shift, and go to state 322
 
 
-State 290
+State 289
 
   110 access_identifier_on_object_nested: DOT . IDENTIFIER $@25 nested_dot_identifier_on_object
 
     IDENTIFIER  shift, and go to state 323
 
 
-State 291
+State 290
 
   104 access_object_on_bracket: IDENTIFIER LBRACKET STRING_LITERAL RBRACKET $@24 acess_more_objects_on_bracket .
 
     $default  reduce using rule 104 (access_object_on_bracket)
 
 
-State 292
+State 291
 
   105 acess_more_objects_on_bracket: access_object_nested .
 
     $default  reduce using rule 105 (acess_more_objects_on_bracket)
 
 
-State 293
+State 292
 
   107 access_object_nested: access_identifier_on_object_nested .
 
     $default  reduce using rule 107 (access_object_nested)
 
 
-State 294
+State 293
 
   108 access_object_nested: access_bracket_on_object_nested .
 
     $default  reduce using rule 108 (access_object_nested)
 
 
-State 295
+State 294
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 function_values . RPARENTHESES SEMICOLON
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters . RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands RBRACE
 
     RPARENTHESES  shift, and go to state 324
 
 
+State 295
+
+  228 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@71 . initialize_class_attribute_value SEMICOLON
+
+    ASSIGN  shift, and go to state 325
+
+    $default  reduce using rule 230 (initialize_class_attribute_value)
+
+    initialize_class_attribute_value  go to state 326
+
+
 State 296
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters . RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands RBRACE
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 . function_parameters RPARENTHESES LBRACE $@73 set_property_with_this RBRACE
 
-    RPARENTHESES  shift, and go to state 325
+    IDENTIFIER  shift, and go to state 110
+
+    $default  reduce using rule 214 (function_parameters)
+
+    function_parameters  go to state 327
 
 
 State 297
 
-  227 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@70 . initialize_class_attribute_value SEMICOLON
+  221 class_declarations: CLASS ERROR_LITERAL LBRACE $@69 class_attributes constructor_definition class_attributes RBRACE .
 
-    ASSIGN  shift, and go to state 326
-
-    $default  reduce using rule 229 (initialize_class_attribute_value)
-
-    initialize_class_attribute_value  go to state 327
+    $default  reduce using rule 221 (class_declarations)
 
 
 State 298
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 . function_parameters RPARENTHESES LBRACE $@72 set_property_with_this RBRACE
+  226 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types . $@70 initialize_class_attribute_value SEMICOLON
 
-    IDENTIFIER  shift, and go to state 112
+    $default  reduce using rule 225 ($@70)
 
-    $default  reduce using rule 213 (function_parameters)
-
-    function_parameters  go to state 328
+    $@70  go to state 328
 
 
 State 299
 
-  220 class_declarations: CLASS ERROR_LITERAL LBRACE $@68 class_attributes constructor_definition class_attributes RBRACE .
+  154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES LBRACE $@43 commands . RBRACE $@44 else_declaration
 
-    $default  reduce using rule 220 (class_declarations)
+    RBRACE  shift, and go to state 329
 
 
 State 300
 
-  225 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types . $@69 initialize_class_attribute_value SEMICOLON
-
-    $default  reduce using rule 224 ($@69)
-
-    $@69  go to state 329
-
-
-State 301
-
-  154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES LBRACE $@43 commands . RBRACE $@44 else_declaration
+  136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES LBRACE $@35 commands . RBRACE
 
     RBRACE  shift, and go to state 330
 
 
-State 302
-
-  136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES LBRACE $@35 commands . RBRACE
-
-    RBRACE  shift, and go to state 331
-
-
-State 303
+State 301
 
   139 command: DO LBRACE $@36 commands RBRACE WHILE LPARENTHESES $@37 . expressions RPARENTHESES SEMICOLON
 
-    LPARENTHESES     shift, and go to state 62
-    IDENTIFIER       shift, and go to state 49
-    STRING_LITERAL   shift, and go to state 63
-    NUMBER_LITERAL   shift, and go to state 64
-    FLOAT_LITERAL    shift, and go to state 65
-    BOOLEAN_LITERAL  shift, and go to state 66
+    LPARENTHESES     shift, and go to state 60
+    IDENTIFIER       shift, and go to state 48
+    STRING_LITERAL   shift, and go to state 61
+    NUMBER_LITERAL   shift, and go to state 62
+    FLOAT_LITERAL    shift, and go to state 63
+    BOOLEAN_LITERAL  shift, and go to state 64
 
-    access_object             go to state 67
-    access_object_on_bracket  go to state 52
-    expressions               go to state 332
+    access_object             go to state 65
+    access_object_on_bracket  go to state 51
+    expressions               go to state 331
 
 
-State 304
+State 302
 
   164 catch_declararation: CATCH LPARENTHESES . $@49 catch_error RPARENTHESES LBRACE $@50 commands RBRACE
 
     $default  reduce using rule 162 ($@49)
 
-    $@49  go to state 333
+    $@49  go to state 332
 
 
-State 305
+State 303
 
   161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE $@47 catch_declararation FINALLY . LBRACE $@48 commands RBRACE
 
-    LBRACE  shift, and go to state 334
+    LBRACE  shift, and go to state 333
 
 
-State 306
+State 304
 
   116 cases_of_switch_case: CASE . NUMBER_LITERAL COLON RETURN $@27 returns_of_switch
   118                     | CASE . STRING_LITERAL COLON RETURN $@28 returns_of_switch
   120                     | CASE . BOOLEAN_LITERAL COLON RETURN $@29 returns_of_switch
   123                     | CASE . $@30 access_object COLON RETURN $@31 returns_of_switch
 
-    STRING_LITERAL   shift, and go to state 335
-    NUMBER_LITERAL   shift, and go to state 336
-    BOOLEAN_LITERAL  shift, and go to state 337
+    STRING_LITERAL   shift, and go to state 334
+    NUMBER_LITERAL   shift, and go to state 335
+    BOOLEAN_LITERAL  shift, and go to state 336
 
     $default  reduce using rule 121 ($@30)
 
-    $@30  go to state 338
+    $@30  go to state 337
 
 
-State 307
+State 305
 
   145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 cases_of_switch_case . default_case_of_switch_case RBRACE
 
-    DEFAULT  shift, and go to state 339
+    DEFAULT  shift, and go to state 338
 
-    default_case_of_switch_case  go to state 340
+    default_case_of_switch_case  go to state 339
 
 
-State 308
+State 306
 
   141 command: THROW NEW ERROR_LITERAL LPARENTHESES $@38 expressions RPARENTHESES SEMICOLON .
 
     $default  reduce using rule 141 (command)
 
 
+State 307
+
+  218 function_parameters_one_or_more: COMMA . $@68 function_parameters
+
+    $default  reduce using rule 217 ($@68)
+
+    $@68  go to state 340
+
+
+State 308
+
+  216 function_parameters: IDENTIFIER COLON all_possible_variables_types $@67 function_parameters_one_or_more .
+
+    $default  reduce using rule 216 (function_parameters)
+
+
 State 309
-
-  217 function_parameters_one_or_more: COMMA . $@67 function_parameters
-
-    $default  reduce using rule 216 ($@67)
-
-    $@67  go to state 341
-
-
-State 310
-
-  215 function_parameters: IDENTIFIER COLON all_possible_variables_types $@66 function_parameters_one_or_more .
-
-    $default  reduce using rule 215 (function_parameters)
-
-
-State 311
 
   208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE . commands RBRACE
 
@@ -4646,13 +4634,13 @@ State 311
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
-    commands                      go to state 342
+    commands                      go to state 341
     command                       go to state 25
     if_declaration                go to state 26
     try_finally_declaration       go to state 27
@@ -4661,32 +4649,46 @@ State 311
     class_declarations            go to state 30
 
 
-State 312
+State 310
 
    78 numbers: NUMBER_LITERAL COMMA $@15 numbers .
 
     $default  reduce using rule 78 (numbers)
 
 
-State 313
+State 311
 
    85 floats: FLOAT_LITERAL COMMA $@18 floats .
 
     $default  reduce using rule 85 (floats)
 
 
-State 314
+State 312
 
    90 booleans: BOOLEAN_LITERAL COMMA $@20 booleans .
 
     $default  reduce using rule 90 (booleans)
 
 
-State 315
+State 313
 
    95 strings: STRING_LITERAL COMMA $@22 strings .
 
     $default  reduce using rule 95 (strings)
+
+
+State 314
+
+  213 function_values: all_possible_variables COMMA $@66 function_values .
+
+    $default  reduce using rule 213 (function_values)
+
+
+State 315
+
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 function_values . RPARENTHESES SEMICOLON
+
+    RPARENTHESES  shift, and go to state 342
 
 
 State 316
@@ -4765,77 +4767,70 @@ State 323
 
 State 324
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES . SEMICOLON
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES . COLON all_possible_variables_types LBRACE $@76 commands RBRACE
 
-    SEMICOLON  shift, and go to state 354
+    COLON  shift, and go to state 354
 
 
 State 325
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES . COLON all_possible_variables_types LBRACE $@75 commands RBRACE
+  229 initialize_class_attribute_value: ASSIGN . all_possible_variables
 
-    COLON  shift, and go to state 355
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
+
+    all_possible_variables        go to state 355
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
 
 
 State 326
 
-  228 initialize_class_attribute_value: ASSIGN . all_possible_variables
+  228 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@71 initialize_class_attribute_value . SEMICOLON
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
-
-    all_possible_variables        go to state 356
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    SEMICOLON  shift, and go to state 356
 
 
 State 327
 
-  227 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value . SEMICOLON
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters . RPARENTHESES LBRACE $@73 set_property_with_this RBRACE
 
-    SEMICOLON  shift, and go to state 357
+    RPARENTHESES  shift, and go to state 357
 
 
 State 328
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters . RPARENTHESES LBRACE $@72 set_property_with_this RBRACE
+  226 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@70 . initialize_class_attribute_value SEMICOLON
 
-    RPARENTHESES  shift, and go to state 358
+    ASSIGN  shift, and go to state 325
+
+    $default  reduce using rule 230 (initialize_class_attribute_value)
+
+    initialize_class_attribute_value  go to state 358
 
 
 State 329
-
-  225 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@69 . initialize_class_attribute_value SEMICOLON
-
-    ASSIGN  shift, and go to state 326
-
-    $default  reduce using rule 229 (initialize_class_attribute_value)
-
-    initialize_class_attribute_value  go to state 359
-
-
-State 330
 
   154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES LBRACE $@43 commands RBRACE . $@44 else_declaration
 
     $default  reduce using rule 153 ($@44)
 
-    $@44  go to state 360
+    $@44  go to state 359
 
 
-State 331
+State 330
 
   136 command: WHILE LPARENTHESES $@34 expressions RPARENTHESES LBRACE $@35 commands RBRACE .
 
     $default  reduce using rule 136 (command)
 
 
-State 332
+State 331
 
   139 command: DO LBRACE $@36 commands RBRACE WHILE LPARENTHESES $@37 expressions . RPARENTHESES SEMICOLON
   175 expressions: expressions . '<' $@51 expressions
@@ -4854,101 +4849,108 @@ State 332
   200            | expressions . '&' $@63 expressions
   202            | expressions . '&' '&' $@64 expressions
 
-    RPARENTHESES  shift, and go to state 361
-    ASSIGN        shift, and go to state 99
-    ADD           shift, and go to state 100
-    MINUS         shift, and go to state 101
-    '<'           shift, and go to state 102
-    '>'           shift, and go to state 103
-    '*'           shift, and go to state 104
-    '/'           shift, and go to state 105
-    '^'           shift, and go to state 106
-    '%'           shift, and go to state 107
-    '|'           shift, and go to state 108
-    '&'           shift, and go to state 109
+    RPARENTHESES  shift, and go to state 360
+    ASSIGN        shift, and go to state 97
+    ADD           shift, and go to state 98
+    MINUS         shift, and go to state 99
+    '<'           shift, and go to state 100
+    '>'           shift, and go to state 101
+    '*'           shift, and go to state 102
+    '/'           shift, and go to state 103
+    '^'           shift, and go to state 104
+    '%'           shift, and go to state 105
+    '|'           shift, and go to state 106
+    '&'           shift, and go to state 107
 
-    assign_expression  go to state 110
+    assign_expression  go to state 108
 
 
-State 333
+State 332
 
   164 catch_declararation: CATCH LPARENTHESES $@49 . catch_error RPARENTHESES LBRACE $@50 commands RBRACE
 
-    IDENTIFIER  shift, and go to state 362
+    IDENTIFIER  shift, and go to state 361
 
-    catch_error  go to state 363
+    catch_error  go to state 362
 
 
-State 334
+State 333
 
   161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE $@47 catch_declararation FINALLY LBRACE . $@48 commands RBRACE
 
     $default  reduce using rule 160 ($@48)
 
-    $@48  go to state 364
+    $@48  go to state 363
+
+
+State 334
+
+  118 cases_of_switch_case: CASE STRING_LITERAL . COLON RETURN $@28 returns_of_switch
+
+    COLON  shift, and go to state 364
 
 
 State 335
 
-  118 cases_of_switch_case: CASE STRING_LITERAL . COLON RETURN $@28 returns_of_switch
+  116 cases_of_switch_case: CASE NUMBER_LITERAL . COLON RETURN $@27 returns_of_switch
 
     COLON  shift, and go to state 365
 
 
 State 336
 
-  116 cases_of_switch_case: CASE NUMBER_LITERAL . COLON RETURN $@27 returns_of_switch
+  120 cases_of_switch_case: CASE BOOLEAN_LITERAL . COLON RETURN $@29 returns_of_switch
 
     COLON  shift, and go to state 366
 
 
 State 337
 
-  120 cases_of_switch_case: CASE BOOLEAN_LITERAL . COLON RETURN $@29 returns_of_switch
+  123 cases_of_switch_case: CASE $@30 . access_object COLON RETURN $@31 returns_of_switch
 
-    COLON  shift, and go to state 367
+    IDENTIFIER  shift, and go to state 48
+
+    access_object             go to state 367
+    access_object_on_bracket  go to state 51
 
 
 State 338
 
-  123 cases_of_switch_case: CASE $@30 . access_object COLON RETURN $@31 returns_of_switch
+  128 default_case_of_switch_case: DEFAULT . COLON RETURN $@33 all_possible_variables SEMICOLON
 
-    IDENTIFIER  shift, and go to state 49
-
-    access_object             go to state 368
-    access_object_on_bracket  go to state 52
+    COLON  shift, and go to state 368
 
 
 State 339
 
-  128 default_case_of_switch_case: DEFAULT . COLON RETURN $@33 all_possible_variables SEMICOLON
+  145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case . RBRACE
 
-    COLON  shift, and go to state 369
+    RBRACE  shift, and go to state 369
 
 
 State 340
 
-  145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case . RBRACE
+  218 function_parameters_one_or_more: COMMA $@68 . function_parameters
 
-    RBRACE  shift, and go to state 370
+    IDENTIFIER  shift, and go to state 110
+
+    $default  reduce using rule 214 (function_parameters)
+
+    function_parameters  go to state 370
 
 
 State 341
 
-  217 function_parameters_one_or_more: COMMA $@67 . function_parameters
+  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands . RBRACE
 
-    IDENTIFIER  shift, and go to state 112
-
-    $default  reduce using rule 213 (function_parameters)
-
-    function_parameters  go to state 371
+    RBRACE  shift, and go to state 371
 
 
 State 342
 
-  208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands . RBRACE
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES . SEMICOLON
 
-    RBRACE  shift, and go to state 372
+    SEMICOLON  shift, and go to state 372
 
 
 State 343
@@ -5053,53 +5055,46 @@ State 353
 
 State 354
 
-   37 instance_new_class: CONST IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@4 function_values RPARENTHESES SEMICOLON .
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON . all_possible_variables_types LBRACE $@76 commands RBRACE
 
-    $default  reduce using rule 37 (instance_new_class)
-
-
-State 355
-
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON . all_possible_variables_types LBRACE $@75 commands RBRACE
-
-    NUMBER   shift, and go to state 222
-    VOID     shift, and go to state 223
-    STRING   shift, and go to state 224
-    BOOLEAN  shift, and go to state 225
-    ANY      shift, and go to state 226
+    NUMBER   shift, and go to state 220
+    VOID     shift, and go to state 221
+    STRING   shift, and go to state 222
+    BOOLEAN  shift, and go to state 223
+    ANY      shift, and go to state 224
 
     all_possible_variables_types  go to state 385
 
 
+State 355
+
+  229 initialize_class_attribute_value: ASSIGN all_possible_variables .
+
+    $default  reduce using rule 229 (initialize_class_attribute_value)
+
+
 State 356
 
-  228 initialize_class_attribute_value: ASSIGN all_possible_variables .
+  228 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@71 initialize_class_attribute_value SEMICOLON .
 
-    $default  reduce using rule 228 (initialize_class_attribute_value)
+    $default  reduce using rule 228 (class_attribute_declaration)
 
 
 State 357
 
-  227 class_attribute_declaration: IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON .
-
-    $default  reduce using rule 227 (class_attribute_declaration)
-
-
-State 358
-
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters RPARENTHESES . LBRACE $@72 set_property_with_this RBRACE
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters RPARENTHESES . LBRACE $@73 set_property_with_this RBRACE
 
     LBRACE  shift, and go to state 386
 
 
-State 359
+State 358
 
-  225 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@69 initialize_class_attribute_value . SEMICOLON
+  226 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value . SEMICOLON
 
     SEMICOLON  shift, and go to state 387
 
 
-State 360
+State 359
 
   154 if_declaration: IF LPARENTHESES $@42 expressions RPARENTHESES LBRACE $@43 commands RBRACE $@44 . else_declaration
 
@@ -5110,14 +5105,14 @@ State 360
     else_declaration  go to state 389
 
 
-State 361
+State 360
 
   139 command: DO LBRACE $@36 commands RBRACE WHILE LPARENTHESES $@37 expressions RPARENTHESES . SEMICOLON
 
     SEMICOLON  shift, and go to state 390
 
 
-State 362
+State 361
 
   166 catch_error: IDENTIFIER . error_to_catch
 
@@ -5127,14 +5122,14 @@ State 362
     error_to_catch  go to state 393
 
 
-State 363
+State 362
 
   164 catch_declararation: CATCH LPARENTHESES $@49 catch_error . RPARENTHESES LBRACE $@50 commands RBRACE
 
     RPARENTHESES  shift, and go to state 394
 
 
-State 364
+State 363
 
   161 try_finally_declaration: TRY LBRACE $@46 commands RBRACE $@47 catch_declararation FINALLY LBRACE $@48 . commands RBRACE
 
@@ -5157,10 +5152,10 @@ State 364
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
     commands                      go to state 395
@@ -5172,67 +5167,74 @@ State 364
     class_declarations            go to state 30
 
 
-State 365
+State 364
 
   118 cases_of_switch_case: CASE STRING_LITERAL COLON . RETURN $@28 returns_of_switch
 
     RETURN  shift, and go to state 396
 
 
-State 366
+State 365
 
   116 cases_of_switch_case: CASE NUMBER_LITERAL COLON . RETURN $@27 returns_of_switch
 
     RETURN  shift, and go to state 397
 
 
-State 367
+State 366
 
   120 cases_of_switch_case: CASE BOOLEAN_LITERAL COLON . RETURN $@29 returns_of_switch
 
     RETURN  shift, and go to state 398
 
 
-State 368
+State 367
 
   123 cases_of_switch_case: CASE $@30 access_object . COLON RETURN $@31 returns_of_switch
 
     COLON  shift, and go to state 399
 
 
-State 369
+State 368
 
   128 default_case_of_switch_case: DEFAULT COLON . RETURN $@33 all_possible_variables SEMICOLON
 
     RETURN  shift, and go to state 400
 
 
-State 370
+State 369
 
   145 command: SWITCH LPARENTHESES $@39 expressions RPARENTHESES LBRACE $@40 cases_of_switch_case default_case_of_switch_case RBRACE .
 
     $default  reduce using rule 145 (command)
 
 
+State 370
+
+  218 function_parameters_one_or_more: COMMA $@68 function_parameters .
+
+    $default  reduce using rule 218 (function_parameters_one_or_more)
+
+
 State 371
-
-  217 function_parameters_one_or_more: COMMA $@67 function_parameters .
-
-    $default  reduce using rule 217 (function_parameters_one_or_more)
-
-
-State 372
 
   208 function_declarartion: FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE .
 
     $default  reduce using rule 208 (function_declarartion)
 
 
+State 372
+
+    9 instance_new_class: variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES $@2 function_values RPARENTHESES SEMICOLON .
+
+    $default  reduce using rule 9 (instance_new_class)
+
+
 State 373
 
    74 array_of_numbers: LBRACKET $@13 . numbers RBRACKET
 
-    NUMBER_LITERAL  shift, and go to state 164
+    NUMBER_LITERAL  shift, and go to state 162
 
     numbers  go to state 401
 
@@ -5241,7 +5243,7 @@ State 374
 
    81 array_of_floats: LBRACKET $@16 . floats RBRACKET
 
-    FLOAT_LITERAL  shift, and go to state 166
+    FLOAT_LITERAL  shift, and go to state 164
 
     floats  go to state 402
 
@@ -5259,7 +5261,7 @@ State 376
 
     $default  reduce using rule 92 ($@21)
 
-    $@21  go to state 117
+    $@21  go to state 115
 
 
 State 377
@@ -5275,7 +5277,7 @@ State 378
 
     $default  reduce using rule 87 ($@19)
 
-    $@19  go to state 116
+    $@19  go to state 114
 
 
 State 379
@@ -5300,14 +5302,14 @@ State 380
    71                   | IDENTIFIER COLON . LBRACE object_attribution RBRACE
 
     LBRACE           shift, and go to state 403
-    IDENTIFIER       shift, and go to state 49
+    IDENTIFIER       shift, and go to state 48
     STRING_LITERAL   shift, and go to state 404
     NUMBER_LITERAL   shift, and go to state 405
     FLOAT_LITERAL    shift, and go to state 406
     BOOLEAN_LITERAL  shift, and go to state 407
 
     access_object             go to state 408
-    access_object_on_bracket  go to state 52
+    access_object_on_bracket  go to state 51
 
 
 State 381
@@ -5342,25 +5344,25 @@ State 384
 
 State 385
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types . LBRACE $@75 commands RBRACE
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types . LBRACE $@76 commands RBRACE
 
     LBRACE  shift, and go to state 412
 
 
 State 386
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters RPARENTHESES LBRACE . $@72 set_property_with_this RBRACE
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters RPARENTHESES LBRACE . $@73 set_property_with_this RBRACE
 
-    $default  reduce using rule 234 ($@72)
+    $default  reduce using rule 235 ($@73)
 
-    $@72  go to state 413
+    $@73  go to state 413
 
 
 State 387
 
-  225 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@69 initialize_class_attribute_value SEMICOLON .
+  226 class_attribute_declaration: access_modifiers IDENTIFIER COLON all_possible_variables_types $@70 initialize_class_attribute_value SEMICOLON .
 
-    $default  reduce using rule 225 (class_attribute_declaration)
+    $default  reduce using rule 226 (class_attribute_declaration)
 
 
 State 388
@@ -5555,28 +5557,28 @@ State 411
 
   112 nested_dot_identifier_on_object: DOT $@26 . access_object
 
-    IDENTIFIER  shift, and go to state 49
+    IDENTIFIER  shift, and go to state 48
 
     access_object             go to state 432
-    access_object_on_bracket  go to state 52
+    access_object_on_bracket  go to state 51
 
 
 State 412
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE . $@75 commands RBRACE
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE . $@76 commands RBRACE
 
-    $default  reduce using rule 241 ($@75)
+    $default  reduce using rule 242 ($@76)
 
-    $@75  go to state 433
+    $@76  go to state 433
 
 
 State 413
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters RPARENTHESES LBRACE $@72 . set_property_with_this RBRACE
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters RPARENTHESES LBRACE $@73 . set_property_with_this RBRACE
 
     THIS  shift, and go to state 434
 
-    $default  reduce using rule 239 (set_property_with_this)
+    $default  reduce using rule 240 (set_property_with_this)
 
     set_property_with_this  go to state 435
 
@@ -5624,17 +5626,17 @@ State 419
 
   118 cases_of_switch_case: CASE STRING_LITERAL COLON RETURN $@28 . returns_of_switch
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
     all_possible_variables        go to state 438
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
     returns_of_switch             go to state 439
 
 
@@ -5642,17 +5644,17 @@ State 420
 
   116 cases_of_switch_case: CASE NUMBER_LITERAL COLON RETURN $@27 . returns_of_switch
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
     all_possible_variables        go to state 438
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
     returns_of_switch             go to state 440
 
 
@@ -5660,17 +5662,17 @@ State 421
 
   120 cases_of_switch_case: CASE BOOLEAN_LITERAL COLON RETURN $@29 . returns_of_switch
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
     all_possible_variables        go to state 438
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
     returns_of_switch             go to state 441
 
 
@@ -5687,17 +5689,17 @@ State 423
 
   128 default_case_of_switch_case: DEFAULT COLON RETURN $@33 . all_possible_variables SEMICOLON
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
     all_possible_variables        go to state 443
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
 
 
 State 424
@@ -5777,7 +5779,7 @@ State 432
 
 State 433
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 . commands RBRACE
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 . commands RBRACE
 
     VAR          shift, and go to state 1
     CONST        shift, and go to state 2
@@ -5798,10 +5800,10 @@ State 433
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
     commands                      go to state 450
@@ -5815,14 +5817,14 @@ State 433
 
 State 434
 
-  238 set_property_with_this: THIS . DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@73 set_property_with_this
+  239 set_property_with_this: THIS . DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@74 set_property_with_this
 
     DOT  shift, and go to state 451
 
 
 State 435
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters RPARENTHESES LBRACE $@72 set_property_with_this . RBRACE
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters RPARENTHESES LBRACE $@73 set_property_with_this . RBRACE
 
     RBRACE  shift, and go to state 452
 
@@ -5850,10 +5852,10 @@ State 436
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
     commands                      go to state 453
@@ -5888,10 +5890,10 @@ State 437
     $default  reduce using rule 132 (commands)
 
     declaration                   go to state 17
-    variable_types                go to state 18
-    console_log_declarations      go to state 19
-    console_log_left_common       go to state 20
-    instance_new_class            go to state 21
+    instance_new_class            go to state 18
+    variable_types                go to state 19
+    console_log_declarations      go to state 20
+    console_log_left_common       go to state 21
     increment_decrement_variable  go to state 22
     set_value_on_class            go to state 23
     commands                      go to state 454
@@ -5935,17 +5937,17 @@ State 442
 
   123 cases_of_switch_case: CASE $@30 access_object COLON RETURN $@31 . returns_of_switch
 
-    LBRACKET         shift, and go to state 71
-    STRING_LITERAL   shift, and go to state 72
-    NUMBER_LITERAL   shift, and go to state 73
-    FLOAT_LITERAL    shift, and go to state 74
-    BOOLEAN_LITERAL  shift, and go to state 75
+    LBRACKET         shift, and go to state 69
+    STRING_LITERAL   shift, and go to state 70
+    NUMBER_LITERAL   shift, and go to state 71
+    FLOAT_LITERAL    shift, and go to state 72
+    BOOLEAN_LITERAL  shift, and go to state 73
 
     all_possible_variables        go to state 438
-    array_of_numbers_only_values  go to state 77
-    array_of_floats_only_values   go to state 78
-    array_of_booleans             go to state 79
-    array_of_strings              go to state 80
+    array_of_numbers_only_values  go to state 75
+    array_of_floats_only_values   go to state 76
+    array_of_booleans             go to state 77
+    array_of_strings              go to state 78
     returns_of_switch             go to state 456
 
 
@@ -6016,23 +6018,23 @@ State 449
 
 State 450
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands . RBRACE
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands . RBRACE
 
     RBRACE  shift, and go to state 462
 
 
 State 451
 
-  238 set_property_with_this: THIS DOT . IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@73 set_property_with_this
+  239 set_property_with_this: THIS DOT . IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@74 set_property_with_this
 
     IDENTIFIER  shift, and go to state 463
 
 
 State 452
 
-  235 constructor_definition: CONSTRUCTOR LPARENTHESES $@71 function_parameters RPARENTHESES LBRACE $@72 set_property_with_this RBRACE .
+  236 constructor_definition: CONSTRUCTOR LPARENTHESES $@72 function_parameters RPARENTHESES LBRACE $@73 set_property_with_this RBRACE .
 
-    $default  reduce using rule 235 (constructor_definition)
+    $default  reduce using rule 236 (constructor_definition)
 
 
 State 453
@@ -6102,14 +6104,14 @@ State 461
 
 State 462
 
-  242 class_function_declarartion: IDENTIFIER LPARENTHESES $@74 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@75 commands RBRACE .
+  243 class_function_declarartion: IDENTIFIER LPARENTHESES $@75 function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE $@76 commands RBRACE .
 
-    $default  reduce using rule 242 (class_function_declarartion)
+    $default  reduce using rule 243 (class_function_declarartion)
 
 
 State 463
 
-  238 set_property_with_this: THIS DOT IDENTIFIER . ASSIGN IDENTIFIER SEMICOLON $@73 set_property_with_this
+  239 set_property_with_this: THIS DOT IDENTIFIER . ASSIGN IDENTIFIER SEMICOLON $@74 set_property_with_this
 
     ASSIGN  shift, and go to state 467
 
@@ -6132,7 +6134,7 @@ State 466
 
   126 returns_of_switch: all_possible_variables SEMICOLON $@32 . cases_of_switch_case
 
-    CASE  shift, and go to state 306
+    CASE  shift, and go to state 304
 
     $default  reduce using rule 124 (cases_of_switch_case)
 
@@ -6141,7 +6143,7 @@ State 466
 
 State 467
 
-  238 set_property_with_this: THIS DOT IDENTIFIER ASSIGN . IDENTIFIER SEMICOLON $@73 set_property_with_this
+  239 set_property_with_this: THIS DOT IDENTIFIER ASSIGN . IDENTIFIER SEMICOLON $@74 set_property_with_this
 
     IDENTIFIER  shift, and go to state 469
 
@@ -6155,33 +6157,33 @@ State 468
 
 State 469
 
-  238 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER . SEMICOLON $@73 set_property_with_this
+  239 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER . SEMICOLON $@74 set_property_with_this
 
     SEMICOLON  shift, and go to state 470
 
 
 State 470
 
-  238 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON . $@73 set_property_with_this
+  239 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON . $@74 set_property_with_this
 
-    $default  reduce using rule 237 ($@73)
+    $default  reduce using rule 238 ($@74)
 
-    $@73  go to state 471
+    $@74  go to state 471
 
 
 State 471
 
-  238 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@73 . set_property_with_this
+  239 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@74 . set_property_with_this
 
     THIS  shift, and go to state 434
 
-    $default  reduce using rule 239 (set_property_with_this)
+    $default  reduce using rule 240 (set_property_with_this)
 
     set_property_with_this  go to state 472
 
 
 State 472
 
-  238 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@73 set_property_with_this .
+  239 set_property_with_this: THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON $@74 set_property_with_this .
 
-    $default  reduce using rule 238 (set_property_with_this)
+    $default  reduce using rule 239 (set_property_with_this)

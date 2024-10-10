@@ -64,6 +64,9 @@ declaration:
     | instance_new_class
 ;
 
+instance_new_class:
+    variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES { fprintf(output, "%s %s = new %s(", $5, $2, $5); } function_values RPARENTHESES SEMICOLON { fprintf(output, ");"); } ;
+
 possible_declarations:
     number_declaration
     | string_declaration
@@ -247,6 +250,7 @@ access_object:
     | access_object_on_bracket 
 ;
 
+
 access_object_on_bracket:
     IDENTIFIER LBRACKET STRING_LITERAL RBRACKET { fprintf(output, "%s.%s", $1, remove_quotes($3)); } acess_more_objects_on_bracket
 ;
@@ -395,7 +399,7 @@ call_a_function:
 
 function_values:
     all_possible_variables
-    | all_possible_variables COMMA function_values
+    | all_possible_variables COMMA { fprintf(output, ","); } function_values
 
 
 function_parameters:

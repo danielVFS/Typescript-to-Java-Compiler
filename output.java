@@ -180,10 +180,12 @@ return name;
 }
 }
 
-"João"
+String value = "12";
 
 System.out.println(pessoa);
 
-"João"12
+Person pessoa = new Person("João");
+
+Person pessoa = new Person("João",12);
 
 System.out.println('Olá 1, bem vindo:' + 

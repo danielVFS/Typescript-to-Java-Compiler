@@ -162,9 +162,11 @@ class Person {
   }
 }
 
-const pessoa = new Person("João");
+const value: string = "12";
 
 console.log(pessoa);
+
+const pessoa = new Person("João");
 
 const pessoa = new Person("João", 12);
 
@@ -172,3 +174,17 @@ console.log('Olá 1, bem vindo:' + this.name);
 console.log('Olá 2, bem vindo:' + this['name']);
 console.log('Olá 3, bem vindo:' + this['name'].value);
 console.log('Olá 4, bem vindo:' + this.name.value);
+
+let options: any[] = [{option: 1, value: '1', option: 2, value: '2'}];
+
+function sum(a: number, b: number): number { 
+  return a + b; 
+}
+
+function sum(a: number, b: number): void { 
+  console.log(a + b); 
+}
+
+sum(1);
+sum(1, 2);
+sum(1, 2, 3);
