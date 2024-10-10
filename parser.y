@@ -47,6 +47,7 @@
 %token <ystr> ERROR_LITERAL
 
 %type <ystr> error_to_catch
+%type <ystr> all_possible_variables_types
 
 %%
 program: commands
@@ -59,6 +60,7 @@ declaration:
     variable_types IDENTIFIER {strcpy(identifierDefined,$2);} COLON possible_declarations
     | console_log_declarations
     | increment_decrement_variable
+    | set_value_on_class
     | instance_new_class
 ;
 
@@ -66,6 +68,7 @@ possible_declarations:
     number_declaration
     | string_declaration
     | boolean_declaration
+    | object_declaration
 ;
 
 
@@ -105,13 +108,11 @@ all_possible_variables:
 ;
 
 all_possible_variables_types:
-    NUMBER 
-    | STRING
-    | BOOLEAN 
-    | ANY 
-    | BOOLEAN_LITERAL 
-    | LBRACE RBRACE 
-    | VOID 
+    NUMBER { $$ = "int"; }
+    | STRING { $$ = "String"; }
+    | BOOLEAN { $$ = "boolean"; }
+    | ANY { $$ = "void"; }
+    | VOID { $$ = "void"; } 
 ;
 
 ////////
@@ -158,9 +159,9 @@ boolean_or_array_of_booleans_declaration:
 
 ////////
 
-object_declaration: 
-    variable_types IDENTIFIER COLON ANY ASSIGN LBRACE object_attribution RBRACE SEMICOLON
-    | variable_types IDENTIFIER COLON CLASS_IDENTIFIER ASSIGN LBRACE object_attribution RBRACE SEMICOLON
+object_declaration:
+    ANY ASSIGN LBRACE { fprintf(output, "HashMap<Any, Object> %s = new HashMap<>(); \n", identifierDefined); } object_attribution RBRACE SEMICOLON
+    | ERROR_LITERAL ASSIGN LBRACE { fprintf(output, "HashMap<%s, Object> %s = new HashMap<>(); \n", $1, identifierDefined); } object_attribution RBRACE SEMICOLON
 ;
 
 array_of_objects_declaration:
@@ -169,21 +170,16 @@ array_of_objects_declaration:
 
 ////////
 
-instance_new_class:
-    variable_types IDENTIFIER ASSIGN NEW CLASS_IDENTIFIER LPARENTHESES function_values RPARENTHESES SEMICOLON;
-
-////////
-
 object_attribution:
-    IDENTIFIER COLON STRING_LITERAL
-    | IDENTIFIER COLON NUMBER_LITERAL
-    | IDENTIFIER COLON FLOAT_LITERAL
-    | IDENTIFIER COLON BOOLEAN_LITERAL
+    IDENTIFIER COLON STRING_LITERAL { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, $1, $3); }
+    | IDENTIFIER COLON NUMBER_LITERAL { fprintf(output, "%s.put(\"%s\",%d); \n", identifierDefined, $1, $3); }
+    | IDENTIFIER COLON FLOAT_LITERAL { fprintf(output, "%s.put(\"%s\",%f); \n", identifierDefined, $1, $3); }
+    | IDENTIFIER COLON BOOLEAN_LITERAL { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, $1, $3); }
     | IDENTIFIER COLON access_object
-    | IDENTIFIER COLON STRING_LITERAL COMMA object_attribution
-    | IDENTIFIER COLON NUMBER_LITERAL COMMA object_attribution 
-    | IDENTIFIER COLON FLOAT_LITERAL COMMA object_attribution 
-    | IDENTIFIER COLON BOOLEAN_LITERAL COMMA object_attribution 
+    | IDENTIFIER COLON STRING_LITERAL COMMA { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, $1, $3); } object_attribution
+    | IDENTIFIER COLON NUMBER_LITERAL COMMA { fprintf(output, "%s.put(\"%s\",%d); \n", identifierDefined, $1, $3); } object_attribution 
+    | IDENTIFIER COLON FLOAT_LITERAL COMMA { fprintf(output, "%s.put(\"%s\",%f); \n", identifierDefined, $1, $3); } object_attribution 
+    | IDENTIFIER COLON BOOLEAN_LITERAL COMMA { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, $1, $3); } object_attribution 
     | IDENTIFIER COLON access_object COMMA object_attribution
     | IDENTIFIER COLON LBRACE object_attribution RBRACE
     | /* empty */
@@ -241,8 +237,8 @@ objects:
 ;
 
 increment_decrement_variable:
-    IDENTIFIER ADD ADD SEMICOLON
-    | IDENTIFIER MINUS MINUS SEMICOLON
+    IDENTIFIER ADD ADD SEMICOLON { fprintf(output, "%s++;", $1); }
+    | IDENTIFIER MINUS MINUS SEMICOLON { fprintf(output, "%s--;", $1); }
 ;
 
 access_object:
@@ -284,13 +280,6 @@ nested_bracket_on_object:
     | /* empty */ 
 ;
 
-access_class:
-    THIS DOT IDENTIFIER
-    | THIS DOT IDENTIFIER DOT access_object
-    | THIS LBRACKET STRING_LITERAL RBRACKET access_object_nested
-    | THIS LBRACKET STRING_LITERAL RBRACKET 
-;
-
 cases_of_switch_case:
     CASE NUMBER_LITERAL COLON RETURN { fprintf(output, "case %d: return ", $2); } returns_of_switch
     | CASE STRING_LITERAL COLON RETURN { fprintf(output, "case %s: return ", $2); } returns_of_switch
@@ -307,6 +296,12 @@ default_case_of_switch_case:
     DEFAULT COLON RETURN { fprintf(output, "default: return "); } all_possible_variables SEMICOLON { fprintf(output, ";"); }
 ;
 
+//////
+
+set_value_on_class: 
+    THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON { fprintf(output, "this.%s = %s", $3, $5); } ;
+;
+
 
 //////////////// commands ////////////////
 
@@ -319,13 +314,13 @@ commands :
 command : 
     if_declaration
     | WHILE LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
-    | DO LBRACE commands RBRACE WHILE expressions
+    | DO LBRACE { fprintf(output, "do {"); } commands RBRACE WHILE LPARENTHESES { fprintf(output, "} while("); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
     | THROW NEW ERROR_LITERAL LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
     | try_finally_declaration
     | SWITCH LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } cases_of_switch_case default_case_of_switch_case RBRACE { fprintf(output, "}"); }
     | function_declarartion
     | call_a_function
-    | RETURN expressions SEMICOLON
+    | RETURN { fprintf(output, "return "); } expressions SEMICOLON { fprintf(output, ";"); }
     | class_declarations 
 ;
 
@@ -362,7 +357,6 @@ expressions:
     | FLOAT_LITERAL { fprintf(output, "%d", $1); }
     | BOOLEAN_LITERAL { fprintf(output, "%s", $1); }
     | access_object
-    | access_class
     | expressions '<' { fprintf(output, "<"); } expressions
     | expressions '<' ASSIGN { fprintf(output, "<="); } expressions
     | expressions assign_expression expressions { fprintf(output, ")"); }
@@ -403,14 +397,21 @@ function_values:
     all_possible_variables
     | all_possible_variables COMMA function_values
 
+
 function_parameters:
     /* empty */
-    | IDENTIFIER COLON all_possible_variables_types
-    | IDENTIFIER COLON all_possible_variables_types COMMA function_parameters
+    | IDENTIFIER COLON all_possible_variables_types { fprintf(output, "%s %s", $3, $1); } function_parameters_one_or_more
 ;
 
+function_parameters_one_or_more: 
+    COMMA { fprintf(output, ", "); } function_parameters
+    | /* empty */
+;
+
+///////////
+
 class_declarations: 
-    CLASS CLASS_IDENTIFIER LBRACE class_attributes constructor_definition class_attributes RBRACE
+    CLASS ERROR_LITERAL LBRACE { fprintf(output, "public class %s {", $2); } class_attributes constructor_definition class_attributes RBRACE { fprintf(output, "}"); }
 ;
 
 class_attributes:
@@ -420,8 +421,8 @@ class_attributes:
 ;
 
 class_attribute_declaration:
-    access_modifiers IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON
-    | IDENTIFIER COLON all_possible_variables_types initialize_class_attribute_value SEMICOLON
+    access_modifiers IDENTIFIER COLON all_possible_variables_types { fprintf(output, " %s %s", $4, $2); } initialize_class_attribute_value SEMICOLON { fprintf(output, ";"); }
+    | IDENTIFIER COLON all_possible_variables_types { fprintf(output, "public %s %s", $3, $1); } initialize_class_attribute_value SEMICOLON { fprintf(output, ";"); }
 ;
 
 initialize_class_attribute_value:
@@ -430,24 +431,27 @@ initialize_class_attribute_value:
 ;
 
 access_modifiers: 
-    PUBLIC
-    | PRIVATE
-    | PROTECTED
+    PUBLIC { fprintf(output, "public"); }
+    | PRIVATE { fprintf(output, "private"); }
+    | PROTECTED { fprintf(output, "protected"); }
 ;
 
 constructor_definition:
-    CONSTRUCTOR LPARENTHESES function_parameters RPARENTHESES LBRACE set_property_with_this RBRACE
+    CONSTRUCTOR LPARENTHESES { fprintf(output, "Public constructor("); } function_parameters RPARENTHESES LBRACE {fprintf(output, "){");} set_property_with_this RBRACE { fprintf(output, "}"); }
     | /* empty */
 ;
 
 set_property_with_this:
-    THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON set_property_with_this
+    THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON  { fprintf(output, "this.%s = %s;", $3, $5); } set_property_with_this
     | /* empty */
 ;
 
 class_function_declarartion:
-    IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+    IDENTIFIER LPARENTHESES { fprintf(output, "%s(", $1); } function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE { fprintf(output, "): %s {", $7); } commands RBRACE { fprintf(output, "}"); }
 ;
+
+///////////
+
     
 %%
 main( int argc, char *argv[] )

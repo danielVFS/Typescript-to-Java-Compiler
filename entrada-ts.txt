@@ -15,6 +15,17 @@ let isvalid: boolean = true;
 let isValids: boolean[] = [true, false];
 
 let person: any = {};
+let person: People = {};
+
+let person2: any = {name: 'Daniel'};
+let person2: any = {age: 22};
+let person2: any = {heigth: 160.2};
+let person2: any = {married: true};
+
+
+let person2: any = {name: 'Daniel', surname: 'Vitor', age: 22, heigth: 160.2, married: true};
+
+let person3: any = {name: 'Vitor'};
 
 while (person.page >= 5) {
   console.log(i);
@@ -61,6 +72,16 @@ if(isvalid == true) {
 if(str1 === str2) {
   console.log('Hello World');
 }
+
+while (i < 5) {
+  console.log(i);
+  i++;
+}
+
+do {
+  console.log(i);
+  i++;
+} while (numero < 1 || numero > 10);
 
 if (b === 0) {
   throw new Error("Divisão por zero não é permitida.");
@@ -118,3 +139,36 @@ switch (dia) {
       return "Número inválido! Escolha um número de 1 a 7.";
 }
 
+class Person { 
+  name: string;
+
+  public age: number;
+  private address: string;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+  }
+
+  saudacao(): void {
+    console.log(`Olá 5, bem vindo ${this.name}`);
+  }
+
+  setName(name: string): void {
+    this.name = name;
+  }
+
+  getName(name: string): string {
+    return name;
+  }
+}
+
+const pessoa = new Person("João");
+
+console.log(pessoa);
+
+const pessoa = new Person("João", 12);
+
+console.log('Olá 1, bem vindo:' + this.name);
+console.log('Olá 2, bem vindo:' + this['name']);
+console.log('Olá 3, bem vindo:' + this['name'].value);
+console.log('Olá 4, bem vindo:' + this.name.value);
