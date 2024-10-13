@@ -513,28 +513,28 @@ static const yytype_uint16 yyrline[] =
       97,    98,    99,   100,   101,   102,   106,   107,   108,   109,
      110,   111,   117,   121,   122,   125,   126,   130,   131,   137,
      141,   142,   142,   148,   152,   153,   153,   159,   159,   160,
-     160,   170,   171,   172,   173,   174,   175,   175,   176,   176,
-     177,   177,   178,   178,   179,   180,   181,   187,   187,   191,
-     191,   195,   195,   196,   199,   199,   203,   203,   207,   207,
-     208,   211,   211,   215,   215,   216,   219,   219,   223,   223,
-     224,   236,   237,   241,   242,   242,   243,   248,   248,   252,
-     253,   258,   259,   263,   263,   267,   267,   268,   272,   281,
-     281,   282,   282,   283,   283,   284,   284,   284,   285,   289,
-     289,   293,   293,   299,   306,   307,   308,   312,   313,   313,
-     313,   314,   314,   314,   315,   315,   316,   317,   317,   317,
-     318,   319,   319,   320,   321,   322,   326,   326,   326,   326,
-     330,   330,   331,   335,   335,   335,   335,   339,   339,   339,
-     340,   344,   348,   349,   353,   353,   353,   357,   357,   358,
-     358,   358,   358,   363,   363,   364,   364,   365,   365,   366,
-     366,   367,   367,   371,   372,   375,   376,   377,   378,   379,
-     380,   380,   381,   381,   382,   383,   383,   384,   384,   385,
-     385,   386,   386,   387,   387,   388,   388,   389,   389,   390,
-     390,   391,   391,   392,   392,   393,   393,   394,   394,   395,
-     395,   399,   403,   404,   408,   408,   408,   412,   412,   413,
-     413,   418,   418,   422,   422,   423,   426,   427,   427,   430,
-     432,   432,   436,   436,   437,   443,   443,   447,   448,   449,
-     453,   453,   454,   454,   458,   459,   463,   464,   465,   469,
-     469,   469,   470,   474,   474,   475,   479,   479,   479
+     160,   166,   167,   168,   169,   170,   171,   171,   172,   172,
+     173,   173,   174,   174,   175,   176,   177,   183,   183,   187,
+     187,   191,   191,   192,   195,   195,   199,   199,   203,   203,
+     204,   207,   207,   211,   211,   212,   215,   215,   219,   219,
+     220,   224,   225,   229,   230,   230,   231,   235,   235,   239,
+     240,   244,   245,   249,   249,   253,   253,   254,   258,   262,
+     262,   263,   263,   264,   264,   265,   265,   265,   266,   270,
+     270,   274,   274,   280,   287,   288,   289,   293,   294,   294,
+     294,   295,   295,   295,   296,   296,   297,   298,   298,   298,
+     299,   300,   300,   301,   302,   303,   307,   307,   307,   307,
+     311,   311,   312,   316,   316,   316,   316,   320,   320,   320,
+     321,   325,   329,   330,   334,   334,   334,   338,   338,   339,
+     339,   339,   339,   344,   344,   345,   345,   346,   346,   347,
+     347,   348,   348,   352,   353,   356,   357,   358,   359,   360,
+     361,   361,   362,   362,   363,   364,   364,   365,   365,   366,
+     366,   367,   367,   368,   368,   369,   369,   370,   370,   371,
+     371,   372,   372,   373,   373,   374,   374,   375,   375,   376,
+     376,   380,   384,   385,   389,   389,   389,   393,   393,   394,
+     394,   399,   399,   403,   403,   404,   407,   408,   408,   411,
+     413,   413,   417,   417,   418,   424,   424,   428,   429,   430,
+     434,   434,   435,   435,   439,   440,   444,   445,   446,   450,
+     450,   450,   451,   455,   455,   456,   460,   460,   460
 };
 #endif
 
@@ -1879,847 +1879,847 @@ yyreduce:
     break;
 
   case 61:
-#line 170 "parser.y" /* yacc.c:1646  */
+#line 166 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, (yyvsp[-2].ystr), (yyvsp[0].ystr)); }
 #line 1885 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 171 "parser.y" /* yacc.c:1646  */
+#line 167 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%d); \n", identifierDefined, (yyvsp[-2].ystr), (yyvsp[0].yint)); }
 #line 1891 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 172 "parser.y" /* yacc.c:1646  */
+#line 168 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%f); \n", identifierDefined, (yyvsp[-2].ystr), (yyvsp[0].yfloat)); }
 #line 1897 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 173 "parser.y" /* yacc.c:1646  */
+#line 169 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, (yyvsp[-2].ystr), (yyvsp[0].ystr)); }
 #line 1903 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 175 "parser.y" /* yacc.c:1646  */
+#line 171 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, (yyvsp[-3].ystr), (yyvsp[-1].ystr)); }
 #line 1909 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 176 "parser.y" /* yacc.c:1646  */
+#line 172 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%d); \n", identifierDefined, (yyvsp[-3].ystr), (yyvsp[-1].yint)); }
 #line 1915 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 177 "parser.y" /* yacc.c:1646  */
+#line 173 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%f); \n", identifierDefined, (yyvsp[-3].ystr), (yyvsp[-1].yfloat)); }
 #line 1921 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 178 "parser.y" /* yacc.c:1646  */
+#line 174 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.put(\"%s\",%s); \n", identifierDefined, (yyvsp[-3].ystr), (yyvsp[-1].ystr)); }
 #line 1927 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 187 "parser.y" /* yacc.c:1646  */
+#line 183 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "int[] %s = {", identifierDefined); }
 #line 1933 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 187 "parser.y" /* yacc.c:1646  */
+#line 183 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 1939 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 191 "parser.y" /* yacc.c:1646  */
+#line 187 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "{"); }
 #line 1945 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 191 "parser.y" /* yacc.c:1646  */
+#line 187 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 1951 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 195 "parser.y" /* yacc.c:1646  */
+#line 191 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%d,", (yyvsp[-1].yint)); }
 #line 1957 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 196 "parser.y" /* yacc.c:1646  */
+#line 192 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%d", (yyvsp[0].yint)); }
 #line 1963 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 199 "parser.y" /* yacc.c:1646  */
+#line 195 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "double[] %s = {", identifierDefined); }
 #line 1969 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 199 "parser.y" /* yacc.c:1646  */
+#line 195 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 1975 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 203 "parser.y" /* yacc.c:1646  */
+#line 199 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "{"); }
 #line 1981 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 203 "parser.y" /* yacc.c:1646  */
+#line 199 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 1987 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 207 "parser.y" /* yacc.c:1646  */
+#line 203 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%f,", (yyvsp[-1].yfloat)); }
 #line 1993 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 208 "parser.y" /* yacc.c:1646  */
+#line 204 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%f,", (yyvsp[0].yfloat)); }
 #line 1999 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 211 "parser.y" /* yacc.c:1646  */
+#line 207 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "{"); }
 #line 2005 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 211 "parser.y" /* yacc.c:1646  */
+#line 207 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2011 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 215 "parser.y" /* yacc.c:1646  */
+#line 211 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s,", (yyvsp[-1].ystr)); }
 #line 2017 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 216 "parser.y" /* yacc.c:1646  */
+#line 212 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2023 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 219 "parser.y" /* yacc.c:1646  */
+#line 215 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "{"); }
 #line 2029 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 219 "parser.y" /* yacc.c:1646  */
+#line 215 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2035 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 223 "parser.y" /* yacc.c:1646  */
+#line 219 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s,", (yyvsp[-1].ystr)); }
 #line 2041 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 224 "parser.y" /* yacc.c:1646  */
+#line 220 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2047 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 236 "parser.y" /* yacc.c:1646  */
+#line 224 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s++", (yyvsp[-2].ystr)); }
 #line 2053 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 237 "parser.y" /* yacc.c:1646  */
+#line 225 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s--", (yyvsp[-2].ystr)); }
 #line 2059 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 241 "parser.y" /* yacc.c:1646  */
+#line 229 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2065 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 242 "parser.y" /* yacc.c:1646  */
+#line 230 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.", (yyvsp[-1].ystr)); }
 #line 2071 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 248 "parser.y" /* yacc.c:1646  */
+#line 235 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s.%s", (yyvsp[-3].ystr), remove_quotes((yyvsp[-1].ystr))); }
 #line 2077 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 263 "parser.y" /* yacc.c:1646  */
+#line 249 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ".%s", (yyvsp[0].ystr)); }
 #line 2083 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 267 "parser.y" /* yacc.c:1646  */
+#line 253 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "."); }
 #line 2089 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 272 "parser.y" /* yacc.c:1646  */
+#line 258 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ".%s", remove_quotes((yyvsp[-1].ystr))); }
 #line 2095 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 281 "parser.y" /* yacc.c:1646  */
+#line 262 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "case %d: return ", (yyvsp[-2].yint)); }
 #line 2101 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 282 "parser.y" /* yacc.c:1646  */
+#line 263 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "case %s: return ", (yyvsp[-2].ystr)); }
 #line 2107 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 283 "parser.y" /* yacc.c:1646  */
+#line 264 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "case %s: return ", (yyvsp[-2].ystr)); }
 #line 2113 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 284 "parser.y" /* yacc.c:1646  */
+#line 265 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "case "); }
 #line 2119 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 284 "parser.y" /* yacc.c:1646  */
+#line 265 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ": return" ); }
 #line 2125 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 289 "parser.y" /* yacc.c:1646  */
+#line 270 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ";"); }
 #line 2131 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 293 "parser.y" /* yacc.c:1646  */
+#line 274 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "default: return "); }
 #line 2137 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 293 "parser.y" /* yacc.c:1646  */
+#line 274 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ";"); }
 #line 2143 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 133:
-#line 299 "parser.y" /* yacc.c:1646  */
+#line 280 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "this.%s = %s", (yyvsp[-3].ystr), (yyvsp[-1].ystr)); }
 #line 2149 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 313 "parser.y" /* yacc.c:1646  */
+#line 294 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "while("); }
 #line 2155 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 313 "parser.y" /* yacc.c:1646  */
+#line 294 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "){"); }
 #line 2161 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 313 "parser.y" /* yacc.c:1646  */
+#line 294 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2167 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 314 "parser.y" /* yacc.c:1646  */
+#line 295 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "do {"); }
 #line 2173 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 314 "parser.y" /* yacc.c:1646  */
+#line 295 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "} while("); }
 #line 2179 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 314 "parser.y" /* yacc.c:1646  */
+#line 295 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ");"); }
 #line 2185 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 315 "parser.y" /* yacc.c:1646  */
+#line 296 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "throw new %s(", (yyvsp[-1].ystr)); }
 #line 2191 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 315 "parser.y" /* yacc.c:1646  */
+#line 296 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ");"); }
 #line 2197 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 147:
-#line 317 "parser.y" /* yacc.c:1646  */
+#line 298 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "while("); }
 #line 2203 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 148:
-#line 317 "parser.y" /* yacc.c:1646  */
+#line 298 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "){"); }
 #line 2209 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 317 "parser.y" /* yacc.c:1646  */
+#line 298 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2215 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 319 "parser.y" /* yacc.c:1646  */
+#line 300 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "return "); }
 #line 2221 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 319 "parser.y" /* yacc.c:1646  */
+#line 300 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ";"); }
 #line 2227 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 154:
-#line 321 "parser.y" /* yacc.c:1646  */
+#line 302 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "break;"); }
 #line 2233 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 155:
-#line 322 "parser.y" /* yacc.c:1646  */
+#line 303 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "continue;"); }
 #line 2239 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 156:
-#line 326 "parser.y" /* yacc.c:1646  */
+#line 307 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "if("); }
 #line 2245 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 157:
-#line 326 "parser.y" /* yacc.c:1646  */
+#line 307 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "){"); }
 #line 2251 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 158:
-#line 326 "parser.y" /* yacc.c:1646  */
+#line 307 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2257 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 330 "parser.y" /* yacc.c:1646  */
+#line 311 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "else{"); }
 #line 2263 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 161:
-#line 330 "parser.y" /* yacc.c:1646  */
+#line 311 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2269 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 163:
-#line 335 "parser.y" /* yacc.c:1646  */
+#line 316 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "try {"); }
 #line 2275 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 335 "parser.y" /* yacc.c:1646  */
+#line 316 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2281 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 165:
-#line 335 "parser.y" /* yacc.c:1646  */
+#line 316 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "finally {"); }
 #line 2287 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 166:
-#line 335 "parser.y" /* yacc.c:1646  */
+#line 316 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2293 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 167:
-#line 339 "parser.y" /* yacc.c:1646  */
+#line 320 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "catch ("); }
 #line 2299 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 168:
-#line 339 "parser.y" /* yacc.c:1646  */
+#line 320 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "){"); }
 #line 2305 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 169:
-#line 339 "parser.y" /* yacc.c:1646  */
+#line 320 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2311 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 171:
-#line 344 "parser.y" /* yacc.c:1646  */
+#line 325 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s %s", (yyvsp[0].ystr), (yyvsp[-1].ystr)); }
 #line 2317 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 172:
-#line 348 "parser.y" /* yacc.c:1646  */
+#line 329 "parser.y" /* yacc.c:1646  */
     {(yyval.ystr) = (yyvsp[0].ystr);}
 #line 2323 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 173:
-#line 349 "parser.y" /* yacc.c:1646  */
+#line 330 "parser.y" /* yacc.c:1646  */
     {(yyval.ystr) = (yyvsp[0].ystr);}
 #line 2329 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 174:
-#line 353 "parser.y" /* yacc.c:1646  */
+#line 334 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "for ("); }
 #line 2335 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 175:
-#line 353 "parser.y" /* yacc.c:1646  */
+#line 334 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "let %s ", (yyvsp[0].ystr)); }
 #line 2341 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 177:
-#line 357 "parser.y" /* yacc.c:1646  */
+#line 338 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "of %s){", (yyvsp[-2].ystr)); }
 #line 2347 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 357 "parser.y" /* yacc.c:1646  */
+#line 338 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2353 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 358 "parser.y" /* yacc.c:1646  */
+#line 339 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "= %d;",(yyvsp[-1].yint)); }
 #line 2359 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 180:
-#line 358 "parser.y" /* yacc.c:1646  */
+#line 339 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ";"); }
 #line 2365 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 181:
-#line 358 "parser.y" /* yacc.c:1646  */
+#line 339 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "){"); }
 #line 2371 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 182:
-#line 358 "parser.y" /* yacc.c:1646  */
+#line 339 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2377 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 183:
-#line 363 "parser.y" /* yacc.c:1646  */
+#line 344 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s < ", (yyvsp[-1].ystr)); }
 #line 2383 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 185:
-#line 364 "parser.y" /* yacc.c:1646  */
+#line 345 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s <=", (yyvsp[-2].ystr)); }
 #line 2389 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 187:
-#line 365 "parser.y" /* yacc.c:1646  */
+#line 346 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s > ", (yyvsp[-1].ystr)); }
 #line 2395 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 366 "parser.y" /* yacc.c:1646  */
+#line 347 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s >=", (yyvsp[-2].ystr)); }
 #line 2401 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 367 "parser.y" /* yacc.c:1646  */
+#line 348 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2407 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 192:
-#line 367 "parser.y" /* yacc.c:1646  */
+#line 348 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ")"); }
 #line 2413 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 193:
-#line 371 "parser.y" /* yacc.c:1646  */
+#line 352 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%d", (yyvsp[0].yint)); }
 #line 2419 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 194:
-#line 372 "parser.y" /* yacc.c:1646  */
+#line 353 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2425 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 195:
-#line 375 "parser.y" /* yacc.c:1646  */
+#line 356 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2431 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 196:
-#line 376 "parser.y" /* yacc.c:1646  */
+#line 357 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%d", (yyvsp[0].yint)); }
 #line 2437 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 197:
-#line 377 "parser.y" /* yacc.c:1646  */
+#line 358 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%d", (yyvsp[0].yfloat)); }
 #line 2443 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 378 "parser.y" /* yacc.c:1646  */
+#line 359 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s", (yyvsp[0].ystr)); }
 #line 2449 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 200:
-#line 380 "parser.y" /* yacc.c:1646  */
+#line 361 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "<"); }
 #line 2455 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 202:
-#line 381 "parser.y" /* yacc.c:1646  */
+#line 362 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "<="); }
 #line 2461 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 204:
-#line 382 "parser.y" /* yacc.c:1646  */
+#line 363 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ")"); }
 #line 2467 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 205:
-#line 383 "parser.y" /* yacc.c:1646  */
+#line 364 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ">"); }
 #line 2473 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 207:
-#line 384 "parser.y" /* yacc.c:1646  */
+#line 365 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ">="); }
 #line 2479 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 209:
-#line 385 "parser.y" /* yacc.c:1646  */
+#line 366 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "+"); }
 #line 2485 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 211:
-#line 386 "parser.y" /* yacc.c:1646  */
+#line 367 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "-"); }
 #line 2491 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 213:
-#line 387 "parser.y" /* yacc.c:1646  */
+#line 368 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "*"); }
 #line 2497 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 215:
-#line 388 "parser.y" /* yacc.c:1646  */
+#line 369 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "/"); }
 #line 2503 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 217:
-#line 389 "parser.y" /* yacc.c:1646  */
+#line 370 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "^"); }
 #line 2509 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 219:
-#line 390 "parser.y" /* yacc.c:1646  */
+#line 371 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%"); }
 #line 2515 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 221:
-#line 391 "parser.y" /* yacc.c:1646  */
+#line 372 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "|"); }
 #line 2521 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 223:
-#line 392 "parser.y" /* yacc.c:1646  */
+#line 373 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "||"); }
 #line 2527 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 225:
-#line 393 "parser.y" /* yacc.c:1646  */
+#line 374 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "&"); }
 #line 2533 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 227:
-#line 394 "parser.y" /* yacc.c:1646  */
+#line 375 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "&&"); }
 #line 2539 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 229:
-#line 395 "parser.y" /* yacc.c:1646  */
+#line 376 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "("); }
 #line 2545 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 230:
-#line 395 "parser.y" /* yacc.c:1646  */
+#line 376 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ")"); }
 #line 2551 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 231:
-#line 399 "parser.y" /* yacc.c:1646  */
+#line 380 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ".equals("); }
 #line 2557 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 234:
-#line 408 "parser.y" /* yacc.c:1646  */
+#line 389 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "public static void %s(", (yyvsp[-1].ystr)); }
 #line 2563 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 235:
-#line 408 "parser.y" /* yacc.c:1646  */
+#line 389 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ")"); }
 #line 2569 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 237:
-#line 412 "parser.y" /* yacc.c:1646  */
+#line 393 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "{"); }
 #line 2575 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 238:
-#line 412 "parser.y" /* yacc.c:1646  */
+#line 393 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2581 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 239:
-#line 413 "parser.y" /* yacc.c:1646  */
+#line 394 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "{"); }
 #line 2587 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 240:
-#line 413 "parser.y" /* yacc.c:1646  */
+#line 394 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2593 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 241:
-#line 418 "parser.y" /* yacc.c:1646  */
+#line 399 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s(", (yyvsp[-1].ystr)); }
 #line 2599 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 242:
-#line 418 "parser.y" /* yacc.c:1646  */
+#line 399 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ");"); }
 #line 2605 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 243:
-#line 422 "parser.y" /* yacc.c:1646  */
+#line 403 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ","); }
 #line 2611 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 247:
-#line 427 "parser.y" /* yacc.c:1646  */
+#line 408 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ","); }
 #line 2617 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 250:
-#line 432 "parser.y" /* yacc.c:1646  */
+#line 413 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s %s", (yyvsp[0].ystr), (yyvsp[-2].ystr)); }
 #line 2623 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 252:
-#line 436 "parser.y" /* yacc.c:1646  */
+#line 417 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ", "); }
 #line 2629 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 255:
-#line 443 "parser.y" /* yacc.c:1646  */
+#line 424 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "public class %s {", (yyvsp[-1].ystr)); }
 #line 2635 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 256:
-#line 443 "parser.y" /* yacc.c:1646  */
+#line 424 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2641 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 260:
-#line 453 "parser.y" /* yacc.c:1646  */
+#line 434 "parser.y" /* yacc.c:1646  */
     { fprintf(output, " %s %s", (yyvsp[0].ystr), (yyvsp[-2].ystr)); }
 #line 2647 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 261:
-#line 453 "parser.y" /* yacc.c:1646  */
+#line 434 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ";"); }
 #line 2653 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 262:
-#line 454 "parser.y" /* yacc.c:1646  */
+#line 435 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "public %s %s", (yyvsp[0].ystr), (yyvsp[-2].ystr)); }
 #line 2659 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 263:
-#line 454 "parser.y" /* yacc.c:1646  */
+#line 435 "parser.y" /* yacc.c:1646  */
     { fprintf(output, ";"); }
 #line 2665 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 266:
-#line 463 "parser.y" /* yacc.c:1646  */
+#line 444 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "public"); }
 #line 2671 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 267:
-#line 464 "parser.y" /* yacc.c:1646  */
+#line 445 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "private"); }
 #line 2677 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 268:
-#line 465 "parser.y" /* yacc.c:1646  */
+#line 446 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "protected"); }
 #line 2683 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 269:
-#line 469 "parser.y" /* yacc.c:1646  */
+#line 450 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "Public constructor("); }
 #line 2689 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 270:
-#line 469 "parser.y" /* yacc.c:1646  */
+#line 450 "parser.y" /* yacc.c:1646  */
     {fprintf(output, "){");}
 #line 2695 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 271:
-#line 469 "parser.y" /* yacc.c:1646  */
+#line 450 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2701 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 273:
-#line 474 "parser.y" /* yacc.c:1646  */
+#line 455 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "this.%s = %s;", (yyvsp[-3].ystr), (yyvsp[-1].ystr)); }
 #line 2707 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 276:
-#line 479 "parser.y" /* yacc.c:1646  */
+#line 460 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "%s(", (yyvsp[-1].ystr)); }
 #line 2713 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 277:
-#line 479 "parser.y" /* yacc.c:1646  */
+#line 460 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "): %s {", (yyvsp[-1].ystr)); }
 #line 2719 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 278:
-#line 479 "parser.y" /* yacc.c:1646  */
+#line 460 "parser.y" /* yacc.c:1646  */
     { fprintf(output, "}"); }
 #line 2725 "parser.tab.c" /* yacc.c:1646  */
     break;
@@ -2953,7 +2953,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 485 "parser.y" /* yacc.c:1906  */
+#line 466 "parser.y" /* yacc.c:1906  */
 
 main( int argc, char *argv[] )
 {

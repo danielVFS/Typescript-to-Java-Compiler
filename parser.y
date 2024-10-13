@@ -160,10 +160,6 @@ object_declaration:
     | CLASS_IDENTIFIER ASSIGN LBRACE { fprintf(output, "HashMap<%s, Object> %s = new HashMap<>(); \n", $1, identifierDefined); } object_attribution RBRACE SEMICOLON
 ;
 
-array_of_objects_declaration:
-    variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
-;
-
 ////////
 
 object_attribution:
@@ -223,14 +219,6 @@ strings:
     STRING_LITERAL COMMA { fprintf(output, "%s,", $1); } strings
     | STRING_LITERAL { fprintf(output, "%s", $1); }
 
-array_of_objects:
-    LBRACKET objects RBRACKET
-;
-
-objects:
-    LBRACE object_attribution RBRACE COMMA objects
-    | LBRACE object_attribution RBRACE
-;
 
 increment_decrement_variable:
     IDENTIFIER ADD ADD { fprintf(output, "%s++", $1); }
@@ -243,7 +231,6 @@ access_object:
     | access_object_on_bracket 
 ;
 
-
 access_object_on_bracket:
     IDENTIFIER LBRACKET STRING_LITERAL RBRACKET { fprintf(output, "%s.%s", $1, remove_quotes($3)); } acess_more_objects_on_bracket
 ;
@@ -252,7 +239,6 @@ acess_more_objects_on_bracket:
     access_object_nested
     | /* empty */
 ;
-
 
 access_object_nested:
     access_identifier_on_object_nested
@@ -270,11 +256,6 @@ nested_dot_identifier_on_object:
 
 access_bracket_on_object_nested:
     LBRACKET STRING_LITERAL RBRACKET { fprintf(output, ".%s", remove_quotes($2)); }
-;
-
-nested_bracket_on_object:
-    access_object_nested
-    | /* empty */ 
 ;
 
 cases_of_switch_case:

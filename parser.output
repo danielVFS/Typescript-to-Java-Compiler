@@ -1,29 +1,8 @@
-Nonterminals useless in grammar
-
-   array_of_objects_declaration
-   array_of_objects
-   objects
-   nested_bracket_on_object
-
-
 Terminals unused in grammar
 
    SINGLE_QUOTE
    DOUBLE_QUOTE
    PROMISE
-
-
-Rules useless in grammar
-
-  278 array_of_objects_declaration: variable_types IDENTIFIER COLON ANY LBRACKET RBRACKET ASSIGN array_of_objects SEMICOLON
-
-  279 array_of_objects: LBRACKET objects RBRACKET
-
-  280 objects: LBRACE object_attribution RBRACE COMMA objects
-  281        | LBRACE object_attribution RBRACE
-
-  282 nested_bracket_on_object: access_object_nested
-  283                         | %empty
 
 
 State 88 conflicts: 4 shift/reduce
