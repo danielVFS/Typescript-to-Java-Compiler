@@ -1,3 +1,5 @@
 docker run  -it  -v "$PWD":/usr/src  phdcoder/flexbison
 
 cd /usr/src 
+
+clear && bash run.sh
