@@ -11,10 +11,44 @@
 
     char identifierDefined[100];
 
-   char* remove_quotes(char* str) {
+    char* remove_quotes(char* str) {
         int len = strlen(str);
         str[len-1] = '\0';
         return stringpool(str+1);
+    }
+
+    char* replace_grave_with_quotes(char* str) {
+        char* first_grave = strchr(str, '`');
+        char* last_grave = strrchr(str, '`');
+
+        if (!first_grave || !last_grave || first_grave == last_grave) {
+            return str;
+        }
+
+        int new_len = strlen(str) + 1;
+        if (first_grave) {
+            new_len -= 1;
+        }
+        if (last_grave) {
+            new_len -= 1;
+        }
+        
+        char* new_str = (char*)malloc(new_len);
+        if (!new_str) {
+            return NULL;
+        }
+
+        strncpy(new_str, str, first_grave - str);
+        new_str[first_grave - str] = '"';
+
+        strncat(new_str, first_grave + 1, last_grave - first_grave - 1);
+
+        new_str[strlen(new_str)] = '"';
+        new_str[strlen(new_str) + 1] = '\0';
+
+        strcat(new_str, last_grave + 1);
+
+        return new_str;
     }
 %}
 
@@ -74,7 +108,7 @@ variable_types:
 ;   
 
 console_log_declarations:
-    console_log_left_common STRING_LITERAL { fprintf(output, "%s", $2); } console_log_declaration_with_add console_log_right_common
+    console_log_left_common STRING_LITERAL { fprintf(output, "%s", replace_grave_with_quotes($2)); } console_log_declaration_with_add console_log_right_common
     | console_log_left_common access_object console_log_declaration_with_add console_log_right_common
 ;
 

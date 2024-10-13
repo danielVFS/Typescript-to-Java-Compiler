@@ -31,7 +31,7 @@ void                { printf("Reconhecido: VOID\n"); return(VOID);}
 any                 { printf("Reconhecido: ANY\n"); return(ANY);}
 let                 { printf("Reconhecido: LET\n"); return(LET);}
 var                 { printf("Reconhecido: VAR\n"); return(VAR);}
-const                 { printf("Reconhecido: CONST\n"); return(CONST);}
+const               { printf("Reconhecido: CONST\n"); return(CONST);}
 if                  { printf("Reconhecido: IF\n"); return(IF);}
 else                { printf("Reconhecido: ELSE\n"); return(ELSE);}
 while               { printf("Reconhecido: WHILE\n"); return(WHILE);}
@@ -76,8 +76,10 @@ of                  { printf("Reconhecido: OF\n"); return(OF);}
 "\""                { printf("Reconhecido: DOUBLE_QUOTE\n");return DOUBLE_QUOTE; }
 {ID}                { printf("Reconhecido: IDENTIFIER (%s)\n", yytext); yylval.ystr = stringpool(yytext); return(IDENTIFIER);}
 {CLASS_ID}          { printf("Reconhecido: CLASS_IDENTIFIER (%s)\n", yytext); yylval.ystr = stringpool(yytext); return(CLASS_IDENTIFIER);}
+"//".*              { /* Ignora comentários de linha */ }
+"/*"([^*]|\*+[^/])*\*+"/" { /* Ignora comentários de múltiplas linhas */ }
 "\\"[ a-z]*\n 
 "\n"                { fprintf(output,"\n"); /*incrementa sozinho lineno*/ }
-[ \t]+              
+[ \t]+              { /* Ignora espaços em branco */ }
 .                   { printf("Reconhecido: caractere desconhecido (%c)\n", yytext[0]); return(yytext[0]);}
 %%
