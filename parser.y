@@ -53,6 +53,8 @@ declaration:
     | increment_decrement_variable
     | set_value_on_class
     | instance_new_class
+    | function_declarartion
+    | class_declarations 
 ;
 
 instance_new_class:
@@ -107,6 +109,7 @@ all_possible_variables_types:
     | BOOLEAN { $$ = "boolean"; }
     | ANY { $$ = "void"; }
     | VOID { $$ = "void"; } 
+    | /* empty */ { $$ = "void"; } 
 ;
 
 ////////
@@ -313,10 +316,8 @@ command :
     | THROW NEW ERROR_LITERAL LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
     | try_finally_declaration
     | SWITCH LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } cases_of_switch_case default_case_of_switch_case RBRACE { fprintf(output, "}"); }
-    | function_declarartion
     | call_a_function
     | RETURN { fprintf(output, "return "); } expressions SEMICOLON { fprintf(output, ";"); }
-    | class_declarations 
 ;
 
 if_declaration: 
@@ -380,13 +381,22 @@ compare_type_and_value_expressions:
 ;
 
 function_declarartion:
-    FUNCTION IDENTIFIER LPARENTHESES function_parameters RPARENTHESES COLON all_possible_variables_types LBRACE commands RBRACE
+    FUNCTION IDENTIFIER LPARENTHESES { fprintf(output, "public static void %s(", $2); } function_parameters RPARENTHESES { fprintf(output, ")"); } return_of_function_declaration
 ;
 
-call_a_function:
-    IDENTIFIER LPARENTHESES all_possible_variables RPARENTHESES SEMICOLON
-    | IDENTIFIER LPARENTHESES all_possible_variables COMMA function_values RPARENTHESES SEMICOLON
+return_of_function_declaration:
+    COLON all_possible_variables_types LBRACE { fprintf(output, "{"); } commands RBRACE { fprintf(output, "}"); }
+    | LBRACE { fprintf(output, "{"); } commands RBRACE { fprintf(output, "}"); } 
 ;
+
+
+call_a_function:
+    IDENTIFIER LPARENTHESES { fprintf(output, "%s(", $1); } all_possible_variables call_a_function_one_more_values RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+;
+
+call_a_function_one_more_values:
+    COMMA { fprintf(output, ","); } function_values
+    | /* empty */
 
 function_values:
     all_possible_variables

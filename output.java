@@ -188,4 +188,19 @@ Person pessoa = new Person("João");
 
 Person pessoa = new Person("João",12);
 
-System.out.println('Olá 1, bem vindo:' + 
+public static void sum(int a, int b){
+return a+b;
+}
+
+public static void sum(int a, int b){
+System.out.println('Soma feita');
+}
+
+public static void sum(int a, int b){
+return a+b;
+}
+
+
+sum(1);
+sum(1,2);
+sum(1,2,3);
