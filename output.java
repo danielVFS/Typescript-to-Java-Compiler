@@ -1,18 +1,18 @@
-int number1 = 10;
-double number2 = 0.200000;
+int number1 = 10
+double number2 = 0.200000
 
-int[] numbers = {10,11,12};
-double[] numbers1 = {0.200000,0.300000,};
+;int[] numbers = {10,11,12}
+double[] numbers1 = {0.200000,0.300000,}
 
 
-String name1 = 'Daniel';
-String name2 = "Vitor";
+String name1 = 'Daniel'
+;String name2 = "Vitor"
 
-String[] names ={'Daniel','Vitor'};
+String[] names ={'Daniel','Vitor'}
 
-boolean isvalid = true;
+boolean isvalid = true
 
-boolean[] isValids ={true,false};
+boolean[] isValids ={true,false}
 
 HashMap<Any, Object> person = new HashMap<>(); 
 
@@ -45,129 +45,129 @@ person3.put("name",'Vitor');
 
 
 while(person.page>=5){
-System.out.println(i);
+System.out.println(i)
 }
 
 while(person.page>=5){
-System.out.println(person.age);
+System.out.println(person.age)
 }
 
 if(true){
-System.out.println("Hello World");
+System.out.println("Hello World")
 }
 
 if(person5.age>3){
-System.out.println(person5.name);
-System.out.println("Olá, bem vindo ${person5.name}");
+System.out.println(person5.name)
+System.out.println("Olá, bem vindo ${person5.name}")
 }else{
-int number1 = 10;
-System.out.println(number1);
+int number1 = 10
+System.out.println(number1)
 }
 
 if(person.age.value>3){
-System.out.println(person5.name);
+System.out.println(person5.name)
 }
 
-int z = 7;
+int z = 7
 
 if(z>5){
-System.out.println("z é maior que 5");
+System.out.println("z é maior que 5")
 
 if(z>10){
-System.out.println("z também é maior que 10");
+System.out.println("z também é maior que 10")
 }else{
-System.out.println("z não é maior que 10");
+System.out.println("z não é maior que 10")
 }
 }else{
-System.out.println("z é menor ou igual a 5");
+System.out.println("z é menor ou igual a 5")
 }
 
 if(isvalid.equals(true)){
-System.out.println('Hello World');
+System.out.println('Hello World')
 }
 
 if(str1.equals(str2)){
-System.out.println('Hello World');
+System.out.println('Hello World')
 }
 
 while(i<5){
-System.out.println(i);
-i++;
+System.out.println(i)
+i++
 }
 
 do {
-System.out.println(i);
-i++;
-} while(numero<1||numero>10);
+System.out.println(i)
+i++
+} while(numero<1||numero>10)
 
 if(b.equals(0)){
-throw new Error("Divisão por zero não é permitida.");
+throw new Error("Divisão por zero não é permitida.")
 }
 
 try {
 if(b.equals(0)){
-throw new Error("Divisão por zero não é permitida.");
+throw new Error("Divisão por zero não é permitida.")
 }
 }finally {
-System.out.println("Operação de leitura concluída.");
+System.out.println("Operação de leitura concluída.")
 }
 
 try {
 if(b.equals(0)){
-throw new Error("Divisão por zero não é permitida.");
+throw new Error("Divisão por zero não é permitida.")
 }
 }catch (Error error){
-System.out.println(e.message);
-System.out.println(e.message);
-System.out.println(e.test.value);
-System.out.println(e.test.value);
-System.out.println(e.test.age.value);
+System.out.println(e.message)
+System.out.println(e.message)
+System.out.println(e.test.value)
+System.out.println(e.test.value)
+System.out.println(e.test.age.value)
 }finally {
-System.out.println("Operação de leitura concluída.");
+System.out.println("Operação de leitura concluída.")
 }
 
 try {
 if(b.equals(0)){
-throw new Error("Divisão por zero não é permitida.");
+throw new Error("Divisão por zero não é permitida.")
 }
 }catch (CustomError error){
-System.out.println(e.message);
-System.out.println(e.message);
+System.out.println(e.message)
+System.out.println(e.message)
 }finally {
-System.out.println("Operação de leitura concluída.");
+System.out.println("Operação de leitura concluída.")
 }
 
 while(dia){
 
-case 1: return "Segunda-feira";
+case 1: return "Segunda-feira"
 
-case "2": return {"Terça","Terça"};
+case "2": return {"Terça","Terça"}
 
-case 13: return {1,3};
+case 13: return {1,3}
 
-case true: return 2;
+case true: return 2
 
-case 5: return "Sexta-feira";
+case 5: return "Sexta-feira"
 
-case 6: return "Sábado";
+case 6: return "Sábado"
 
-case 7: return {"Domingo","Domingo"};
+case 7: return {"Domingo","Domingo"}
 
-default: return "Número inválido! Escolha um número de 1 a 7.";
+default: return "Número inválido! Escolha um número de 1 a 7."
 }
 
 public class Person {
-public String name;
+public String name
 
-public int age;
-private String address;
+public int age
+private String address
 
 Public constructor(String name, int age){
-this.name = name;
+this.name = name
 }
 
 saudacao(): void {
-System.out.println("Olá 5, bem vindo ${this.name}");
+System.out.println("Olá 5, bem vindo ${this.name}")
 }
 
 setName(String name): void {
@@ -175,63 +175,63 @@ this.name = name
 }
 
 getName(String name): String {
-return name;
+return name
 }
 }
 
-String value = "12";
+String value = "12"
 
-System.out.println(pessoa);
+System.out.println(pessoa)
 
-Person pessoa = new Person("João");
+Person pessoa = new Person("João")
 
-Person pessoa = new Person("João",12);
+Person pessoa = new Person("João",12)
 
 public static void sum(int a, int b){
-return a+b;
-}
-
-public static void sum(int a, int b){
-System.out.println('Soma feita');
+return a+b
 }
 
 public static void sum(int a, int b){
-return a+b;
+System.out.println('Soma feita')
+}
+
+public static void sum(int a, int b){
+return a+b
 }
 
 
-sum(1);
-sum(1,2);
-sum(1,2,3);
+sum(1)
+sum(1,2)
+sum(1,2,3)
 
-for (let i = 0;i < 5;i++){
-System.out.println(i);
+for (let i = 0i < 5i++){
+System.out.println(i)
 }
 
-for (let i = 0;i < 10;i++){
+for (let i = 0i < 10i++){
 if(i.equals(5)){
-System.out.println("i é estritamente igual a 5");
+System.out.println("i é estritamente igual a 5")
 }
 }
 
-for (let i = 10;i <=0;i--){
-System.out.println(i);
+for (let i = 10i <=0i--){
+System.out.println(i)
 }
 
-for (let i = 5;i.equals(5);i++){
-System.out.println("i é igual a 5");
-break;
+for (let i = 5i.equals(5)i++){
+System.out.println("i é igual a 5")
+break
 }
 
-for (let i = 5;i.equals(5);i++){
-System.out.println("i é igual a 5");
-continue;
+for (let i = 5i.equals(5)i++){
+System.out.println("i é igual a 5")
+continue
 }
 
 
-int[] numbers = {1,2,3,4,5};
+int[] numbers = {1,2,3,4,5}
 for (let num of numbers){
-System.out.println(num);
+System.out.println(num)
 }
 
 

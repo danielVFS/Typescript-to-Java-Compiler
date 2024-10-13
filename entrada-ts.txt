@@ -1,11 +1,11 @@
 let number1: number = 10;
-let number2: number = 0.2;
+let number2: number = 0.2
 
 let numbers: number[] = [10, 11, 12];
 let numbers1: number[] = [0.2, 0.3];
 
 
-let name1: string = 'Daniel';
+let name1: string = 'Daniel'
 let name2: string = "Vitor";
 
 let names: string[] = ['Daniel', 'Vitor'];

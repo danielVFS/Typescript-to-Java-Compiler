@@ -79,11 +79,15 @@ program: commands
 
 //////////////// declararations ////////////////
 
+optional_semicolon:
+    SEMICOLON { fprintf(output,";"); }
+    | /* empty */ { fprintf(output,";"); }
+;
 
 declaration:
     variable_types IDENTIFIER {strcpy(identifierDefined,$2);} COLON possible_declarations
     | console_log_declarations
-    | increment_decrement_variable SEMICOLON { fprintf(output, ";"); }
+    | increment_decrement_variable optional_semicolon
     | set_value_on_class
     | instance_new_class
     | function_declarartion
@@ -91,7 +95,8 @@ declaration:
 ;
 
 instance_new_class:
-    variable_types IDENTIFIER ASSIGN NEW CLASS_IDENTIFIER LPARENTHESES { fprintf(output, "%s %s = new %s(", $5, $2, $5); } function_values RPARENTHESES SEMICOLON { fprintf(output, ");"); } ;
+    variable_types IDENTIFIER ASSIGN NEW CLASS_IDENTIFIER LPARENTHESES { fprintf(output, "%s %s = new %s(", $5, $2, $5); } function_values RPARENTHESES { fprintf(output, ")"); } optional_semicolon  
+;
 
 possible_declarations:
     number_declaration
@@ -117,7 +122,7 @@ console_log_left_common:
 ;
 
 console_log_right_common:
-    RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+    RPARENTHESES { fprintf(output, ")"); } optional_semicolon
 ;
 
 console_log_declaration_with_add:
@@ -152,8 +157,8 @@ number_declaration:
 ;
 
 number_or_array_declaration:
-    LBRACKET RBRACKET ASSIGN array_of_numbers_and_floats_declaration SEMICOLON { fprintf(output,";");}
-    | ASSIGN number_or_float_declaration SEMICOLON { fprintf(output,";");}
+    LBRACKET RBRACKET ASSIGN array_of_numbers_and_floats_declaration optional_semicolon
+    | ASSIGN number_or_float_declaration optional_semicolon
 
 number_or_float_declaration:
     NUMBER_LITERAL { fprintf(output,"int %s = %d", identifierDefined, $1);}
@@ -168,7 +173,7 @@ array_of_numbers_and_floats_declaration:
 ////////
 
 string_declaration: 
-    STRING string_or_array_of_strings_declaration SEMICOLON { fprintf(output,";");}
+    STRING string_or_array_of_strings_declaration optional_semicolon
 ;
 
 string_or_array_of_strings_declaration:
@@ -179,7 +184,7 @@ string_or_array_of_strings_declaration:
 ////////
 
 boolean_declaration: 
-    BOOLEAN boolean_or_array_of_booleans_declaration SEMICOLON { fprintf(output,";");}
+    BOOLEAN boolean_or_array_of_booleans_declaration optional_semicolon
 ;
 
 boolean_or_array_of_booleans_declaration:
@@ -190,8 +195,8 @@ boolean_or_array_of_booleans_declaration:
 ////////
 
 object_declaration:
-    ANY ASSIGN LBRACE { fprintf(output, "HashMap<Any, Object> %s = new HashMap<>(); \n", identifierDefined); } object_attribution RBRACE SEMICOLON
-    | CLASS_IDENTIFIER ASSIGN LBRACE { fprintf(output, "HashMap<%s, Object> %s = new HashMap<>(); \n", $1, identifierDefined); } object_attribution RBRACE SEMICOLON
+    ANY ASSIGN LBRACE { fprintf(output, "HashMap<Any, Object> %s = new HashMap<>(); \n", identifierDefined); } object_attribution RBRACE optional_semicolon
+    | CLASS_IDENTIFIER ASSIGN LBRACE { fprintf(output, "HashMap<%s, Object> %s = new HashMap<>(); \n", $1, identifierDefined); } object_attribution RBRACE optional_semicolon
 ;
 
 ////////
@@ -301,17 +306,17 @@ cases_of_switch_case:
 ;
 
 returns_of_switch:
-    all_possible_variables SEMICOLON { fprintf(output, ";"); } cases_of_switch_case
+    all_possible_variables optional_semicolon cases_of_switch_case
 ;
 
 default_case_of_switch_case: 
-    DEFAULT COLON RETURN { fprintf(output, "default: return "); } all_possible_variables SEMICOLON { fprintf(output, ";"); }
+    DEFAULT COLON RETURN { fprintf(output, "default: return "); } all_possible_variables optional_semicolon 
 ;
 
 //////
 
 set_value_on_class: 
-    THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON { fprintf(output, "this.%s = %s", $3, $5); } ;
+    THIS DOT IDENTIFIER ASSIGN IDENTIFIER optional_semicolon { fprintf(output, "this.%s = %s", $3, $5); } 
 ;
 
 
@@ -326,15 +331,15 @@ commands :
 command : 
     if_declaration
     | WHILE LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
-    | DO LBRACE { fprintf(output, "do {"); } commands RBRACE WHILE LPARENTHESES { fprintf(output, "} while("); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
-    | THROW NEW CLASS_IDENTIFIER LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+    | DO LBRACE { fprintf(output, "do {"); } commands RBRACE WHILE LPARENTHESES { fprintf(output, "} while("); } expressions RPARENTHESES { fprintf(output, ")"); } optional_semicolon
+    | THROW NEW CLASS_IDENTIFIER LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES { fprintf(output, ")"); } optional_semicolon 
     | try_finally_declaration
     | SWITCH LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } cases_of_switch_case default_case_of_switch_case RBRACE { fprintf(output, "}"); }
     | call_a_function
-    | RETURN { fprintf(output, "return "); } expressions SEMICOLON { fprintf(output, ";"); }
+    | RETURN { fprintf(output, "return "); } expressions optional_semicolon
     | for_declaration
-    | BREAK SEMICOLON { fprintf(output, "break;"); }
-    | CONTINUE SEMICOLON { fprintf(output, "continue;"); }
+    | BREAK { fprintf(output, "break"); } optional_semicolon 
+    | CONTINUE { fprintf(output, "continue"); } optional_semicolon
 ;
 
 if_declaration: 
@@ -370,7 +375,7 @@ for_declaration:
 
 for_options:
     OF IDENTIFIER RPARENTHESES LBRACE { fprintf(output, "of %s){", $2); } commands RBRACE { fprintf(output, "}"); }
-    | ASSIGN NUMBER_LITERAL SEMICOLON { fprintf(output, "= %d;",$2); } for_comparations SEMICOLON { fprintf(output, ";"); } increment_decrement_variable RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
+    | ASSIGN NUMBER_LITERAL { fprintf(output, "= %d",$2); } optional_semicolon for_comparations optional_semicolon increment_decrement_variable RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
 ;
 
 
@@ -430,7 +435,7 @@ return_of_function_declaration:
 
 
 call_a_function:
-    IDENTIFIER LPARENTHESES { fprintf(output, "%s(", $1); } all_possible_variables call_a_function_one_more_values RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+    IDENTIFIER LPARENTHESES { fprintf(output, "%s(", $1); } all_possible_variables call_a_function_one_more_values RPARENTHESES { fprintf(output, ")"); } optional_semicolon
 ;
 
 call_a_function_one_more_values:
@@ -465,8 +470,8 @@ class_attributes:
 ;
 
 class_attribute_declaration:
-    access_modifiers IDENTIFIER COLON all_possible_variables_types { fprintf(output, " %s %s", $4, $2); } initialize_class_attribute_value SEMICOLON { fprintf(output, ";"); }
-    | IDENTIFIER COLON all_possible_variables_types { fprintf(output, "public %s %s", $3, $1); } initialize_class_attribute_value SEMICOLON { fprintf(output, ";"); }
+    access_modifiers IDENTIFIER COLON all_possible_variables_types { fprintf(output, " %s %s", $4, $2); } initialize_class_attribute_value optional_semicolon 
+    | IDENTIFIER COLON all_possible_variables_types { fprintf(output, "public %s %s", $3, $1); } initialize_class_attribute_value optional_semicolon 
 ;
 
 initialize_class_attribute_value:
@@ -486,7 +491,7 @@ constructor_definition:
 ;
 
 set_property_with_this:
-    THIS DOT IDENTIFIER ASSIGN IDENTIFIER SEMICOLON  { fprintf(output, "this.%s = %s;", $3, $5); } set_property_with_this
+    THIS DOT IDENTIFIER ASSIGN IDENTIFIER { fprintf(output, "this.%s = %s", $3, $5); } optional_semicolon  set_property_with_this
     | /* empty */
 ;
 
