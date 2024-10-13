@@ -223,3 +223,14 @@ for (let i = 5;i.equals(5);i++){
 System.out.println("i é igual a 5");
 break;
 }
+
+for (let i = 5;i.equals(5);i++){
+System.out.println("i é igual a 5");
+continue;
+}
+
+
+int[] numbers = {1,2,3,4,5};
+for (let num of numbers){
+System.out.println(num);
+}

@@ -87,18 +87,20 @@ extern int yydebug;
     INSTANCEOF = 297,
     FOR = 298,
     BREAK = 299,
-    COLON = 300,
-    SEMICOLON = 301,
-    ASSIGN = 302,
-    ADD = 303,
-    MINUS = 304,
-    IDENTIFIER = 305,
-    CLASS_IDENTIFIER = 306,
-    LET = 307,
-    STRING_LITERAL = 308,
-    NUMBER_LITERAL = 309,
-    FLOAT_LITERAL = 310,
-    BOOLEAN_LITERAL = 311
+    CONTINUE = 300,
+    OF = 301,
+    COLON = 302,
+    SEMICOLON = 303,
+    ASSIGN = 304,
+    ADD = 305,
+    MINUS = 306,
+    IDENTIFIER = 307,
+    CLASS_IDENTIFIER = 308,
+    LET = 309,
+    STRING_LITERAL = 310,
+    NUMBER_LITERAL = 311,
+    FLOAT_LITERAL = 312,
+    BOOLEAN_LITERAL = 313
   };
 #endif
 
@@ -113,7 +115,7 @@ union YYSTYPE
     int   yint;
     float yfloat;
 
-#line 117 "parser.tab.h" /* yacc.c:1909  */
+#line 119 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

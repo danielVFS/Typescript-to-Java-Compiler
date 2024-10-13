@@ -58,6 +58,7 @@ public              { printf("Reconhecido: PUBLIC\n"); return(PUBLIC);}
 protected           { printf("Reconhecido: PROTECTED\n"); return(PROTECTED);}
 constructor         { printf("Reconhecido: CONSTRUCTOR\n"); return(CONSTRUCTOR);}
 instanceof          { printf("Reconhecido: INSTANCEOF\n"); return(INSTANCEOF);}
+of                  { printf("Reconhecido: OF\n"); return(OF);}
 ":"                 { printf("Reconhecido: COLON\n"); return (COLON); }
 ";"                 { printf("Reconhecido: SEMICOLON\n"); return (SEMICOLON); }
 "console.log"       { printf("Reconhecido: CONSOLE_LOG\n"); return (CONSOLE_LOG); }

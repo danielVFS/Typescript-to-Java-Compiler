@@ -26,7 +26,7 @@
 
 %start program
 %token VAR CONST CLASS CONSTRUCTOR PRIVATE PUBLIC PROTECTED NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
-%token THIS FUNCTION PROMISE INSTANCEOF FOR BREAK CONTINUE
+%token THIS FUNCTION PROMISE INSTANCEOF FOR BREAK CONTINUE OF
 %token COLON SEMICOLON ASSIGN ADD MINUS
 %token <ystr> IDENTIFIER
 %token <ystr> CLASS_IDENTIFIER
@@ -350,8 +350,14 @@ error_to_catch:
 ;
 
 for_declaration:
-    FOR LPARENTHESES { fprintf(output, "for ("); } LET IDENTIFIER ASSIGN NUMBER_LITERAL SEMICOLON { fprintf(output, "let %s = %d;", $5, $7); } for_comparations SEMICOLON { fprintf(output, ";"); } increment_decrement_variable RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
+    FOR LPARENTHESES { fprintf(output, "for ("); } LET IDENTIFIER { fprintf(output, "let %s ", $5); } for_options 
 ;
+
+for_options:
+    OF IDENTIFIER RPARENTHESES LBRACE { fprintf(output, "of %s){", $2); } commands RBRACE { fprintf(output, "}"); }
+    | ASSIGN NUMBER_LITERAL SEMICOLON { fprintf(output, "= %d;",$2); } for_comparations SEMICOLON { fprintf(output, ";"); } increment_decrement_variable RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
+;
+
 
 for_comparations: 
     IDENTIFIER '<' { fprintf(output, "%s < ", $1); } for_comparations_right_comparasion
