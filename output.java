@@ -204,3 +204,22 @@ return a+b;
 sum(1);
 sum(1,2);
 sum(1,2,3);
+
+for (let i = 0;i < 5;i++){
+System.out.println(i);
+}
+
+for (let i = 0;i < 10;i++){
+if(i.equals(5)){
+System.out.println("i é estritamente igual a 5");
+}
+}
+
+for (let i = 10;i <=0;i--){
+System.out.println(i);
+}
+
+for (let i = 5;i.equals(5);i++){
+System.out.println("i é igual a 5");
+break;
+}

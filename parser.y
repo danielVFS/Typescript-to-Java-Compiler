@@ -26,7 +26,7 @@
 
 %start program
 %token VAR CONST CLASS CONSTRUCTOR PRIVATE PUBLIC PROTECTED NUMBER VOID STRING BOOLEAN ANY CONSOLE_LOG LBRACKET RBRACKET LBRACE RBRACE SINGLE_QUOTE DOUBLE_QUOTE COMMA LPARENTHESES RPARENTHESES IF ELSE WHILE DO DOT TRY CATCH FINALLY SWITCH CASE THROW NEW RETURN DEFAULT
-%token THIS FUNCTION PROMISE INSTANCEOF
+%token THIS FUNCTION PROMISE INSTANCEOF FOR BREAK
 %token COLON SEMICOLON ASSIGN ADD MINUS
 %token <ystr> IDENTIFIER
 %token <ystr> CLASS_IDENTIFIER
@@ -49,7 +49,7 @@ program: commands
 declaration:
     variable_types IDENTIFIER {strcpy(identifierDefined,$2);} COLON possible_declarations
     | console_log_declarations
-    | increment_decrement_variable
+    | increment_decrement_variable SEMICOLON { fprintf(output, ";"); }
     | set_value_on_class
     | instance_new_class
     | function_declarartion
@@ -233,8 +233,8 @@ objects:
 ;
 
 increment_decrement_variable:
-    IDENTIFIER ADD ADD SEMICOLON { fprintf(output, "%s++;", $1); }
-    | IDENTIFIER MINUS MINUS SEMICOLON { fprintf(output, "%s--;", $1); }
+    IDENTIFIER ADD ADD { fprintf(output, "%s++", $1); }
+    | IDENTIFIER MINUS MINUS { fprintf(output, "%s--", $1); }
 ;
 
 access_object:
@@ -317,6 +317,8 @@ command :
     | SWITCH LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } cases_of_switch_case default_case_of_switch_case RBRACE { fprintf(output, "}"); }
     | call_a_function
     | RETURN { fprintf(output, "return "); } expressions SEMICOLON { fprintf(output, ";"); }
+    | for_declaration
+    | BREAK SEMICOLON { fprintf(output, "break;"); }
 ;
 
 if_declaration: 
@@ -345,6 +347,22 @@ error_to_catch:
     COLON CLASS_IDENTIFIER {$$ = $2;}
     | INSTANCEOF CLASS_IDENTIFIER {$$ = $2;}
 ;
+
+for_declaration:
+    FOR LPARENTHESES { fprintf(output, "for ("); } LET IDENTIFIER ASSIGN NUMBER_LITERAL SEMICOLON { fprintf(output, "let %s = %d;", $5, $7); } for_comparations SEMICOLON { fprintf(output, ";"); } increment_decrement_variable RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
+;
+
+for_comparations: 
+    IDENTIFIER '<' { fprintf(output, "%s < ", $1); } for_comparations_right_comparasion
+    | IDENTIFIER '<' ASSIGN { fprintf(output, "%s <=", $1); } for_comparations_right_comparasion
+    | IDENTIFIER '>' { fprintf(output, "%s > ", $1); } for_comparations_right_comparasion
+    | IDENTIFIER '>' ASSIGN { fprintf(output, "%s >=", $1); } for_comparations_right_comparasion
+    | IDENTIFIER { fprintf(output, "%s", $1); } assign_expression for_comparations_right_comparasion { fprintf(output, ")"); }
+;
+
+for_comparations_right_comparasion:
+    NUMBER_LITERAL { fprintf(output, "%d", $1); } 
+    | IDENTIFIER { fprintf(output, "%s", $1); } 
 
 expressions: 
     STRING_LITERAL { fprintf(output, "%s", $1); }

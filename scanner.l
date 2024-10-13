@@ -50,6 +50,8 @@ function            { printf("Reconhecido: FUNCTION\n"); return(FUNCTION);}
 Promise             { printf("Reconhecido: PROMISE\n"); return(PROMISE);}
 this                { printf("Reconhecido: THIS\n"); return(THIS);}
 class               { printf("Reconhecido: CLASS\n"); return(CLASS);}
+for                 { printf("Reconhecido: FOR\n"); return(FOR);}
+break               { printf("Reconhecido: BREAK\n"); return(BREAK);}
 private             { printf("Reconhecido: PRIVATE\n"); return(PRIVATE);}
 public              { printf("Reconhecido: PUBLIC\n"); return(PUBLIC);}
 protected           { printf("Reconhecido: PROTECTED\n"); return(PROTECTED);}
