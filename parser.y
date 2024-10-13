@@ -11,19 +11,10 @@
 
     char identifierDefined[100];
 
-   char* remove_quotes(const char* str) {
+   char* remove_quotes(char* str) {
         int len = strlen(str);
-        char* result = (char*)malloc(len + 1);
-        int i, j = 0;
-
-        for (i = 0; i < len; i++) {  
-            if (str[i] != '\"') {
-                result[j++] = str[i];
-            }
-        }
-
-        result[j] = '\0';
-        return result;
+        str[len-1] = '\0';
+        return stringpool(str+1);
     }
 %}
 

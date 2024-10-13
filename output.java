@@ -119,10 +119,10 @@ throw new Error("Divisão por zero não é permitida.");
 }
 }catch (Error error){
 System.out.println(e.message);
-System.out.println(e.'message');
-System.out.println(e.'test'.value);
-System.out.println(e.'test'.'value');
-System.out.println(e.'test'.age.value);
+System.out.println(e.message);
+System.out.println(e.test.value);
+System.out.println(e.test.value);
+System.out.println(e.test.age.value);
 }finally {
 System.out.println("Operação de leitura concluída.");
 }
@@ -133,7 +133,7 @@ throw new Error("Divisão por zero não é permitida.");
 }
 }catch (CustomError error){
 System.out.println(e.message);
-System.out.println(e.'message');
+System.out.println(e.message);
 }finally {
 System.out.println("Operação de leitura concluída.");
 }
