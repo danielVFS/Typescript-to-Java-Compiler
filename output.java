@@ -32,7 +32,6 @@ HashMap<Any, Object> person2 = new HashMap<>();
 person2.put("married",true); 
 
 
-
 HashMap<Any, Object> person2 = new HashMap<>(); 
 person2.put("name",'Daniel'); 
 person2.put("surname",'Vitor'); 
@@ -41,7 +40,7 @@ person2.put("heigth",160.199997);
 person2.put("married",true); 
 
 
-HashMap<Any, Object> person3 = new HashMap<>(); 
+HashMap<Person, Object> person3 = new HashMap<>(); 
 person3.put("name",'Vitor'); 
 
 

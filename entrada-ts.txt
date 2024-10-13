@@ -22,10 +22,9 @@ let person2: any = {age: 22};
 let person2: any = {heigth: 160.2};
 let person2: any = {married: true};
 
-
 let person2: any = {name: 'Daniel', surname: 'Vitor', age: 22, heigth: 160.2, married: true};
 
-let person3: any = {name: 'Vitor'};
+let person3: Person = {name: 'Vitor'};
 
 while (person.page >= 5) {
   console.log(i);
