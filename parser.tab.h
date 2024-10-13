@@ -96,8 +96,7 @@ extern int yydebug;
     STRING_LITERAL = 306,
     NUMBER_LITERAL = 307,
     FLOAT_LITERAL = 308,
-    BOOLEAN_LITERAL = 309,
-    ERROR_LITERAL = 310
+    BOOLEAN_LITERAL = 309
   };
 #endif
 
@@ -112,7 +111,7 @@ union YYSTYPE
     int   yint;
     float yfloat;
 
-#line 116 "parser.tab.h" /* yacc.c:1909  */
+#line 115 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

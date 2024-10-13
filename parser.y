@@ -35,7 +35,6 @@
 %token <yint> NUMBER_LITERAL
 %token <yfloat> FLOAT_LITERAL
 %token <ystr> BOOLEAN_LITERAL
-%token <ystr> ERROR_LITERAL
 
 %type <ystr> error_to_catch
 %type <ystr> all_possible_variables_types
@@ -58,7 +57,7 @@ declaration:
 ;
 
 instance_new_class:
-    variable_types IDENTIFIER ASSIGN NEW ERROR_LITERAL LPARENTHESES { fprintf(output, "%s %s = new %s(", $5, $2, $5); } function_values RPARENTHESES SEMICOLON { fprintf(output, ");"); } ;
+    variable_types IDENTIFIER ASSIGN NEW CLASS_IDENTIFIER LPARENTHESES { fprintf(output, "%s %s = new %s(", $5, $2, $5); } function_values RPARENTHESES SEMICOLON { fprintf(output, ");"); } ;
 
 possible_declarations:
     number_declaration
@@ -158,7 +157,7 @@ boolean_or_array_of_booleans_declaration:
 
 object_declaration:
     ANY ASSIGN LBRACE { fprintf(output, "HashMap<Any, Object> %s = new HashMap<>(); \n", identifierDefined); } object_attribution RBRACE SEMICOLON
-    | ERROR_LITERAL ASSIGN LBRACE { fprintf(output, "HashMap<%s, Object> %s = new HashMap<>(); \n", $1, identifierDefined); } object_attribution RBRACE SEMICOLON
+    | CLASS_IDENTIFIER ASSIGN LBRACE { fprintf(output, "HashMap<%s, Object> %s = new HashMap<>(); \n", $1, identifierDefined); } object_attribution RBRACE SEMICOLON
 ;
 
 array_of_objects_declaration:
@@ -313,7 +312,7 @@ command :
     if_declaration
     | WHILE LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } commands RBRACE { fprintf(output, "}"); }
     | DO LBRACE { fprintf(output, "do {"); } commands RBRACE WHILE LPARENTHESES { fprintf(output, "} while("); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
-    | THROW NEW ERROR_LITERAL LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
+    | THROW NEW CLASS_IDENTIFIER LPARENTHESES { fprintf(output, "throw new %s(", $3); } expressions RPARENTHESES SEMICOLON { fprintf(output, ");"); }
     | try_finally_declaration
     | SWITCH LPARENTHESES { fprintf(output, "while("); } expressions RPARENTHESES LBRACE { fprintf(output, "){"); } cases_of_switch_case default_case_of_switch_case RBRACE { fprintf(output, "}"); }
     | call_a_function
@@ -343,8 +342,8 @@ catch_error:
 ;
 
 error_to_catch:
-    COLON ERROR_LITERAL {$$ = $2;}
-    | INSTANCEOF ERROR_LITERAL {$$ = $2;}
+    COLON CLASS_IDENTIFIER {$$ = $2;}
+    | INSTANCEOF CLASS_IDENTIFIER {$$ = $2;}
 ;
 
 expressions: 
@@ -416,7 +415,7 @@ function_parameters_one_or_more:
 ///////////
 
 class_declarations: 
-    CLASS ERROR_LITERAL LBRACE { fprintf(output, "public class %s {", $2); } class_attributes constructor_definition class_attributes RBRACE { fprintf(output, "}"); }
+    CLASS CLASS_IDENTIFIER LBRACE { fprintf(output, "public class %s {", $2); } class_attributes constructor_definition class_attributes RBRACE { fprintf(output, "}"); }
 ;
 
 class_attributes:

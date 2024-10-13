@@ -14,7 +14,6 @@ STRING_LITERAL_WITH_DOUBLE_QUOTE \"[^"]*\"
 STRING_LITERAL_CRASIS_QUOTE \`[^`]*\`
 TRUE true
 FALSE false
-ERROR [A-Z][a-zA-Z]*
 
 %%
 {NUMBER}            { printf("Reconhecido: NUMBER_LITERAL (%s)\n", yytext); yylval.yint = atoi(yytext); return(NUMBER_LITERAL);}
@@ -24,7 +23,6 @@ ERROR [A-Z][a-zA-Z]*
 {STRING_LITERAL_WITH_SINGLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
 {STRING_LITERAL_WITH_DOUBLE_QUOTE}    { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
 {STRING_LITERAL_CRASIS_QUOTE}         { printf("Reconhecido: STRING_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (STRING_LITERAL);}
-{ERROR}               { printf("Reconhecido: ERROR_LITERAL (%s)\n", yytext); yylval.ystr = stringpool(yytext); return (ERROR_LITERAL);}
 "="                 { printf("Reconhecido: ASSIGN\n"); return(ASSIGN);}
 number              { printf("Reconhecido: NUMBER\n"); return(NUMBER);}
 string              { printf("Reconhecido: STRING\n"); return(STRING);}
