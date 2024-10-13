@@ -205,3 +205,9 @@ for (let i = 5; i === 5; i++) {
   console.log("i é igual a 5");
   break;
 }
+
+for (let i = 5; i === 5; i++) {
+  console.log("i é igual a 5");
+  continue;
+}
+
