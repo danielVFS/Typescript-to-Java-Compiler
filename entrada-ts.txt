@@ -1,12 +1,11 @@
 let number1: number = 10;
 let number2: number = 0.2;
 
-let numbers: number[] = [10, 11, 12];
-let numbers1: number[] = [0.2, 0.3];
-
+let numbers1: number[] = [10, 11, 12];
+let numbers2: number[] = [0.2, 0.3];
 
 let name1: string = 'Daniel';
-let name2: string = "Vitor";
+let name2: string = 'Vitor';
 
 let names: string[] = ['Daniel', 'Vitor'];
 
@@ -14,137 +13,72 @@ let isvalid: boolean = true;
 
 let isValids: boolean[] = [true, false];
 
-let person: any = {};
-let person: People = {};
+let person2: any = {
+  name: 'Daniel',
+  surname: 'Vitor',
+  age: 10,
+  heigth: 160.2,
+  married: true,
+};
 
-let person2: any = {name: 'Daniel'};
-let person2: any = {age: 22};
-let person2: any = {heigth: 160.2};
-let person2: any = {married: true};
-
-let person2: any = {name: 'Daniel', surname: 'Vitor', age: 22, heigth: 160.2, married: true};
-
-let person3: Person = {name: 'Vitor'};
-
-while (person.page >= 5) {
-  console.log(i);
+while (person2.age >= 20) {
+  console.log(person2.age);
 }
 
-while (person.page >= 5) {
-  console.log(person.age);
+if (person2.married) {
+  console.log('Hello World');
 }
 
-if(true) {
-  console.log("Hello World");
-}
-
-if(person5.age > 3) {
-  console.log(person5.name);
-  console.log(`Olá, bem vindo ${person5.name}`);
+if (person2.age > 20) {
+  console.log(person2.age);
 } else {
   let number1: number = 10;
   console.log(number1);
 }
 
-if(person.age.value > 3) {
-  console.log(person5.name);
-}
-
 let z: number = 7;
 
 if (z > 5) {
-  console.log("z é maior que 5");
-    
+  console.log('z é maior que 5');
+
   if (z > 10) {
-    console.log("z também é maior que 10");
+    console.log('z também é maior que 10');
   } else {
-    console.log("z não é maior que 10");
+    console.log('z não é maior que 10');
   }
 } else {
-  console.log("z é menor ou igual a 5");
+  console.log('z é menor ou igual a 5');
 }
 
-if(isvalid == true) {
+if (isvalid == true) {
   console.log('Hello World');
 }
 
-if(str1 === str2) {
-  console.log('Hello World');
-}
-
+let i: number = 1;
 while (i < 5) {
   console.log(i);
   i++;
 }
 
+let numero: number = 1;
 do {
   console.log(i);
   i++;
 } while (numero < 1 || numero > 10);
 
-if (b === 0) {
-  throw new Error("Divisão por zero não é permitida.");
-}
-
+const b: number = 1;
 try {
   if (b === 0) {
-    throw new Error("Divisão por zero não é permitida.");
+    throw new Error('Divisão por zero não é permitida.');
   }
 } finally {
-  console.log("Operação de leitura concluída.");
+  console.log('Operação de leitura concluída.');
 }
 
-try {
-  if (b === 0) {
-    throw new Error("Divisão por zero não é permitida.");
-  }
-} catch (error: Error) {
-  console.log(e.message);
-  console.log(e['message']);
-  console.log(e['test'].value);
-  console.log(e['test']['value']);
-  console.log(e['test'].age.value);
-} finally {
-  console.log("Operação de leitura concluída.");
-}
+class Person {
+  private name: string;
 
-try {
-  if (b === 0) {
-    throw new Error("Divisão por zero não é permitida.");
-  }
-} catch (error instanceof CustomError) {
-  console.log(e.message);
-  console.log(e['message']);
-} finally {
-  console.log("Operação de leitura concluída.");
-}
-
-switch (dia) {
-  case 1:
-      return "Segunda-feira";
-  case "2":
-      return ["Terça", "Terça"];
-  case 13:
-      return [1, 3];
-  case true:
-      return 2;
-  case 5:
-      return "Sexta-feira";
-  case 6:
-      return "Sábado";
-  case 7:
-      return ["Domingo", "Domingo"];
-  default:
-      return "Número inválido! Escolha um número de 1 a 7.";
-}
-
-class Person { 
-  name: string;
-
-  public age: number;
-  private address: string;
-
-  constructor(name: string, age: number) {
+  constructor(name: string) {
     this.name = name;
   }
 
@@ -161,30 +95,15 @@ class Person {
   }
 }
 
-const value: string = "12";
+const value: string = '12';
 
-console.log(pessoa);
+const pessoa = new Person('João');
 
-const pessoa = new Person("João");
-
-const pessoa = new Person("João", 12);
-
-function sum(a: number, b: number): number { 
-  return a + b; 
+function sum(a: number, b: number): number {
+  return a + b;
 }
 
-function sum(a: number, b: number): void { 
-  console.log('Soma feita'); 
-}
-
-function sum(a: number, b: number) { 
-  return a + b; 
-}
-
-
-sum(1);
 sum(1, 2);
-sum(1, 2, 3);
 
 for (let i = 0; i < 5; i++) {
   console.log(i);
@@ -192,7 +111,7 @@ for (let i = 0; i < 5; i++) {
 
 for (let i = 0; i < 10; i++) {
   if (i === 5) {
-    console.log("i é estritamente igual a 5");
+    console.log('i é estritamente igual a 5');
   }
 }
 
@@ -201,20 +120,29 @@ for (let i = 10; i <= 0; i--) {
 }
 
 for (let i = 5; i === 5; i++) {
-  console.log("i é igual a 5");
+  console.log('i é igual a 5');
   break;
 }
 
 for (let i = 5; i === 5; i++) {
-  console.log("i é igual a 5");
+  console.log('i é igual a 5');
   continue;
 }
-
 
 const numbers: number[] = [1, 2, 3, 4, 5];
 for (let num of numbers) {
   console.log(num);
 }
+
+function getDayOfWeek(dia: number): string {
+  switch (dia) {
+    case 1:
+      return 'Segunda-feira';
+    default:
+      return 'Domingo';
+  }
+}
+
 
 // um comentário qualquer
 
